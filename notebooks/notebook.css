@@ -1,5 +1,5 @@
 /* =================================================================== */
-/*             Minimal Top Navigation Bar CSS (Updated)                */
+/*             Minimal Top Navigation Bar CSS (Shared)                 */
 /* =================================================================== */
 .top-nav {
   position: fixed; top: 0; left: 0; width: 100%;
@@ -185,3 +185,13 @@ a:hover { text-decoration: underline; }
 }
 .nested-list.collapsed { max-height: 0; padding-bottom: 0; }
 .nested-list li { border: none; padding: 0.2rem 0; }
+
+/* =================================================================== */
+/*                     Citation System Styles                          */
+/* =================================================================== */
+a.cite {
+  vertical-align: super; font-size: 0.75em;
+  padding: 0 0.1em; text-decoration: none;
+}
+.reference-list .back-links { font-size: 0.9em; opacity: 0.8; }
+.reference-list .back-links a { text-decoration: none; margin-left: 0.25em; }

@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Comprehensive Note Template - Mahbub Kousar</title>
   <link rel="stylesheet" href="../notebook.css">
-  
-  <!-- NEW: Link to Prism CSS for syntax highlighting -->
   <link rel="stylesheet" href="../../prism/prism.css">
 </head>
 <body>
@@ -27,16 +25,14 @@
       <section class="categories-section">
         <h2>Categories</h2>
         <ul class="category-list">
-          <li><a href="#">Natural Language Processing</a></li>
+          <li><a href="#">Algorithms & Data Structures</a></li>
           <li><a href="#"><strong>Web Development</strong></a></li>
-          <li><a href="#">Algorithms</a></li>
         </ul>
       </section>
       <section class="all-posts-section" style="margin-top: 2rem;">
         <h2>All Posts</h2>
         <ul class="post-list">
           <li><a href="sample-note.html">A Comprehensive Note...</a></li>
-          <li><a href="#">On the Peculiar Nature of...</a></li>
         </ul>
       </section>
     </aside>
@@ -49,116 +45,63 @@
           Published on <time datetime="2025-10-28">October 28, 2025</time> in <a href="#">Web Development</a>
         </p>
 
-        <p>This document serves as a comprehensive template for all future notebook entries. It includes examples of every major technical and academic component that might be required, from code blocks to mathematical formulae, ensuring a consistent and professional presentation across all research notes.</p>
+        <p>This document serves as a comprehensive template for future notebook entries. It includes a robust, automated citation system that mimics the ease of use found in LaTeX. The system is powered by JavaScript to handle numbering and linking, ensuring that references are easy to manage and maintain.<a class="cite" data-key="mdn-js"></a></p>
         
-        <hr style="margin: 2rem 0;">
-
-        <h2>Code Implementation</h2>
-        <p>Syntax highlighting is provided by Prism.js. To specify a language, use the class <code>language-&lt;name&gt;</code> on the <code>&lt;code&gt;</code> element. For example, here is a Python snippet:</p>
-        <pre><code class="language-python">import numpy as np
-
-def compute_mse(y_true, y_pred):
+        <h2>Code Implementation with Syntax Highlighting</h2>
+        <p>Syntax highlighting is provided by Prism.js.<a class="cite" data-key="prism-js"></a> To specify a language, use the class <code>language-&lt;name&gt;</code> on the <code>&lt;code&gt;</code> element. The following Python snippet demonstrates a function for calculating the Fibonacci sequence, a classic example in the study of algorithms.<a class="cite" data-key="cormen-algos"></a></p>
+        <pre><code class="language-python">def fibonacci(n):
     """
-    Computes the Mean Squared Error between two numpy arrays.
-    This is a standard loss function in regression tasks.
+    Calculates the nth Fibonacci number using an iterative approach.
     """
-    if y_true.shape != y_pred.shape:
-        raise ValueError("Input arrays must have the same shape.")
-    
-    mse = np.mean((y_true - y_pred) ** 2)
-    return mse
+    if n <= 1:
+        return n
+    a, b = 0, 1
+    for _ in range(n - 1):
+        a, b = b, a + b
+    return b
 
-# Example usage:
-predictions = np.array([2.5, 0.0, 2, 8])
-targets = np.array([3, -0.5, 2, 7])
-loss = compute_mse(targets, predictions)
-print(f"Mean Squared Error: {loss:.4f}")</code></pre>
+# Example: Print the first 10 Fibonacci numbers
+for i in range(10):
+    print(f"fib({i}) = {fibonacci(i)}")</code></pre>
 
-        <h2>Mathematical Foundation</h2>
+        <h2>Mathematical Formulae</h2>
         <p>
-          Mathematical notation is rendered using MathJax. We can include inline formulae, such as \( E=mc^2 \), directly within a paragraph. For more complex, block-level equations, we use a separate paragraph. The fundamental theorem of algebra is a cornerstone of many computational methods. For instance, the solution to a standard quadratic equation \( ax^2 + bx + c = 0 \) is given by the well-known formula:
+          Mathematical notation is rendered using MathJax.<a class="cite" data-key="mathjax"></a> Inline formulae, such as the famous mass-energy equivalence \( E=mc^2 \), can be included directly. For block-level equations, the Lorentz factor from special relativity is a prime example:
         </p>
-        <p>$$ x = \frac{-b \pm \sqrt{b^2-4ac}}{2a} $$</p>
+        <p>$$ \gamma = \frac{1}{\sqrt{1 - v^2/c^2}} $$</p>
+        <p>This equation is fundamental in understanding relativistic effects at high velocities, a concept explored in detail by Einstein.<a class="cite" data-key="einstein-relativity"></a></p>
 
-        <h2>Theorems and Proofs</h2>
-        <p>The academic theme is reinforced through the use of structured theorem and proof environments.</p>
+        <h2>Theorems and Logical Proofs</h2>
+        <p>The academic theme is reinforced through structured theorem and proof environments. This is particularly useful when discussing formal computer science topics.</p>
+        <div class="definition">
+          A <strong>Turing machine</strong> is a mathematical model of computation that defines an abstract machine which manipulates symbols on a strip of tape according to a table of rules.<a class="cite" data-key="turing-1936"></a>
+        </div>
         <div class="theorem">
-          For any right triangle with sides \(a\) and \(b\) and hypotenuse \(c\), the square of the hypotenuse is equal to the sum of the squares of the other two sides.
+          The Halting Problem for Turing machines is undecidable.
         </div>
         <div class="proof">
-          The proof is trivial and left as an exercise for the reader.
+          The proof relies on a contradiction, assuming a machine \(H\) exists that can solve the Halting Problem. A new machine \(G\) is constructed that uses \(H\) to create a paradoxical result, thus proving that the initial assumption must be false. The full proof is detailed in many foundational texts.<a class="cite" data-key="cormen-algos"></a>
         </div>
-
-        <h2>Visual Representation</h2>
-        <p>Figures and their corresponding captions are essential for illustrating complex concepts. All images are responsive and centered within the content block.</p>
-        <figure>
-          <img src="https://picsum.photos/seed/tech/600/300" alt="A placeholder image representing a technical diagram">
-          <figcaption>A sample diagram illustrating a key architectural component. The actual content is less important than the structural demonstration.</figcaption>
-        </figure>
-
-        <h2>Data Comparison</h2>
-        <p>Tables are used for the structured presentation of data. They follow a clean, academic style with clear headers and captions.</p>
-        <table>
-          <caption>Comparison of Model Performance Metrics</caption>
-          <thead>
-            <tr>
-              <th>Model</th>
-              <th>Accuracy (%)</th>
-              <th>Precision</th>
-              <th>Recall</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Baseline Logistic Regression</td>
-              <td>88.2</td>
-              <td>0.85</td>
-              <td>0.91</td>
-            </tr>
-            <tr>
-              <td>Support Vector Machine</td>
-              <td>91.4</td>
-              <td>0.90</td>
-              <td>0.92</td>
-            </tr>
-            <tr>
-              <td>Neural Network (2-layer)</td>
-              <td>93.1</td>
-              <td>0.94</td>
-              <td>0.92</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h2>Concluding Remarks</h2>
-        <p>It is important to remember the human element in all technical pursuits. As one luminary in the field stated:</p>
-        <blockquote>
-          <p>The computer programmer is a creator of universes for which he alone is the lawgiver. No playwright, no stage director, no emperor, however potent, has ever exercised such absolute authority to arrange a stage or field of battle and to command such unswervingly dutiful actors or troops.</p>
-          <footer>Joseph Weizenbaum</footer>
-        </blockquote>
 
       </article>
     </main>
 
-    <!-- RIGHT SIDEBAR -->
+    <!-- RIGHT SIDEBAR (REFERENCES) -->
     <aside class="sidebar-right">
       <h2>References</h2>
-      <ol>
-        <li>W3C, "CSS Grid Layout Module Level 1," 2020.</li>
-        <li>Donald E. Knuth, "The Art of Computer Programming," Addison-Wesley, 1968.</li>
-        <li>Prism.js Documentation. [Online].</li>
-        <li>MathJax Documentation. [Online].</li>
+      <ol class="reference-list">
+        <li id="mdn-js">MDN Web Docs, "JavaScript," Mozilla. [Online]. Available: https://developer.mozilla.org/en-US/docs/Web/JavaScript.</li>
+        <li id="prism-js">Prism.js, "A lightweight, extensible syntax highlighter." [Online]. Available: https://prismjs.com.</li>
+        <li id="cormen-algos">T. H. Cormen, C. E. Leiserson, R. L. Rivest, and C. Stein, "Introduction to Algorithms," 3rd ed. MIT Press, 2009.</li>
+        <li id="mathjax">MathJax, "Beautiful math in all browsers." [Online]. Available: https://www.mathjax.org.</li>
+        <li id="einstein-relativity">A. Einstein, "Zur Elektrodynamik bewegter Körper" (On the Electrodynamics of Moving Bodies), Annalen der Physik, vol. 17, no. 10, pp. 891–921, 1905.</li>
+        <li id="turing-1936">A. M. Turing, "On Computable Numbers, with an Application to the Entscheidungsproblem," Proceedings of the London Mathematical Society, vol. s2-42, no. 1, pp. 230–265, 1937.</li>
       </ol>
     </aside>
   </div>
 
-  <!-- NEW: Script for MathJax -->
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  
-  <!-- NEW: Script for Prism.js -->
   <script async src="../../prism/prism.js"></script>
-
-  <!-- Main notebook script -->
   <script src="../notebook.js"></script>
 </body>
 </html>
