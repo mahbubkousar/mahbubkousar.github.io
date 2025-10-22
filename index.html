@@ -384,6 +384,68 @@ Journal of Self-Deprecating Humor, 1(1), 1-∞.</code></pre>
     darkModeToggle.addEventListener('click', () => {
       document.body.classList.toggle('latex-dark');
     });
+
+    // Sticky navigation with scroll behavior
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      // Add shadow when scrolled
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      // Hide/show based on scroll direction
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          // Scrolling down & past threshold
+          nav.classList.add('nav-hidden');
+        } else {
+          // Scrolling up
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Active link highlighting
+    const navLinks = document.querySelectorAll('.top-nav a');
+    const currentPath = window.location.pathname;
+    const currentPage = currentPath.split('/').pop() || 'index.html';
+
+    navLinks.forEach(link => {
+      const linkPath = link.getAttribute('href');
+
+      // Check for current page
+      if (linkPath === '#top' && (currentPage === 'index.html' || currentPage === '')) {
+        link.classList.add('active');
+      } else if (linkPath.includes(currentPage) && currentPage !== 'index.html' && currentPage !== '') {
+        link.classList.add('active');
+      }
+
+      // Handle hash links for same-page navigation
+      if (linkPath.startsWith('#')) {
+        link.addEventListener('click', (e) => {
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        });
+      }
+    });
   </script>
 
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
