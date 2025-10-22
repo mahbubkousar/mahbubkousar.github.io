@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iris Dataset - Resources - Mahbub Kousar</title>
+  <meta name="description" content="Classic machine learning dataset for classification tasks" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../prism/prism.css" />
+  <link rel="stylesheet" href="../resource.css" />
+</head>
+
+<body class="text-justify">
+  <!-- Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Resources</a></li>
+      <li><a href="../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <main class="resource-page">
+    <!-- Breadcrumb -->
+    <nav class="resource-breadcrumb">
+      <a href="../index.html">Resources</a>
+      <span class="breadcrumb-separator">/</span>
+      <a href="../index.html?filter=data-science">Data Science</a>
+      <span class="breadcrumb-separator">/</span>
+      <span>Iris Dataset</span>
+    </nav>
+
+    <!-- Resource Header -->
+    <header class="resource-header">
+      <h1 class="resource-title">Dataset: Iris Flowers</h1>
+      <div class="resource-meta">
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Type:</span>
+          <span class="resource-type-badge badge-file">File</span>
+        </div>
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Category:</span>
+          <span>Data Science</span>
+        </div>
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Date Added:</span>
+          <time datetime="2025-10-10">October 10, 2025</time>
+        </div>
+      </div>
+      <div class="resource-tags">
+        <span class="tag">dataset</span>
+        <span class="tag">machine-learning</span>
+        <span class="tag">classification</span>
+        <span class="tag">csv</span>
+      </div>
+    </header>
+
+    <!-- Resource Content -->
+    <article class="resource-content">
+      <h2>Overview</h2>
+      <p>
+        The Iris flower dataset is one of the most famous datasets in machine learning and pattern recognition.
+        Introduced by Ronald Fisher in 1936, it contains measurements of 150 iris flowers from three different species.
+        It's commonly used for testing classification algorithms and learning data science fundamentals.
+      </p>
+
+      <div class="info-box">
+        <div class="info-box-title">Dataset Details</div>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li><strong>Samples:</strong> 150 (50 per species)</li>
+          <li><strong>Features:</strong> 4 numeric features</li>
+          <li><strong>Classes:</strong> 3 species (Setosa, Versicolor, Virginica)</li>
+          <li><strong>Format:</strong> CSV</li>
+          <li><strong>Size:</strong> ~4 KB</li>
+          <li><strong>Missing Values:</strong> None</li>
+        </ul>
+      </div>
+
+      <h2>Features</h2>
+      <p>
+        Each sample contains four measurements (in centimeters):
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Range</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>sepal_length</td>
+            <td>Length of the sepal</td>
+            <td>float</td>
+            <td>4.3 - 7.9 cm</td>
+          </tr>
+          <tr>
+            <td>sepal_width</td>
+            <td>Width of the sepal</td>
+            <td>float</td>
+            <td>2.0 - 4.4 cm</td>
+          </tr>
+          <tr>
+            <td>petal_length</td>
+            <td>Length of the petal</td>
+            <td>float</td>
+            <td>1.0 - 6.9 cm</td>
+          </tr>
+          <tr>
+            <td>petal_width</td>
+            <td>Width of the petal</td>
+            <td>float</td>
+            <td>0.1 - 2.5 cm</td>
+          </tr>
+          <tr>
+            <td>species</td>
+            <td>Flower species</td>
+            <td>string</td>
+            <td>setosa, versicolor, virginica</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Sample Data</h2>
+      <p>
+        First few rows of the dataset:
+      </p>
+
+      <div class="resource-code-block">
+        <div class="code-header">
+          <span class="code-language">CSV Preview</span>
+          <button class="copy-button" onclick="copyCode('code-csv')">Copy</button>
+        </div>
+        <pre><code id="code-csv" class="language-csv">sepal_length,sepal_width,petal_length,petal_width,species
+5.1,3.5,1.4,0.2,setosa
+4.9,3.0,1.4,0.2,setosa
+4.7,3.2,1.3,0.2,setosa
+7.0,3.2,4.7,1.4,versicolor
+6.4,3.2,4.5,1.5,versicolor
+6.9,3.1,4.9,1.5,versicolor
+6.3,3.3,6.0,2.5,virginica
+5.8,2.7,5.1,1.9,virginica
+7.1,3.0,5.9,2.1,virginica</code></pre>
+      </div>
+
+      <h2>Usage Examples</h2>
+
+      <h3>Loading with Pandas</h3>
+      <div class="resource-code-block">
+        <div class="code-header">
+          <span class="code-language">Python</span>
+          <button class="copy-button" onclick="copyCode('code-pandas')">Copy</button>
+        </div>
+        <pre><code id="code-pandas" class="language-python">import pandas as pd
+
+# Load the dataset
+df = pd.read_csv('iris.csv')
+
+# Display basic information
+print(df.head())
+print(df.info())
+print(df.describe())
+
+# Separate features and target
+X = df[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']]
+y = df['species']</code></pre>
+      </div>
+
+      <h3>Simple Classification Example</h3>
+      <div class="resource-code-block">
+        <div class="code-header">
+          <span class="code-language">Python - Scikit-learn</span>
+          <button class="copy-button" onclick="copyCode('code-sklearn')">Copy</button>
+        </div>
+        <pre><code id="code-sklearn" class="language-python">from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+# Split the data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Train a classifier
+clf = DecisionTreeClassifier(random_state=42)
+clf.fit(X_train, y_train)
+
+# Make predictions
+y_pred = clf.predict(X_test)
+
+# Evaluate
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy:.2%}")</code></pre>
+      </div>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li><strong>Classification:</strong> Training and testing classification algorithms (Decision Trees, KNN, SVM, etc.)</li>
+        <li><strong>Clustering:</strong> Demonstrating K-means and hierarchical clustering</li>
+        <li><strong>Visualization:</strong> Creating scatter plots and pair plots</li>
+        <li><strong>Feature Selection:</strong> Studying feature importance and correlation</li>
+        <li><strong>Model Comparison:</strong> Benchmarking different ML algorithms</li>
+        <li><strong>Cross-Validation:</strong> Learning model evaluation techniques</li>
+      </ul>
+
+      <h2>Why This Dataset is Popular</h2>
+      <div class="info-box">
+        <ol style="margin: 0.5rem 0 0 0;">
+          <li><strong>Small and clean:</strong> Easy to load and understand, no preprocessing needed</li>
+          <li><strong>Well-balanced:</strong> Equal number of samples per class</li>
+          <li><strong>Moderate difficulty:</strong> Not trivially easy, but not too complex</li>
+          <li><strong>Multi-class:</strong> Three classes instead of binary classification</li>
+          <li><strong>Real-world data:</strong> Actual botanical measurements</li>
+          <li><strong>Historical significance:</strong> One of the earliest ML datasets</li>
+        </ol>
+      </div>
+
+      <div class="download-section">
+        <p>Download the Iris dataset in CSV format</p>
+        <a href="#" class="download-button" download>Download iris.csv</a>
+      </div>
+
+      <h2>Alternative Sources</h2>
+      <ul>
+        <li>
+          <strong>Scikit-learn:</strong> Built-in dataset
+          <code>from sklearn.datasets import load_iris</code>
+        </li>
+        <li>
+          <strong>UCI ML Repository:</strong>
+          <a href="https://archive.ics.uci.edu/ml/datasets/iris" target="_blank" rel="noopener noreferrer">
+            archive.ics.uci.edu/ml/datasets/iris
+          </a>
+        </li>
+        <li>
+          <strong>Kaggle:</strong>
+          <a href="https://www.kaggle.com/datasets/uciml/iris" target="_blank" rel="noopener noreferrer">
+            kaggle.com/datasets/uciml/iris
+          </a>
+        </li>
+      </ul>
+
+      <!-- Related Resources -->
+      <section class="related-resources">
+        <h2>Related Resources</h2>
+        <ul class="related-list">
+          <li><a href="#">Machine Learning Fundamentals</a></li>
+          <li><a href="#">Classification Algorithms Comparison</a></li>
+          <li><a href="#">Data Visualization with Python</a></li>
+        </ul>
+      </section>
+
+      <a href="../index.html" class="back-to-resources">Back to Resources</a>
+    </article>
+  </main>
+
+  <script>
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      const code = codeElement.textContent;
+
+      navigator.clipboard.writeText(code).then(() => {
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 2000);
+      });
+    }
+
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../prism/prism.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,396 @@
+/* =================================================================== */
+/*                    Resources System Styles                          */
+/* =================================================================== */
+
+/* Override portfolio body constraints for resources pages */
+body:has(.resources-index) {
+  max-width: none;
+  padding: 5.5rem 0 2rem 0;
+}
+
+/* --- Header Styles --- */
+.resources-header {
+  text-align: center;
+  margin: 2rem 0 3rem 0;
+  padding-top: 1rem;
+}
+
+.resources-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.resources-header .subtitle {
+  font-size: 1rem;
+  color: var(--body-color);
+  opacity: 0.7;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* --- Main Container --- */
+.resources-index {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.25rem 2rem 1.25rem;
+}
+
+/* --- Filter Section --- */
+.filter-section {
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background-color: var(--pre-bg-color);
+  border-radius: 4px;
+  border: var(--border-width-thin) solid var(--footnotes-border-color);
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-group label {
+  font-size: 0.9em;
+  font-weight: 600;
+  opacity: 0.85;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.03em;
+}
+
+.filter-group input[type="text"],
+.filter-group select {
+  padding: 0.5rem 0.75rem;
+  border: var(--border-width-thin) solid var(--footnotes-border-color);
+  border-radius: 4px;
+  background-color: var(--body-bg-color);
+  color: var(--body-color);
+  font-size: 0.9em;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.filter-group input[type="text"]:focus,
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--link-visited);
+}
+
+/* --- Resources Table --- */
+.resources-table-section {
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  justify-content: center;
+}
+
+.resources-table {
+  width: auto;
+  max-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 0.9em;
+  background-color: var(--body-bg-color);
+  margin: 0 auto;
+}
+
+.resources-table thead {
+  background-color: var(--pre-bg-color);
+  border-top: var(--border-width-thick) solid var(--table-border-color);
+  border-bottom: var(--border-width-thick) solid var(--table-border-color);
+}
+
+.resources-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.resources-table tbody tr {
+  border-bottom: var(--border-width-thin) solid var(--footnotes-border-color);
+  transition: background-color 0.15s ease;
+}
+
+.resources-table tbody tr:hover {
+  background-color: var(--pre-bg-color);
+}
+
+.resources-table tbody tr:last-child {
+  border-bottom: var(--border-width-thick) solid var(--table-border-color);
+}
+
+.resources-table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+/* --- Table Cell Specific Styles --- */
+.resource-name {
+  font-weight: 600;
+  min-width: 180px;
+}
+
+.resource-type {
+  min-width: 80px;
+}
+
+.resource-category {
+  min-width: 120px;
+  opacity: 0.85;
+}
+
+.resource-description {
+  min-width: 250px;
+  line-height: 1.4;
+  color: var(--body-color);
+  opacity: 0.8;
+}
+
+.resource-date {
+  min-width: 100px;
+  font-size: 0.9em;
+  opacity: 0.7;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.resource-actions {
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+/* --- Type Badges --- */
+.type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.type-code {
+  background-color: hsl(210, 50%, 92%);
+  color: hsl(210, 50%, 35%);
+}
+
+.type-tool {
+  background-color: hsl(150, 40%, 92%);
+  color: hsl(150, 40%, 30%);
+}
+
+.type-link {
+  background-color: hsl(30, 50%, 92%);
+  color: hsl(30, 50%, 30%);
+}
+
+.type-note {
+  background-color: hsl(280, 35%, 92%);
+  color: hsl(280, 35%, 35%);
+}
+
+.type-file {
+  background-color: hsl(0, 0%, 90%);
+  color: hsl(0, 0%, 30%);
+}
+
+/* Dark mode support for badges */
+.latex-dark .type-code {
+  background-color: hsl(210, 50%, 25%);
+  color: hsl(210, 50%, 85%);
+}
+
+.latex-dark .type-tool {
+  background-color: hsl(150, 40%, 25%);
+  color: hsl(150, 40%, 85%);
+}
+
+.latex-dark .type-link {
+  background-color: hsl(30, 50%, 25%);
+  color: hsl(30, 50%, 85%);
+}
+
+.latex-dark .type-note {
+  background-color: hsl(280, 35%, 25%);
+  color: hsl(280, 35%, 85%);
+}
+
+.latex-dark .type-file {
+  background-color: hsl(0, 0%, 25%);
+  color: hsl(0, 0%, 85%);
+}
+
+/* --- Action Links --- */
+.action-link {
+  color: var(--link-visited);
+  text-decoration: none;
+  font-size: 0.9em;
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+  display: inline-block;
+  transition: opacity 0.2s ease;
+}
+
+.action-link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.action-link:last-child {
+  margin-right: 0;
+}
+
+/* Add separator between action links */
+.action-link + .action-link::before {
+  content: '•';
+  margin-right: 0.5rem;
+  opacity: 0.3;
+}
+
+/* --- Empty State --- */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.25rem;
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* --- Statistics Section --- */
+.resources-stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: var(--pre-bg-color);
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--link-visited);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.85em;
+  opacity: 0.7;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.03em;
+}
+
+/* --- Footer --- */
+.resources-footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem 1.25rem;
+  font-size: 0.9em;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 1024px) {
+  .resources-table {
+    font-size: 0.85em;
+  }
+
+  .resources-table th,
+  .resources-table td {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .resource-description {
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .filter-group {
+    min-width: 100%;
+  }
+
+  /* Make table scrollable on mobile */
+  .resources-table-section {
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
+    padding: 0 1.25rem;
+  }
+
+  .resources-table {
+    font-size: 0.8em;
+  }
+
+  .resources-table th,
+  .resources-table td {
+    padding: 0.5rem 0.6rem;
+  }
+
+  /* Stack action links vertically on very small screens */
+  .resource-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .action-link + .action-link::before {
+    content: '';
+    margin-right: 0;
+  }
+
+  .resources-stats {
+    gap: 1rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .resources-header h1 {
+    font-size: 2rem;
+  }
+
+  .resources-table {
+    font-size: 0.75em;
+  }
+
+  /* Hide less critical columns on very small screens */
+  .resource-date {
+    display: none;
+  }
+
+  .resources-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

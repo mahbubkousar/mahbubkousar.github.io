@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources - Mahbub Kousar</title>
+  <meta name="description" content="Curated collection of code snippets, notes, tools, and useful links" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="resources.css" />
+</head>
+
+<body class="text-justify">
+  <!-- Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../index.html">Portfolio</a></li>
+      <li><a href="../notebooks/index.html">Notebook</a></li>
+      <li><a href="index.html">Resources</a></li>
+      <li><a href="../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <header class="resources-header">
+    <h1>Resources</h1>
+    <p class="subtitle">Curated collection of code, tools, and useful links</p>
+  </header>
+
+  <main class="resources-index">
+
+    <!-- Filter/Search Section -->
+    <section class="filter-section">
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="search-input">Search:</label>
+          <input type="text" id="search-input" placeholder="Search resources..." />
+        </div>
+        <div class="filter-group">
+          <label for="type-filter">Type:</label>
+          <select id="type-filter">
+            <option value="all">All Types</option>
+            <option value="code">Code Snippet</option>
+            <option value="tool">Tool</option>
+            <option value="link">Link</option>
+            <option value="note">Note</option>
+            <option value="file">File</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="category-filter">Category:</label>
+          <select id="category-filter">
+            <option value="all">All Categories</option>
+            <option value="web">Web Development</option>
+            <option value="python">Python</option>
+            <option value="data-science">Data Science</option>
+            <option value="algorithms">Algorithms</option>
+            <option value="tools">Tools & Utilities</option>
+            <option value="reference">Reference</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources Table -->
+    <section class="resources-table-section">
+      <table class="resources-table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Category</th>
+            <th scope="col">Description</th>
+            <th scope="col">Date Added</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="resources-tbody">
+          <!-- Example Row 1 -->
+          <tr class="resource-row" data-type="code" data-category="python">
+            <td class="resource-name">Binary Search Implementation</td>
+            <td class="resource-type">
+              <span class="type-badge type-code">Code</span>
+            </td>
+            <td class="resource-category">Python</td>
+            <td class="resource-description">Optimized binary search with edge case handling</td>
+            <td class="resource-date">
+              <time datetime="2025-10-22">Oct 22, 2025</time>
+            </td>
+            <td class="resource-actions">
+              <a href="pages/code-binary-search.html" class="action-link" title="View">View</a>
+            </td>
+          </tr>
+
+          <!-- Example Row 2 -->
+          <tr class="resource-row" data-type="tool" data-category="tools">
+            <td class="resource-name">VS Code Settings</td>
+            <td class="resource-type">
+              <span class="type-badge type-tool">Tool</span>
+            </td>
+            <td class="resource-category">Tools & Utilities</td>
+            <td class="resource-description">Personal VS Code configuration with extensions</td>
+            <td class="resource-date">
+              <time datetime="2025-10-20">Oct 20, 2025</time>
+            </td>
+            <td class="resource-actions">
+              <a href="pages/tool-vscode-settings.html" class="action-link" title="View">View</a>
+            </td>
+          </tr>
+
+          <!-- Example Row 3 -->
+          <tr class="resource-row" data-type="link" data-category="reference">
+            <td class="resource-name">Python Documentation</td>
+            <td class="resource-type">
+              <span class="type-badge type-link">Link</span>
+            </td>
+            <td class="resource-category">Reference</td>
+            <td class="resource-description">Official Python 3 documentation</td>
+            <td class="resource-date">
+              <time datetime="2025-10-18">Oct 18, 2025</time>
+            </td>
+            <td class="resource-actions">
+              <a href="pages/link-python-docs.html" class="action-link" title="View">View</a>
+            </td>
+          </tr>
+
+          <!-- Example Row 4 -->
+          <tr class="resource-row" data-type="note" data-category="algorithms">
+            <td class="resource-name">Big O Cheat Sheet</td>
+            <td class="resource-type">
+              <span class="type-badge type-note">Note</span>
+            </td>
+            <td class="resource-category">Algorithms</td>
+            <td class="resource-description">Quick reference for algorithm complexity</td>
+            <td class="resource-date">
+              <time datetime="2025-10-15">Oct 15, 2025</time>
+            </td>
+            <td class="resource-actions">
+              <a href="pages/note-big-o-cheatsheet.html" class="action-link" title="View">View</a>
+            </td>
+          </tr>
+
+          <!-- Example Row 5 -->
+          <tr class="resource-row" data-type="code" data-category="web">
+            <td class="resource-name">Responsive Navigation Bar</td>
+            <td class="resource-type">
+              <span class="type-badge type-code">Code</span>
+            </td>
+            <td class="resource-category">Web Development</td>
+            <td class="resource-description">Mobile-friendly navigation with smooth scrolling</td>
+            <td class="resource-date">
+              <time datetime="2025-10-12">Oct 12, 2025</time>
+            </td>
+            <td class="resource-actions">
+              <a href="#" class="action-link" title="View">View</a>
+            </td>
+          </tr>
+
+          <!-- Example Row 6 -->
+          <tr class="resource-row" data-type="file" data-category="data-science">
+            <td class="resource-name">Dataset: Iris Flowers</td>
+            <td class="resource-type">
+              <span class="type-badge type-file">File</span>
+            </td>
+            <td class="resource-category">Data Science</td>
+            <td class="resource-description">Classic ML dataset for classification</td>
+            <td class="resource-date">
+              <time datetime="2025-10-10">Oct 10, 2025</time>
+            </td>
+            <td class="resource-actions">
+              <a href="pages/file-iris-dataset.html" class="action-link" title="View">View</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <p>No resources found matching your criteria.</p>
+      </div>
+    </section>
+
+    <!-- Summary Statistics -->
+    <section class="resources-stats">
+      <div class="stat-item">
+        <span class="stat-value" id="total-resources">6</span>
+        <span class="stat-label">Total Resources</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="filtered-resources">6</span>
+        <span class="stat-label">Showing</span>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="resources-footer">
+    <p>Resources are updated regularly. Contributions and suggestions are welcome.</p>
+  </footer>
+
+  <script>
+    // Resource filtering and search functionality
+    const searchInput = document.getElementById('search-input');
+    const typeFilter = document.getElementById('type-filter');
+    const categoryFilter = document.getElementById('category-filter');
+    const resourceRows = document.querySelectorAll('.resource-row');
+    const emptyState = document.getElementById('empty-state');
+    const filteredCount = document.getElementById('filtered-resources');
+    const totalCount = document.getElementById('total-resources');
+
+    function filterResources() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const selectedType = typeFilter.value;
+      const selectedCategory = categoryFilter.value;
+      let visibleCount = 0;
+
+      resourceRows.forEach(row => {
+        const name = row.querySelector('.resource-name').textContent.toLowerCase();
+        const description = row.querySelector('.resource-description').textContent.toLowerCase();
+        const rowType = row.dataset.type;
+        const rowCategory = row.dataset.category;
+
+        const matchesSearch = name.includes(searchTerm) || description.includes(searchTerm);
+        const matchesType = selectedType === 'all' || rowType === selectedType;
+        const matchesCategory = selectedCategory === 'all' || rowCategory === selectedCategory;
+
+        if (matchesSearch && matchesType && matchesCategory) {
+          row.style.display = '';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Update counts
+      filteredCount.textContent = visibleCount;
+
+      // Show/hide empty state
+      if (visibleCount === 0) {
+        emptyState.style.display = 'block';
+        document.querySelector('.resources-table').style.display = 'none';
+      } else {
+        emptyState.style.display = 'none';
+        document.querySelector('.resources-table').style.display = 'table';
+      }
+    }
+
+    // Attach event listeners
+    searchInput.addEventListener('input', filterResources);
+    typeFilter.addEventListener('change', filterResources);
+    categoryFilter.addEventListener('change', filterResources);
+
+    // Set initial total count
+    totalCount.textContent = resourceRows.length;
+
+    // Active link highlighting
+    const navLinks = document.querySelectorAll('.top-nav a');
+    const currentPath = window.location.pathname;
+
+    navLinks.forEach(link => {
+      const linkPath = link.getAttribute('href');
+      if (linkPath === 'index.html' && currentPath.includes('resources/index.html')) {
+        link.classList.add('active');
+      }
+    });
+
+    // Sticky navigation with scroll behavior
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+</body>
+
+</html>

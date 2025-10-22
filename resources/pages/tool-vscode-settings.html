@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VS Code Settings - Resources - Mahbub Kousar</title>
+  <meta name="description" content="Personal VS Code configuration with extensions and settings" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../prism/prism.css" />
+  <link rel="stylesheet" href="../resource.css" />
+</head>
+
+<body class="text-justify">
+  <!-- Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Resources</a></li>
+      <li><a href="../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <main class="resource-page">
+    <!-- Breadcrumb -->
+    <nav class="resource-breadcrumb">
+      <a href="../index.html">Resources</a>
+      <span class="breadcrumb-separator">/</span>
+      <a href="../index.html?filter=tools">Tools & Utilities</a>
+      <span class="breadcrumb-separator">/</span>
+      <span>VS Code Settings</span>
+    </nav>
+
+    <!-- Resource Header -->
+    <header class="resource-header">
+      <h1 class="resource-title">VS Code Settings</h1>
+      <div class="resource-meta">
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Type:</span>
+          <span class="resource-type-badge badge-tool">Tool</span>
+        </div>
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Category:</span>
+          <span>Tools & Utilities</span>
+        </div>
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Date Added:</span>
+          <time datetime="2025-10-20">October 20, 2025</time>
+        </div>
+      </div>
+      <div class="resource-tags">
+        <span class="tag">vscode</span>
+        <span class="tag">editor</span>
+        <span class="tag">configuration</span>
+        <span class="tag">productivity</span>
+      </div>
+    </header>
+
+    <!-- Resource Content -->
+    <article class="resource-content">
+      <h2>Overview</h2>
+      <p>
+        This is my personal Visual Studio Code configuration optimized for Python, JavaScript, and web development.
+        It includes carefully selected extensions, editor settings, and keybindings that enhance productivity
+        and maintain code quality.
+      </p>
+
+      <div class="info-box">
+        <div class="info-box-title">What's Included</div>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>Complete <code>settings.json</code> configuration</li>
+          <li>Recommended extensions list</li>
+          <li>Custom keybindings</li>
+          <li>Theme and appearance settings</li>
+          <li>Language-specific configurations</li>
+        </ul>
+      </div>
+
+      <h2>Essential Extensions</h2>
+      <p>
+        These extensions significantly improve the development experience:
+      </p>
+
+      <h3>General Development</h3>
+      <ul>
+        <li><strong>Python</strong> (ms-python.python) - Python language support with IntelliSense</li>
+        <li><strong>Pylance</strong> (ms-python.vscode-pylance) - Fast, feature-rich Python language server</li>
+        <li><strong>ESLint</strong> (dbaeumer.vscode-eslint) - JavaScript linting</li>
+        <li><strong>Prettier</strong> (esbenp.prettier-vscode) - Code formatter</li>
+      </ul>
+
+      <h3>Productivity</h3>
+      <ul>
+        <li><strong>GitHub Copilot</strong> (github.copilot) - AI pair programmer</li>
+        <li><strong>GitLens</strong> (eamodio.gitlens) - Git supercharged</li>
+        <li><strong>Error Lens</strong> (usernamehw.errorlens) - Inline error highlighting</li>
+        <li><strong>Live Server</strong> (ritwickdey.liveserver) - Local development server</li>
+      </ul>
+
+      <h2>Settings Configuration</h2>
+
+      <div class="resource-code-block">
+        <div class="code-header">
+          <span class="code-language">settings.json</span>
+          <button class="copy-button" onclick="copyCode('code-settings')">Copy</button>
+        </div>
+        <pre><code id="code-settings" class="language-json">{
+  // Editor
+  "editor.fontSize": 14,
+  "editor.fontFamily": "'Fira Code', 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "editor.lineHeight": 1.6,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "editor.minimap.enabled": false,
+  "editor.suggestSelection": "first",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+
+  // Python specific
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.formatting.provider": "black",
+
+  // JavaScript/TypeScript
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Files
+  "files.autoSave": "onFocusChange",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // Terminal
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.fontFamily": "'Fira Code', monospace",
+
+  // Workbench
+  "workbench.colorTheme": "One Dark Pro",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.startupEditor": "newUntitledFile",
+
+  // Git
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true
+}</code></pre>
+      </div>
+
+      <h2>Installation Guide</h2>
+      <ol class="usage-steps">
+        <li>
+          <strong>Open VS Code Settings</strong><br />
+          Press <code>Ctrl+,</code> (Windows/Linux) or <code>Cmd+,</code> (Mac) to open settings.
+        </li>
+        <li>
+          <strong>Access settings.json</strong><br />
+          Click the "Open Settings (JSON)" icon in the top-right corner of the settings window.
+        </li>
+        <li>
+          <strong>Copy configuration</strong><br />
+          Replace or merge the contents with the configuration above.
+        </li>
+        <li>
+          <strong>Install extensions</strong><br />
+          Go to Extensions view (<code>Ctrl+Shift+X</code>) and search for each extension by name.
+        </li>
+        <li>
+          <strong>Restart VS Code</strong><br />
+          Reload the window for all changes to take effect.
+        </li>
+      </ol>
+
+      <h2>Custom Keybindings</h2>
+
+      <div class="resource-code-block">
+        <div class="code-header">
+          <span class="code-language">keybindings.json</span>
+          <button class="copy-button" onclick="copyCode('code-keybindings')">Copy</button>
+        </div>
+        <pre><code id="code-keybindings" class="language-json">[
+  {
+    "key": "ctrl+shift+d",
+    "command": "editor.action.duplicateSelection"
+  },
+  {
+    "key": "ctrl+k ctrl+c",
+    "command": "editor.action.addCommentLine",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+f",
+    "command": "editor.action.formatDocument",
+    "when": "editorTextFocus"
+  }
+]</code></pre>
+      </div>
+
+      <div class="download-section">
+        <p>Download complete configuration files</p>
+        <a href="#" class="download-button" download>Download vscode-config.zip</a>
+      </div>
+
+      <!-- Related Resources -->
+      <section class="related-resources">
+        <h2>Related Resources</h2>
+        <ul class="related-list">
+          <li><a href="#">Git Configuration Guide</a></li>
+          <li><a href="#">Terminal Setup and Customization</a></li>
+          <li><a href="#">Python Development Environment</a></li>
+        </ul>
+      </section>
+
+      <a href="../index.html" class="back-to-resources">Back to Resources</a>
+    </article>
+  </main>
+
+  <script>
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      const code = codeElement.textContent;
+
+      navigator.clipboard.writeText(code).then(() => {
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 2000);
+      });
+    }
+
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../prism/prism.js"></script>
+</body>
+
+</html>

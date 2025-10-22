@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Big O Cheat Sheet - Resources - Mahbub Kousar</title>
+  <meta name="description" content="Quick reference for algorithm complexity analysis" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../resource.css" />
+</head>
+
+<body class="text-justify">
+  <!-- Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Resources</a></li>
+      <li><a href="../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <main class="resource-page">
+    <!-- Breadcrumb -->
+    <nav class="resource-breadcrumb">
+      <a href="../index.html">Resources</a>
+      <span class="breadcrumb-separator">/</span>
+      <a href="../index.html?filter=algorithms">Algorithms</a>
+      <span class="breadcrumb-separator">/</span>
+      <span>Big O Cheat Sheet</span>
+    </nav>
+
+    <!-- Resource Header -->
+    <header class="resource-header">
+      <h1 class="resource-title">Big O Cheat Sheet</h1>
+      <div class="resource-meta">
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Type:</span>
+          <span class="resource-type-badge badge-note">Note</span>
+        </div>
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Category:</span>
+          <span>Algorithms</span>
+        </div>
+        <div class="resource-meta-item">
+          <span class="resource-meta-label">Date Added:</span>
+          <time datetime="2025-10-15">October 15, 2025</time>
+        </div>
+      </div>
+      <div class="resource-tags">
+        <span class="tag">algorithms</span>
+        <span class="tag">complexity</span>
+        <span class="tag">big-o</span>
+        <span class="tag">reference</span>
+      </div>
+    </header>
+
+    <!-- Resource Content -->
+    <article class="resource-content">
+      <h2>Overview</h2>
+      <p>
+        Big O notation describes the performance or complexity of an algorithm. This cheat sheet provides
+        quick reference tables for common data structures and algorithms, along with their time and space
+        complexities.
+      </p>
+
+      <div class="info-box">
+        <div class="info-box-title">Complexity Classes (from best to worst)</div>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li><strong>O(1)</strong> - Constant time</li>
+          <li><strong>O(log n)</strong> - Logarithmic time</li>
+          <li><strong>O(n)</strong> - Linear time</li>
+          <li><strong>O(n log n)</strong> - Linearithmic time</li>
+          <li><strong>O(n²)</strong> - Quadratic time</li>
+          <li><strong>O(2ⁿ)</strong> - Exponential time</li>
+          <li><strong>O(n!)</strong> - Factorial time</li>
+        </ul>
+      </div>
+
+      <h2>Common Data Structure Operations</h2>
+
+      <h3>Array</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Best</th>
+            <th>Average</th>
+            <th>Worst</th>
+            <th>Space</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Access</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Insert</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Delete</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Linked List</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Best</th>
+            <th>Average</th>
+            <th>Worst</th>
+            <th>Space</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Access</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Insert</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Delete</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Hash Table</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Best</th>
+            <th>Average</th>
+            <th>Worst</th>
+            <th>Space</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Search</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Insert</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Delete</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Binary Search Tree</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Best</th>
+            <th>Average</th>
+            <th>Worst</th>
+            <th>Space</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Search</td>
+            <td>O(log n)</td>
+            <td>O(log n)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Insert</td>
+            <td>O(log n)</td>
+            <td>O(log n)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Delete</td>
+            <td>O(log n)</td>
+            <td>O(log n)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Sorting Algorithms</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th>Best</th>
+            <th>Average</th>
+            <th>Worst</th>
+            <th>Space</th>
+            <th>Stable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Quick Sort</td>
+            <td>O(n log n)</td>
+            <td>O(n log n)</td>
+            <td>O(n²)</td>
+            <td>O(log n)</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Merge Sort</td>
+            <td>O(n log n)</td>
+            <td>O(n log n)</td>
+            <td>O(n log n)</td>
+            <td>O(n)</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Heap Sort</td>
+            <td>O(n log n)</td>
+            <td>O(n log n)</td>
+            <td>O(n log n)</td>
+            <td>O(1)</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Bubble Sort</td>
+            <td>O(n)</td>
+            <td>O(n²)</td>
+            <td>O(n²)</td>
+            <td>O(1)</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Insertion Sort</td>
+            <td>O(n)</td>
+            <td>O(n²)</td>
+            <td>O(n²)</td>
+            <td>O(1)</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Selection Sort</td>
+            <td>O(n²)</td>
+            <td>O(n²)</td>
+            <td>O(n²)</td>
+            <td>O(1)</td>
+            <td>No</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Search Algorithms</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th>Best</th>
+            <th>Average</th>
+            <th>Worst</th>
+            <th>Space</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Binary Search</td>
+            <td>O(1)</td>
+            <td>O(log n)</td>
+            <td>O(log n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Linear Search</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Depth-First Search</td>
+            <td>O(|V| + |E|)</td>
+            <td>O(|V| + |E|)</td>
+            <td>O(|V| + |E|)</td>
+            <td>O(|V|)</td>
+          </tr>
+          <tr>
+            <td>Breadth-First Search</td>
+            <td>O(|V| + |E|)</td>
+            <td>O(|V| + |E|)</td>
+            <td>O(|V| + |E|)</td>
+            <td>O(|V|)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Rules of Thumb</h2>
+      <div class="info-box">
+        <ol style="margin: 0.5rem 0 0 0;">
+          <li><strong>Drop constants:</strong> O(2n) becomes O(n)</li>
+          <li><strong>Drop non-dominant terms:</strong> O(n² + n) becomes O(n²)</li>
+          <li><strong>Different inputs use different variables:</strong> O(a + b) not O(n)</li>
+          <li><strong>Nested loops multiply:</strong> Two nested loops → O(n²)</li>
+          <li><strong>Consecutive operations add:</strong> O(a) + O(b) = O(a + b)</li>
+        </ol>
+      </div>
+
+      <div class="download-section">
+        <p>Download this cheat sheet as a PDF for quick reference</p>
+        <a href="#" class="download-button" download>Download PDF</a>
+      </div>
+
+      <!-- Related Resources -->
+      <section class="related-resources">
+        <h2>Related Resources</h2>
+        <ul class="related-list">
+          <li><a href="code-binary-search.html">Binary Search Implementation</a></li>
+          <li><a href="../../notebooks/posts/demo-note.html">Comprehensive Guide to Common Algorithms</a></li>
+          <li><a href="#">Data Structures Deep Dive</a></li>
+        </ul>
+      </section>
+
+      <a href="../index.html" class="back-to-resources">Back to Resources</a>
+    </article>
+  </main>
+
+  <script>
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+</body>
+
+</html>
