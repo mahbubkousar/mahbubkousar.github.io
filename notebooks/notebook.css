@@ -1,0 +1,507 @@
+/* =================================================================== */
+/*                    Notebook System Styles                           */
+/* =================================================================== */
+
+/* --- Index Page Styles --- */
+.notebook-header {
+  text-align: center;
+  margin: 2rem 0 3rem 0;
+  padding-top: 1rem;
+}
+
+.notebook-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.notebook-header .subtitle {
+  font-size: 1rem;
+  color: var(--body-color);
+  opacity: 0.7;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+.notebook-index {
+  max-width: 80ch;
+  margin: 0 auto;
+  padding: 0 1.25rem 2rem 1.25rem;
+}
+
+/* Category Sections */
+.category-section {
+  margin-bottom: 3rem;
+  border-bottom: var(--border-width-thin) solid var(--footnotes-border-color);
+  padding-bottom: 2rem;
+}
+
+.category-section:last-child {
+  border-bottom: none;
+}
+
+.category-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.05em;
+  color: var(--link-visited);
+}
+
+/* Subcategories */
+.subcategory {
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+}
+
+.subcategory-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* Post List */
+.post-list {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.post-item {
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.post-item::before {
+  content: '§';
+  position: absolute;
+  left: 0;
+  color: var(--body-color);
+  opacity: 0.3;
+  font-size: 0.9em;
+}
+
+.post-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  text-decoration: none;
+  color: var(--body-color);
+  padding: 0.25rem 0;
+  transition: color 0.2s ease;
+}
+
+.post-link:hover {
+  color: var(--link-visited);
+}
+
+.post-link:hover .post-title {
+  text-decoration: underline;
+}
+
+.post-title {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.post-meta {
+  font-size: 0.85em;
+  opacity: 0.6;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+.notebook-footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem 1.25rem;
+  font-size: 0.9em;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* =================================================================== */
+/*                    Note Page Two-Column Layout                      */
+/* =================================================================== */
+
+/* Override portfolio body constraints for notebook pages */
+body:has(.note-container) {
+  max-width: none;
+  padding: 5.5rem 0 2rem 0;
+}
+
+.note-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1.25rem 2rem 1.25rem;
+}
+
+/* Two-column grid for desktop */
+@media (min-width: 1050px) {
+  .note-container {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 3rem;
+    max-width: 1600px;
+    padding: 0 2rem 2rem 2rem;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1400px) {
+  .note-container {
+    max-width: 1280px;
+    padding: 0 3rem 2rem 3rem;
+    gap: 4rem;
+  }
+}
+
+/* Main content column */
+.note-content {
+  max-width: none;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Note header */
+.note-header {
+  margin-bottom: 2rem;
+  border-bottom: var(--border-width-thin) solid var(--footnotes-border-color);
+  padding-bottom: 1.5rem;
+}
+
+.note-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.note-meta {
+  font-size: 0.9em;
+  color: var(--body-color);
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+
+.note-meta-item {
+  display: inline-block;
+  margin-right: 1.5rem;
+}
+
+.note-meta-item::before {
+  content: '• ';
+  margin-right: 0.25rem;
+}
+
+.note-meta-item:first-child::before {
+  content: '';
+  margin-right: 0;
+}
+
+/* References sidebar */
+.references-sidebar {
+  font-size: 0.85rem;
+  position: sticky;
+  top: 6rem;
+  height: fit-content;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: var(--pre-bg-color);
+  border-radius: 4px;
+  scrollbar-width: thin;
+}
+
+.references-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.references-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.references-sidebar::-webkit-scrollbar-thumb {
+  background: var(--footnotes-border-color);
+  border-radius: 2px;
+}
+
+.references-sidebar h3 {
+  font-size: 0.95rem;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.03em;
+}
+
+.ref-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ref-item {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--footnotes-border-color);
+  line-height: 1.4;
+}
+
+.ref-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.ref-id {
+  font-weight: 600;
+  color: var(--link-visited);
+  margin-right: 0.25rem;
+  font-size: 0.9em;
+}
+
+.ref-content {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.ref-url {
+  font-size: 0.8em;
+  word-break: break-all;
+  opacity: 0.8;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* Reference citations in text */
+.ref-cite {
+  color: var(--link-visited);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.ref-cite:hover {
+  text-decoration: underline;
+}
+
+/* Mobile: Stack sidebar below content */
+@media (max-width: 1049px) {
+  .note-container {
+    display: block;
+  }
+
+  .references-sidebar {
+    position: static;
+    max-height: none;
+    margin-top: 2rem;
+    padding: 1.25rem;
+  }
+
+  .note-content {
+    max-width: 80ch;
+  }
+}
+
+/* =================================================================== */
+/*                    Note Content Components                          */
+/* =================================================================== */
+
+/* Section numbering */
+.note-content {
+  counter-reset: section subsection;
+}
+
+.note-content h2 {
+  counter-increment: section;
+  counter-reset: subsection;
+}
+
+.note-content h2::before {
+  content: counter(section) ". ";
+}
+
+.note-content h3 {
+  counter-increment: subsection;
+}
+
+.note-content h3::before {
+  content: counter(section) "." counter(subsection) " ";
+}
+
+/* Definition boxes */
+.definition-box {
+  border-left: 3px solid var(--link-visited);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  background-color: var(--pre-bg-color);
+  border-radius: 0 4px 4px 0;
+}
+
+.definition-box .box-title {
+  font-weight: 600;
+  font-variant-caps: small-caps;
+  margin-bottom: 0.5rem;
+  color: var(--link-visited);
+  letter-spacing: 0.03em;
+}
+
+/* Theorem boxes */
+.theorem-box {
+  border: var(--border-width-thin) solid var(--table-border-color);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.theorem-box .box-title {
+  font-weight: 600;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+/* Example boxes */
+.example-box {
+  border-left: 3px solid var(--footnotes-border-color);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  background-color: var(--pre-bg-color);
+  border-radius: 0 4px 4px 0;
+}
+
+.example-box .box-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}
+
+/* Note/Warning boxes */
+.note-box {
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  background-color: var(--pre-bg-color);
+  border-radius: 4px;
+  border: 1px dashed var(--footnotes-border-color);
+}
+
+.note-box .box-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.95em;
+}
+
+.note-box .box-title::before {
+  content: '⚠ ';
+  margin-right: 0.25rem;
+}
+
+/* Code blocks with line numbers */
+.code-block-container {
+  margin: 1.5rem 0;
+}
+
+.code-block-header {
+  background-color: var(--pre-bg-color);
+  padding: 0.5rem 1rem;
+  font-size: 0.85em;
+  border-radius: 4px 4px 0 0;
+  border-bottom: 1px solid var(--footnotes-border-color);
+  font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+.code-block-container pre {
+  margin: 0;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Inline math */
+.math-inline {
+  font-family: 'Latin Modern', Georgia, serif;
+  font-style: italic;
+}
+
+/* Display math */
+.math-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1.5rem 0;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+/* Image figures */
+.note-figure {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.note-figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: var(--border-width-thin) solid var(--footnotes-border-color);
+}
+
+.note-figure figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.9em;
+  font-style: italic;
+  opacity: 0.8;
+  text-align: center;
+}
+
+/* Breadcrumb navigation */
+.breadcrumb {
+  font-size: 0.85em;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: var(--body-color);
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+  color: var(--link-visited);
+}
+
+.breadcrumb-separator {
+  margin: 0 0.5rem;
+}
+
+/* Back to index link */
+.back-link {
+  display: inline-block;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: var(--border-width-thin) solid var(--footnotes-border-color);
+  font-size: 0.9em;
+  text-decoration: none;
+  color: var(--link-visited);
+}
+
+.back-link::before {
+  content: '← ';
+  margin-right: 0.25rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive typography for notes */
+@media (max-width: 600px) {
+  .note-title {
+    font-size: 1.75rem;
+  }
+
+  .note-content h2 {
+    font-size: 1.4rem;
+  }
+
+  .note-content h3 {
+    font-size: 1.2rem;
+  }
+}

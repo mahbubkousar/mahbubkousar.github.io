@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notebook - Mahbub Kousar</title>
+  <meta name="description" content="Technical notes and knowledge sharing on Computer Science and Mathematics" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="notebook.css" />
+</head>
+
+<body class="text-justify">
+  <!-- Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../index.html">Portfolio</a></li>
+      <li><a href="index.html">Notebook</a></li>
+      <li><a href="#">Resources</a></li>
+      <li><a href="#">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <header class="notebook-header">
+    <h1>Notebook</h1>
+    <p class="subtitle">Technical notes on Computer Science, Mathematics, and Engineering</p>
+  </header>
+
+  <main class="notebook-index">
+
+    <!-- Category: Computer Science -->
+    <section class="category-section">
+      <h2 class="category-title">Computer Science</h2>
+
+      <!-- Subcategory: Algorithms -->
+      <div class="subcategory">
+        <h3 class="subcategory-title">Algorithms & Data Structures</h3>
+        <ul class="post-list">
+          <li class="post-item">
+            <a href="posts/demo-note.html" class="post-link">
+              <span class="post-title">Comprehensive Guide to Common Algorithms</span>
+              <span class="post-meta">
+                <time datetime="2025-10-22">Oct 22, 2025</time>
+              </span>
+            </a>
+          </li>
+          <li class="post-item">
+            <a href="#" class="post-link">
+              <span class="post-title">Dynamic Programming Patterns</span>
+              <span class="post-meta">
+                <time datetime="2025-10-20">Oct 20, 2025</time>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Subcategory: Machine Learning -->
+      <div class="subcategory">
+        <h3 class="subcategory-title">Machine Learning</h3>
+        <ul class="post-list">
+          <li class="post-item">
+            <a href="#" class="post-link">
+              <span class="post-title">Understanding Neural Networks</span>
+              <span class="post-meta">
+                <time datetime="2025-10-18">Oct 18, 2025</time>
+              </span>
+            </a>
+          </li>
+          <li class="post-item">
+            <a href="#" class="post-link">
+              <span class="post-title">Backpropagation from First Principles</span>
+              <span class="post-meta">
+                <time datetime="2025-10-15">Oct 15, 2025</time>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Category: Mathematics -->
+    <section class="category-section">
+      <h2 class="category-title">Mathematics</h2>
+
+      <!-- Subcategory: Linear Algebra -->
+      <div class="subcategory">
+        <h3 class="subcategory-title">Linear Algebra</h3>
+        <ul class="post-list">
+          <li class="post-item">
+            <a href="#" class="post-link">
+              <span class="post-title">Eigenvalues and Eigenvectors</span>
+              <span class="post-meta">
+                <time datetime="2025-10-12">Oct 12, 2025</time>
+              </span>
+            </a>
+          </li>
+          <li class="post-item">
+            <a href="#" class="post-link">
+              <span class="post-title">Matrix Decompositions</span>
+              <span class="post-meta">
+                <time datetime="2025-10-10">Oct 10, 2025</time>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Subcategory: Calculus -->
+      <div class="subcategory">
+        <h3 class="subcategory-title">Calculus</h3>
+        <ul class="post-list">
+          <li class="post-item">
+            <a href="#" class="post-link">
+              <span class="post-title">Multivariable Chain Rule</span>
+              <span class="post-meta">
+                <time datetime="2025-10-08">Oct 8, 2025</time>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Category: Systems -->
+    <section class="category-section">
+      <h2 class="category-title">Systems & Architecture</h2>
+
+      <div class="subcategory">
+        <h3 class="subcategory-title">Operating Systems</h3>
+        <ul class="post-list">
+          <li class="post-item">
+            <a href="#" class="post-link">
+              <span class="post-title">Process Scheduling Algorithms</span>
+              <span class="post-meta">
+                <time datetime="2025-10-05">Oct 5, 2025</time>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="notebook-footer">
+    <p>All notes are works in progress. Corrections and suggestions are welcome.</p>
+  </footer>
+
+  <script>
+    // Active link highlighting
+    const navLinks = document.querySelectorAll('.top-nav a');
+    const currentPath = window.location.pathname;
+
+    navLinks.forEach(link => {
+      const linkPath = link.getAttribute('href');
+      if (linkPath === 'index.html' && currentPath.includes('notebooks/index.html')) {
+        link.classList.add('active');
+      }
+    });
+
+    // Sticky navigation with scroll behavior
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+</body>
+
+</html>
