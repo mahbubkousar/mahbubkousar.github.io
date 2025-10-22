@@ -504,4 +504,29 @@ body:has(.note-container) {
   .note-content h3 {
     font-size: 1.2rem;
   }
+
+  /* Make tables scrollable on mobile to match other components */
+  .note-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Reduce padding on boxes for mobile */
+  .definition-box,
+  .theorem-box,
+  .example-box,
+  .note-box {
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+  }
+
+  /* Reduce code block padding */
+  .code-block-container pre {
+    padding: 0.75rem 1rem;
+  }
+
+  .code-block-header {
+    padding: 0.5rem 0.75rem;
+  }
 }
