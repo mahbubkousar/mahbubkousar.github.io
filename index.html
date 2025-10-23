@@ -423,27 +423,10 @@ Journal of Self-Deprecating Humor, 1(1), 1-∞.</code></pre>
       }
     });
 
-    // Active link highlighting
-    const navLinks = document.querySelectorAll('.top-nav a');
-    const currentPath = window.location.pathname;
-    const currentPage = currentPath.split('/').pop() || 'index.html';
-
-    navLinks.forEach(link => {
-      const linkPath = link.getAttribute('href');
-
-      // Check for current page
-      if (linkPath === '#top' && (currentPage === 'index.html' || currentPage === '')) {
+    // Active link highlighting - Portfolio page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.getAttribute('href') === '#top') {
         link.classList.add('active');
-      } else if (linkPath.includes(currentPage) && currentPage !== 'index.html' && currentPage !== '') {
-        link.classList.add('active');
-      }
-
-      // Handle hash links for same-page navigation
-      if (linkPath.startsWith('#')) {
-        link.addEventListener('click', (e) => {
-          navLinks.forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
-        });
       }
     });
   </script>

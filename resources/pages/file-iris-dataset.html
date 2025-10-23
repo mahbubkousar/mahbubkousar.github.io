@@ -260,6 +260,13 @@ print(f"Accuracy: {accuracy:.2%}")</code></pre>
   </main>
 
   <script>
+    // Active link highlighting - Resource page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Resources') {
+        link.classList.add('active');
+      }
+    });
+
     function copyCode(elementId) {
       const codeElement = document.getElementById(elementId);
       const code = codeElement.textContent;

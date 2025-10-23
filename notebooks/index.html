@@ -148,13 +148,9 @@
   </footer>
 
   <script>
-    // Active link highlighting
-    const navLinks = document.querySelectorAll('.top-nav a');
-    const currentPath = window.location.pathname;
-
-    navLinks.forEach(link => {
-      const linkPath = link.getAttribute('href');
-      if (linkPath === 'index.html' && currentPath.includes('notebooks/index.html')) {
+    // Active link highlighting - Notebook page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.getAttribute('href') === 'index.html' || link.textContent.trim() === 'Notebook') {
         link.classList.add('active');
       }
     });

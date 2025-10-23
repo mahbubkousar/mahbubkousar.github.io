@@ -252,13 +252,9 @@
     // Set initial total count
     totalCount.textContent = resourceRows.length;
 
-    // Active link highlighting
-    const navLinks = document.querySelectorAll('.top-nav a');
-    const currentPath = window.location.pathname;
-
-    navLinks.forEach(link => {
-      const linkPath = link.getAttribute('href');
-      if (linkPath === 'index.html' && currentPath.includes('resources/index.html')) {
+    // Active link highlighting - Resources page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.getAttribute('href') === 'index.html' || link.textContent.trim() === 'Resources') {
         link.classList.add('active');
       }
     });

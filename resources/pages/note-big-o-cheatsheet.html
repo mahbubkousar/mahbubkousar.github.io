@@ -376,6 +376,13 @@
   </main>
 
   <script>
+    // Active link highlighting - Resource page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Resources') {
+        link.classList.add('active');
+      }
+    });
+
     let lastScrollTop = 0;
     let scrollThreshold = 100;
     const nav = document.querySelector('.top-nav');

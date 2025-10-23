@@ -492,10 +492,9 @@ code block
 
     searchInput.addEventListener('input', filterNotes);
 
-    // Active link highlighting
-    const navLinks = document.querySelectorAll('.top-nav a');
-    navLinks.forEach(link => {
-      if (link.getAttribute('href') === 'index.html') {
+    // Active link highlighting - Quick Notes page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.getAttribute('href') === 'index.html' || link.textContent.trim() === 'Quick Notes') {
         link.classList.add('active');
       }
     });

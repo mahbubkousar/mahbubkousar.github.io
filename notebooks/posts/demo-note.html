@@ -108,7 +108,7 @@
       <!-- Code Block with Header -->
       <div class="code-block-container">
         <div class="code-block-header">Python Implementation</div>
-        <pre><code class="language-python">def binary_search(arr, target):
+        <pre class="line-numbers"><code class="language-python">def binary_search(arr, target):
     """
     Perform binary search on a sorted array.
 
@@ -215,7 +215,7 @@ print(f"Found at index: {result}")  # Output: Found at index: 3</code></pre>
       <!-- Another Code Example -->
       <div class="code-block-container">
         <div class="code-block-header">C++ Implementation</div>
-        <pre><code class="language-cpp">#include &lt;iostream&gt;
+        <pre class="line-numbers"><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 
 int partition(std::vector&lt;int&gt;&amp; arr, int low, int high) {
@@ -282,7 +282,7 @@ int main() {
       <!-- JavaScript Example -->
       <div class="code-block-container">
         <div class="code-block-header">JavaScript - BFS Implementation</div>
-        <pre><code class="language-javascript">function bfs(graph, start) {
+        <pre class="line-numbers"><code class="language-javascript">function bfs(graph, start) {
     const visited = new Set();
     const queue = [start];
     const result = [];
@@ -350,7 +350,7 @@ console.log(bfs(graph, 'A')); // Output: ['A', 'B', 'C', 'D', 'E', 'F']</code></
       <!-- Example with multiple languages -->
       <div class="code-block-container">
         <div class="code-block-header">Java - Memoized Fibonacci</div>
-        <pre><code class="language-java">import java.util.HashMap;
+        <pre class="line-numbers"><code class="language-java">import java.util.HashMap;
 import java.util.Map;
 
 public class Fibonacci {
@@ -433,6 +433,13 @@ public class Fibonacci {
   </div>
 
   <script>
+    // Active link highlighting - Notebook post page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+
     // Sticky navigation with scroll behavior
     let lastScrollTop = 0;
     let scrollThreshold = 100;
