@@ -555,3 +555,15 @@ body:has(.note-container) {
     padding: 0.5rem 0.75rem;
   }
 }
+
+/* Additional mobile fixes for very small screens */
+@media (max-width: 480px) {
+  /* Match the reduced padding from style.css */
+  .note-container {
+    padding: 0 1rem 2rem 1rem;
+  }
+
+  .references-sidebar {
+    padding: 1rem;
+  }
+}
