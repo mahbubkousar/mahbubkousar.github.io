@@ -407,6 +407,29 @@ Journal of Self-Deprecating Humor, 1(1), 1-∞.</code></pre>
     </article>
   </main>
 
+  <!-- Success Modal -->
+  <div id="puzzle-success-modal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 class="modal-title">Theorem: Puzzle Completion</h3>
+      <div class="modal-body">
+        <p><strong>Observation:</strong> The subject's visage has been successfully reconstructed.</p>
+        <p id="modal-stats" class="modal-stats"></p>
+        <div class="proof">
+          Congratulations on your spatial reasoning capabilities. This achievement, while modest in the grand
+          scheme of human accomplishment, demonstrates a level of persistence that is—dare we say—adequately impressive.
+          The subject's appearance has been revealed, for better or worse.
+        </div>
+        <p style="font-size: 0.9em; font-style: italic; margin-top: 1rem;">
+          Was it worth it? Survey data pending.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button id="modal-close-btn" class="modal-btn">Close (with dignity)</button>
+        <button id="modal-shuffle-btn" class="modal-btn modal-btn-primary">Challenge Accepted (Shuffle Again)</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Dark mode toggle functionality
     const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -547,7 +570,7 @@ Journal of Self-Deprecating Humor, 1(1), 1-∞.</code></pre>
         // Check if solved
         if (this.checkSolved()) {
           setTimeout(() => {
-            alert(`Congratulations! You solved the puzzle in ${this.moveCount} moves!`);
+            this.showSuccessModal();
           }, 300);
         }
       }
@@ -574,11 +597,64 @@ Journal of Self-Deprecating Humor, 1(1), 1-∞.</code></pre>
       updateMoveCounter() {
         document.getElementById('move-counter').textContent = `Moves: ${this.moveCount}`;
       }
+
+      showSuccessModal() {
+        const modal = document.getElementById('puzzle-success-modal');
+        const stats = document.getElementById('modal-stats');
+
+        // Generate humorous stats message
+        let efficiency = '';
+        if (this.moveCount < 50) {
+          efficiency = 'remarkably efficient';
+        } else if (this.moveCount < 100) {
+          efficiency = 'acceptably competent';
+        } else if (this.moveCount < 200) {
+          efficiency = 'persistently determined';
+        } else {
+          efficiency = 'admirably stubborn';
+        }
+
+        stats.innerHTML = `<strong>Completion achieved in ${this.moveCount} moves</strong> — a ${efficiency} performance.`;
+
+        modal.classList.add('modal-active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      hideSuccessModal() {
+        const modal = document.getElementById('puzzle-success-modal');
+        modal.classList.remove('modal-active');
+        document.body.style.overflow = '';
+      }
     }
 
     // Initialize puzzle when page loads
+    let puzzleInstance;
     window.addEventListener('DOMContentLoaded', () => {
-      new SlidingPuzzle();
+      puzzleInstance = new SlidingPuzzle();
+
+      // Modal event listeners
+      document.getElementById('modal-close-btn').addEventListener('click', () => {
+        puzzleInstance.hideSuccessModal();
+      });
+
+      document.getElementById('modal-shuffle-btn').addEventListener('click', () => {
+        puzzleInstance.hideSuccessModal();
+        puzzleInstance.shuffle();
+      });
+
+      // Close modal on overlay click
+      document.getElementById('puzzle-success-modal').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+          puzzleInstance.hideSuccessModal();
+        }
+      });
+
+      // Close modal on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          puzzleInstance.hideSuccessModal();
+        }
+      });
     });
 
     // Sticky navigation with scroll behavior
