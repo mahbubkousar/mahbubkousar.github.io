@@ -938,4 +938,21 @@ h6 {
   h2 {
     font-size: 1.5rem;
   }
+
+  /* Ensure consistent padding on very small screens */
+  body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Prevent overflow on links and lists */
+  ul, ol {
+    padding-left: 1.5rem;
+  }
+
+  /* Ensure long links wrap properly */
+  a {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
 }
