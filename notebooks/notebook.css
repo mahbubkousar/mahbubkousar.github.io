@@ -296,6 +296,7 @@ body:has(.note-container) {
     max-height: none;
     margin-top: 2rem;
     padding: 1.25rem;
+    max-width: 80ch;
   }
 
   .note-content {
