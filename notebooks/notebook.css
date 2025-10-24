@@ -347,6 +347,8 @@ body:has(.note-container) {
   margin: 1.5rem 0;
   background-color: var(--pre-bg-color);
   border-radius: 0 4px 4px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .definition-box .box-title {
@@ -363,6 +365,8 @@ body:has(.note-container) {
   padding: 1rem 1.25rem;
   margin: 1.5rem 0;
   border-radius: 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .theorem-box .box-title {
@@ -378,12 +382,24 @@ body:has(.note-container) {
   margin: 1.5rem 0;
   background-color: var(--pre-bg-color);
   border-radius: 0 4px 4px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .example-box .box-title {
   font-weight: 600;
   margin-bottom: 0.5rem;
   opacity: 0.85;
+}
+
+/* Ensure paragraphs with inline math in boxes can scroll if needed */
+.example-box p,
+.theorem-box p,
+.definition-box p,
+.note-box p {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
 }
 
 /* Note/Warning boxes */
@@ -393,6 +409,8 @@ body:has(.note-container) {
   background-color: var(--pre-bg-color);
   border-radius: 4px;
   border: 1px dashed var(--footnotes-border-color);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .note-box .box-title {
