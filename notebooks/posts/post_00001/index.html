@@ -83,28 +83,26 @@
       <div class="example-box">
         <div class="box-title">Example 1: Finding an Inverse</div>
         <p>
-          Find the inverse of <span class="math-inline">f(x) = 2/(e<sup>x</sup> + 1)</span>.
+          Find the inverse of \(f(x) = \dfrac{2}{e^x + 1}\).
         </p>
         <p>
-          Let <span class="math-inline">y = f(x)</span>. We solve for <span class="math-inline">x</span>:
+          Let \(y = f(x)\). We solve for \(x\):
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            y = 2/(e<sup>x</sup> + 1)<br/>
-            y(e<sup>x</sup> + 1) = 2<br/>
-            ye<sup>x</sup> + y = 2<br/>
-            ye<sup>x</sup> = 2 - y<br/>
-            e<sup>x</sup> = (2-y)/y<br/>
-            x = ln((2-y)/y) = ln(2/y - 1)
-          </p>
+          \[\begin{align}
+          y &= \frac{2}{e^x + 1} \\
+          y(e^x + 1) &= 2 \\
+          ye^x + y &= 2 \\
+          ye^x &= 2 - y \\
+          e^x &= \frac{2-y}{y} \\
+          x &= \ln\left(\frac{2-y}{y}\right) = \ln\left(\frac{2}{y} - 1\right)
+          \end{align}\]
         </div>
         <p>
-          Therefore, the inverse function is <span class="math-inline">f<sup>-1</sup>(y) = ln(2/y - 1)</span>. Swapping variables to use <span class="math-inline">x</span>, we get:
+          Therefore, the inverse function is \(f^{-1}(y) = \ln\left(\dfrac{2}{y} - 1\right)\). Swapping variables to use \(x\), we get:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            f<sup>-1</sup>(x) = ln(2/x - 1)
-          </p>
+          \[ f^{-1}(x) = \ln\left(\frac{2}{x} - 1\right) \]
         </div>
       </div>
 
@@ -116,19 +114,19 @@
       <div class="example-box">
         <div class="box-title">Example 2: Testing One-to-One Property</div>
         <p>
-          Is <span class="math-inline">f(x) = (x+5)/(x-6)</span> one-to-one?
+          Is \(f(x) = \dfrac{x+5}{x-6}\) one-to-one?
         </p>
         <p>
-          Set <span class="math-inline">f(x<sub>1</sub>) = f(x<sub>2</sub>)</span>:
+          Set \(f(x_1) = f(x_2)\):
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            (x<sub>1</sub>+5)/(x<sub>1</sub>-6) = (x<sub>2</sub>+5)/(x<sub>2</sub>-6)<br/>
-            (x<sub>1</sub>+5)(x<sub>2</sub>-6) = (x<sub>2</sub>+5)(x<sub>1</sub>-6)<br/>
-            x<sub>1</sub>x<sub>2</sub> - 6x<sub>1</sub> + 5x<sub>2</sub> - 30 = x<sub>1</sub>x<sub>2</sub> + 5x<sub>1</sub> - 6x<sub>2</sub> - 30<br/>
-            -6x<sub>1</sub> + 5x<sub>2</sub> = 5x<sub>1</sub> - 6x<sub>2</sub><br/>
-            11x<sub>2</sub> = 11x<sub>1</sub> ⇒ x<sub>1</sub> = x<sub>2</sub>
-          </p>
+          \[\begin{align}
+          \frac{x_1+5}{x_1-6} &= \frac{x_2+5}{x_2-6} \\
+          (x_1+5)(x_2-6) &= (x_2+5)(x_1-6) \\
+          x_1x_2 - 6x_1 + 5x_2 - 30 &= x_1x_2 + 5x_1 - 6x_2 - 30 \\
+          -6x_1 + 5x_2 &= 5x_1 - 6x_2 \\
+          11x_2 &= 11x_1 \Rightarrow x_1 = x_2
+          \end{align}\]
         </div>
         <p>Yes, the function is one-to-one.</p>
       </div>
@@ -218,12 +216,12 @@
           Imagine you flip a fair coin until you get a head <a href="#ref1" class="ref-cite">[1]</a>.
         </p>
         <ul style="margin: 0.5rem 0 0 0;">
-          <li>P(1 flip: H) = <span class="math-inline">1/2</span></li>
-          <li>P(2 flips: TH) = <span class="math-inline">1/2 × 1/2 = 1/4</span></li>
-          <li>P(3 flips: TTH) = <span class="math-inline">1/2 × 1/2 × 1/2 = 1/8</span></li>
+          <li>P(1 flip: H) = \(\frac{1}{2}\)</li>
+          <li>P(2 flips: TH) = \(\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}\)</li>
+          <li>P(3 flips: TTH) = \(\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}\)</li>
         </ul>
         <p style="margin-top: 0.5rem;">
-          The sequence of probabilities is <span class="math-inline">{1/2, 1/4, 1/8, ...}</span>, a geometric sequence with first term <span class="math-inline">a = 1/2</span> and common ratio <span class="math-inline">r = 1/2</span>.
+          The sequence of probabilities is \(\left\{\frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \ldots\right\}\), a geometric sequence with first term \(a = \frac{1}{2}\) and common ratio \(r = \frac{1}{2}\).
         </p>
       </div>
 
@@ -236,88 +234,80 @@
       <div class="theorem-box">
         <div class="box-title">Theorem 1: Sum of a Finite Geometric Series</div>
         <p>
-          The sum of the first <span class="math-inline">n+1</span> terms of a geometric series (starting from <span class="math-inline">k=0</span>) with first term <span class="math-inline">a</span> and common ratio <span class="math-inline">r</span> is <a href="#ref1" class="ref-cite">[1]</a>:
+          The sum of the first \(n+1\) terms of a geometric series (starting from \(k=0\)) with first term \(a\) and common ratio \(r\) is <a href="#ref1" class="ref-cite">[1]</a>:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            S<sub>n</sub> = Σ<sub>k=0</sub><sup>n</sup> ar<sup>k</sup> = a + ar + ar<sup>2</sup> + ⋯ + ar<sup>n</sup> = a(1-r<sup>n+1</sup>)/(1-r), &nbsp;&nbsp; r ≠ 1
-          </p>
+          \[ S_n = \sum_{k=0}^{n} ar^k = a + ar + ar^2 + \cdots + ar^n = \frac{a(1-r^{n+1})}{1-r}, \quad r \neq 1 \]
         </div>
         <p>
-          For the simple case <span class="math-inline">a=1</span>: <span class="math-inline">Σ<sub>k=0</sub><sup>n</sup> r<sup>k</sup> = (1-r<sup>n+1</sup>)/(1-r)</span>.
+          For the simple case \(a=1\): \(\displaystyle \sum_{k=0}^{n} r^k = \frac{1-r^{n+1}}{1-r}\).
         </p>
       </div>
 
       <div class="theorem-box">
         <div class="box-title">Corollary 1: Sum of an Infinite Geometric Series</div>
         <p>
-          If <span class="math-inline">0 &lt; |r| &lt; 1</span>, the sum of an infinite geometric series converges to <a href="#ref1" class="ref-cite">[1]</a>:
+          If \(0 < |r| < 1\), the sum of an infinite geometric series converges to <a href="#ref1" class="ref-cite">[1]</a>:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            S<sub>∞</sub> = Σ<sub>k=0</sub><sup>∞</sup> ar<sup>k</sup> = a + ar + ar<sup>2</sup> + ⋯ = a/(1-r)
-          </p>
+          \[ S_{\infty} = \sum_{k=0}^{\infty} ar^k = a + ar + ar^2 + \cdots = \frac{a}{1-r} \]
         </div>
         <p>
-          For the simple case <span class="math-inline">a=1</span>: <span class="math-inline">Σ<sub>k=0</sub><sup>∞</sup> r<sup>k</sup> = 1/(1-r)</span>. This works because as <span class="math-inline">n → ∞</span>, the term <span class="math-inline">r<sup>n+1</sup></span> approaches 0.
+          For the simple case \(a=1\): \(\displaystyle \sum_{k=0}^{\infty} r^k = \frac{1}{1-r}\). This works because as \(n \to \infty\), the term \(r^{n+1}\) approaches 0.
         </p>
       </div>
 
       <div class="example-box">
         <div class="box-title">Example 6: Computing an Infinite Geometric Series</div>
         <p>
-          Compute <span class="math-inline">Σ<sub>k=2</sub><sup>∞</sup> 1/2<sup>k</sup></span>.
+          Compute \(\displaystyle \sum_{k=2}^{\infty} \frac{1}{2^k}\).
         </p>
         <p>
-          This series is <span class="math-inline">1/4 + 1/8 + 1/16 + ...</span>
+          This series is \(\frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \cdots\)
         </p>
         <p>
-          The first term is <span class="math-inline">a = 1/4</span> and the common ratio is <span class="math-inline">r = 1/2</span>. Since <span class="math-inline">|r|&lt;1</span>, the series converges.
+          The first term is \(a = \frac{1}{4}\) and the common ratio is \(r = \frac{1}{2}\). Since \(|r|<1\), the series converges.
         </p>
         <p>
           Using the infinite sum formula:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            S<sub>∞</sub> = a/(1-r) = (1/4)/(1 - 1/2) = (1/4)/(1/2) = 1/2
-          </p>
+          \[ S_{\infty} = \frac{a}{1-r} = \frac{\frac{1}{4}}{1 - \frac{1}{2}} = \frac{\frac{1}{4}}{\frac{1}{2}} = \frac{1}{4} \cdot \frac{2}{1} = \frac{1}{2} \]
         </div>
       </div>
 
       <div class="theorem-box">
         <div class="box-title">Corollary 2: Derivative of Geometric Series</div>
         <p>
-          By taking the derivative of the infinite series formula <span class="math-inline">Σ<sub>k=0</sub><sup>∞</sup> r<sup>k</sup> = 1/(1-r)</span> with respect to <span class="math-inline">r</span>, we get a useful identity for <span class="math-inline">0 &lt; |r| &lt; 1</span> <a href="#ref1" class="ref-cite">[1]</a>:
+          By taking the derivative of the infinite series formula \(\displaystyle \sum_{k=0}^{\infty} r^k = \frac{1}{1-r}\) with respect to \(r\), we get a useful identity for \(0 < |r| < 1\) <a href="#ref1" class="ref-cite">[1]</a>:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            d/dr Σ<sub>k=0</sub><sup>∞</sup> r<sup>k</sup> = d/dr (1/(1-r))<br/>
-            Σ<sub>k=1</sub><sup>∞</sup> kr<sup>k-1</sup> = 1 + 2r + 3r<sup>2</sup> + ⋯ = 1/(1-r)<sup>2</sup>
-          </p>
+          \[\begin{align}
+          \frac{d}{dr} \sum_{k=0}^{\infty} r^k &= \frac{d}{dr} \left(\frac{1}{1-r}\right) \\
+          \sum_{k=1}^{\infty} kr^{k-1} &= 1 + 2r + 3r^2 + \cdots = \frac{1}{(1-r)^2}
+          \end{align}\]
         </div>
       </div>
 
       <div class="example-box">
         <div class="box-title">Example 7: Using the Derivative Formula</div>
         <p>
-          Compute <span class="math-inline">Σ<sub>k=1</sub><sup>∞</sup> k · 2/3<sup>k</sup></span>.
+          Compute \(\displaystyle \sum_{k=1}^{\infty} k \cdot \frac{2}{3^k}\).
         </p>
         <p>
           We can manipulate this to match the corollary:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            Σ<sub>k=1</sub><sup>∞</sup> k · 2/3<sup>k</sup> = 2 Σ<sub>k=1</sub><sup>∞</sup> k · (1/3)<sup>k</sup><br/>
-            = 2 · (1/3) Σ<sub>k=1</sub><sup>∞</sup> k · (1/3)<sup>k-1</sup>
-          </p>
+          \[\begin{align}
+          \sum_{k=1}^{\infty} k \cdot \frac{2}{3^k} &= 2 \sum_{k=1}^{\infty} k \cdot \left(\frac{1}{3}\right)^k \\
+          &= 2 \cdot \frac{1}{3} \sum_{k=1}^{\infty} k \cdot \left(\frac{1}{3}\right)^{k-1}
+          \end{align}\]
         </div>
         <p>
-          Now apply the formula with <span class="math-inline">r = 1/3</span>:
+          Now apply the formula with \(r = \frac{1}{3}\):
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            = (2/3) · (1/(1 - 1/3)<sup>2</sup>) = (2/3) · (1/(2/3)<sup>2</sup>) = (2/3) · (1/(4/9)) = (2/3) · (9/4) = 3/2
-          </p>
+          \[ = \frac{2}{3} \cdot \frac{1}{\left(1 - \frac{1}{3}\right)^2} = \frac{2}{3} \cdot \frac{1}{\left(\frac{2}{3}\right)^2} = \frac{2}{3} \cdot \frac{1}{\frac{4}{9}} = \frac{2}{3} \cdot \frac{9}{4} = \frac{3}{2} \]
         </div>
       </div>
 
@@ -335,40 +325,36 @@
       <div class="definition-box">
         <div class="box-title">Definition: Taylor Approximation</div>
         <p>
-          The Taylor approximation of an infinitely differentiable function <span class="math-inline">f(x)</span> at a point <span class="math-inline">x=a</span> is <a href="#ref1" class="ref-cite">[1]</a>:
+          The Taylor approximation of an infinitely differentiable function \(f(x)\) at a point \(x=a\) is <a href="#ref1" class="ref-cite">[1]</a>:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            f(x) = Σ<sub>n=0</sub><sup>∞</sup> f<sup>(n)</sup>(a)/n! · (x-a)<sup>n</sup> = f(a) + f'(a)(x-a) + f''(a)/2! · (x-a)<sup>2</sup> + ⋯
-          </p>
+          \[ f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!} (x-a)^n = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!} (x-a)^2 + \cdots \]
         </div>
         <p>
-          When <span class="math-inline">a=0</span>, this is called a <strong>Maclaurin Series</strong>.
+          When \(a=0\), this is called a <strong>Maclaurin Series</strong>.
         </p>
       </div>
 
       <div class="example-box">
-        <div class="box-title">Example 8: f(x) = e<sup>x</sup> at a=0</div>
+        <div class="box-title">Example 8: \(f(x) = e^x\) at \(a=0\)</div>
         <p>
-          All derivatives <span class="math-inline">f<sup>(n)</sup>(x)</span> are <span class="math-inline">e<sup>x</sup></span>, so <span class="math-inline">f<sup>(n)</sup>(0) = e<sup>0</sup> = 1</span> for all <span class="math-inline">n</span>.
+          All derivatives \(f^{(n)}(x)\) are \(e^x\), so \(f^{(n)}(0) = e^0 = 1\) for all \(n\).
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            e<sup>x</sup> = Σ<sub>n=0</sub><sup>∞</sup> 1/n! · (x-0)<sup>n</sup> = 1 + x + x<sup>2</sup>/2! + x<sup>3</sup>/3! + ⋯
-          </p>
+          \[ e^x = \sum_{n=0}^{\infty} \frac{1}{n!} (x-0)^n = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots \]
         </div>
       </div>
 
       <div class="example-box">
-        <div class="box-title">Example 9: f(x) = sin x at a=0</div>
+        <div class="box-title">Example 9: \(f(x) = \sin x\) at \(a=0\)</div>
         <p>
-          The derivatives at <span class="math-inline">x=0</span> follow a pattern: <span class="math-inline">f(0)=0</span>, <span class="math-inline">f'(0)=1</span>, <span class="math-inline">f''(0)=0</span>, <span class="math-inline">f'''(0)=-1</span>, etc. Plugging these into the formula, all the even-powered terms go to zero:
+          The derivatives at \(x=0\) follow a pattern: \(f(0)=0\), \(f'(0)=1\), \(f''(0)=0\), \(f'''(0)=-1\), etc. Plugging these into the formula, all the even-powered terms go to zero:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            sin x = 0 + (1/1!)x + 0 + (-1/3!)x<sup>3</sup> + 0 + (1/5!)x<sup>5</sup> + ⋯<br/>
-            sin x = x - x<sup>3</sup>/3! + x<sup>5</sup>/5! - x<sup>7</sup>/7! + ⋯
-          </p>
+          \[\begin{align}
+          \sin x &= 0 + \frac{1}{1!}x + 0 + \frac{-1}{3!}x^3 + 0 + \frac{1}{5!}x^5 + \cdots \\
+          \sin x &= x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots
+          \end{align}\]
         </div>
         <p>
           As you include more terms, the approximation becomes more accurate over a wider range.
@@ -394,39 +380,35 @@
           It's easier to calculate the complement: the probability that <em>no one</em> shares a birthday (assuming 365 days).
         </p>
         <ul style="margin: 0.5rem 0 0 0;">
-          <li>Person 1: <span class="math-inline">365/365</span> (can have any birthday)</li>
-          <li>Person 2: <span class="math-inline">364/365</span> (must be different from person 1)</li>
-          <li>Person 3: <span class="math-inline">363/365</span> (must be different from 1 and 2)</li>
+          <li>Person 1: \(\frac{365}{365}\) (can have any birthday)</li>
+          <li>Person 2: \(\frac{364}{365}\) (must be different from person 1)</li>
+          <li>Person 3: \(\frac{363}{365}\) (must be different from 1 and 2)</li>
           <li>...</li>
-          <li>Person k: <span class="math-inline">(365 - k + 1)/365</span></li>
+          <li>Person k: \(\frac{365 - k + 1}{365}\)</li>
         </ul>
         <p style="margin-top: 0.5rem;">
-          The probability of all <span class="math-inline">k</span> people having different birthdays is:
+          The probability of all \(k\) people having different birthdays is:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            P(all different) = (365 × 364 × ⋯ × (365-k+1))/365<sup>k</sup> = 365!/((365-k)!) × 1/365<sup>k</sup>
-          </p>
+          \[ P(\text{all different}) = \frac{365 \times 364 \times \cdots \times (365-k+1)}{365^k} = \frac{365!}{(365-k)!} \cdot \frac{1}{365^k} \]
         </div>
         <p>
-          For <span class="math-inline">k=50</span> people, <span class="math-inline">P(all different) ≈ 0.03</span>. So, the probability of at least one match is <span class="math-inline">P(match) = 1 - 0.03 = 0.97</span>, or 97%!
+          For \(k=50\) people, \(P(\text{all different}) \approx 0.03\). So, the probability of at least one match is \(P(\text{match}) = 1 - 0.03 = 0.97\), or 97%!
         </p>
       </div>
 
       <h3>Permutation</h3>
       <p>
-        A permutation is an <strong>ordered</strong> arrangement of <span class="math-inline">k</span> items selected from a set of <span class="math-inline">n</span> distinct items without replacement.
+        A permutation is an <strong>ordered</strong> arrangement of \(k\) items selected from a set of \(n\) distinct items without replacement.
       </p>
 
       <div class="theorem-box">
         <div class="box-title">Theorem 2: Number of Permutations</div>
         <p>
-          The number of ways to choose <span class="math-inline">k</span> ordered items from <span class="math-inline">n</span> is <a href="#ref1" class="ref-cite">[1]</a>:
+          The number of ways to choose \(k\) ordered items from \(n\) is <a href="#ref1" class="ref-cite">[1]</a>:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            P(n, k) = n(n-1)(n-2)⋯(n-k+1) = n!/(n-k)!
-          </p>
+          \[ P(n, k) = n(n-1)(n-2)\cdots(n-k+1) = \frac{n!}{(n-k)!} \]
         </div>
       </div>
 
@@ -436,9 +418,7 @@
           How many ways to award 1st, 2nd, and 3rd prize (ordered) from 100 contestants?
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            P(100, 3) = 100!/(100-3)! = 100!/97! = 100 × 99 × 98 = 970,200
-          </p>
+          \[ P(100, 3) = \frac{100!}{(100-3)!} = \frac{100!}{97!} = 100 \times 99 \times 98 = 970{,}200 \]
         </div>
       </div>
 
@@ -473,9 +453,7 @@
           This is also called "n choose k" or the binomial coefficient <a href="#ref1" class="ref-cite">[1]</a>.
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            C(n, k) = (ⁿₖ) = P(n, k)/k! = n!/(k!(n-k)!)
-          </p>
+          \[ C(n, k) = \binom{n}{k} = \frac{P(n, k)}{k!} = \frac{n!}{k!(n-k)!} \]
         </div>
         <p>
           We divide the number of permutations by <span class="math-inline">k!</span> because there are <span class="math-inline">k!</span> ways to order the <span class="math-inline">k</span> chosen items, and in a combination, all those orderings are counted as one.
@@ -488,9 +466,7 @@
           How many 5-card poker hands (unordered) can be dealt from a standard 52-card deck?
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            C(52, 5) = (⁵²₅) = 52!/(5!(52-5)!) = 52!/(5!47!) = 2,598,960
-          </p>
+          \[ C(52, 5) = \binom{52}{5} = \frac{52!}{5!(52-5)!} = \frac{52!}{5! \cdot 47!} = 2{,}598{,}960 \]
         </div>
       </div>
 
@@ -500,9 +476,7 @@
           How many ways to select a 6-person crew (unordered) from 30 astronauts?
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            C(30, 6) = (³⁰₆) = 30!/(6!(30-6)!) = 30!/(6!24!) = 593,775
-          </p>
+          \[ C(30, 6) = \binom{30}{6} = \frac{30!}{6!(30-6)!} = \frac{30!}{6! \cdot 24!} = 593{,}775 \]
         </div>
       </div>
 
@@ -536,28 +510,32 @@
       <div class="example-box">
         <div class="box-title">Example 16: Finding a Coefficient in (x+y)<sup>25</sup></div>
         <p>
-          What is the coefficient of <span class="math-inline">x<sup>12</sup>y<sup>13</sup></span> in the expansion of <span class="math-inline">(x+y)<sup>25</sup></span>?
+          What is the coefficient of \(x^{12}y^{13}\) in the expansion of \((x+y)^{25}\)?
         </p>
         <p>
-          The term with <span class="math-inline">y<sup>13</sup></span> corresponds to <span class="math-inline">k=13</span>. The term is <span class="math-inline">(²⁵₁₃) x<sup>25-13</sup>y<sup>13</sup> = (²⁵₁₃) x<sup>12</sup>y<sup>13</sup></span>. The coefficient is <span class="math-inline">(²⁵₁₃) = 25!/(13!(25-13)!) = 25!/(13!12!)</span>.
+          The term with \(y^{13}\) corresponds to \(k=13\). The term is \(\binom{25}{13} x^{25-13}y^{13} = \binom{25}{13} x^{12}y^{13}\). The coefficient is:
         </p>
+        <div class="math-display">
+          \[ \binom{25}{13} = \frac{25!}{13!(25-13)!} = \frac{25!}{13! \cdot 12!} \]
+        </div>
       </div>
 
       <div class="example-box">
         <div class="box-title">Example 17: Finding a Coefficient in (2x-3y)<sup>25</sup></div>
         <p>
-          What is the coefficient of <span class="math-inline">x<sup>12</sup>y<sup>13</sup></span> in the expansion of <span class="math-inline">(2x-3y)<sup>25</sup></span>?
+          What is the coefficient of \(x^{12}y^{13}\) in the expansion of \((2x-3y)^{25}\)?
         </p>
         <p>
-          Let <span class="math-inline">a = 2x</span> and <span class="math-inline">b = -3y</span>. We need the term with <span class="math-inline">b<sup>13</sup></span>, which corresponds to <span class="math-inline">k=13</span>. The term is <span class="math-inline">(²⁵₁₃) a<sup>25-13</sup>b<sup>13</sup> = (²⁵₁₃) (2x)<sup>12</sup>(-3y)<sup>13</sup></span>.
+          Let \(a = 2x\) and \(b = -3y\). We need the term with \(b^{13}\), which corresponds to \(k=13\). The term is \(\binom{25}{13} a^{25-13}b^{13} = \binom{25}{13} (2x)^{12}(-3y)^{13}\).
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            = (²⁵₁₃) 2<sup>12</sup>x<sup>12</sup>(-3)<sup>13</sup>y<sup>13</sup> = (²⁵₁₃) 2<sup>12</sup>(-1)<sup>13</sup>3<sup>13</sup>x<sup>12</sup>y<sup>13</sup>
-          </p>
+          \[\begin{align}
+          &= \binom{25}{13} 2^{12}x^{12}(-3)^{13}y^{13} \\
+          &= \binom{25}{13} 2^{12}(-1)^{13}3^{13}x^{12}y^{13}
+          \end{align}\]
         </div>
         <p>
-          The coefficient is <span class="math-inline">-(²⁵₁₃) 2<sup>12</sup>3<sup>13</sup> = -(25!/(12!13!)) 2<sup>12</sup>3<sup>13</sup></span>.
+          The coefficient is \(-\binom{25}{13} 2^{12}3^{13} = -\dfrac{25!}{12! \cdot 13!} \cdot 2^{12} \cdot 3^{13}\).
         </p>
       </div>
 
@@ -610,38 +588,36 @@
       <div class="example-box">
         <div class="box-title">Example 19: Basic Substitution</div>
         <p>
-          <span class="math-inline">∫ 2x cos(x<sup>2</sup>) dx</span>.
+          Evaluate \(\int 2x \cos(x^2) \, dx\).
         </p>
         <p>
-          Let <span class="math-inline">u = x<sup>2</sup></span>, so <span class="math-inline">du = 2x dx</span>.
+          Let \(u = x^2\), so \(du = 2x \, dx\).
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            ∫ cos(u) du = sin(u) + C = sin(x<sup>2</sup>) + C
-          </p>
+          \[ \int \cos(u) \, du = \sin(u) + C = \sin(x^2) + C \]
         </div>
       </div>
 
       <div class="example-box">
         <div class="box-title">Example 20: More Complex Substitution</div>
         <p>
-          <span class="math-inline">∫ x<sup>3</sup> √(1-x<sup>2</sup>) dx</span>.
+          Evaluate \(\int x^3 \sqrt{1-x^2} \, dx\).
         </p>
         <p>
-          Let <span class="math-inline">u = 1-x<sup>2</sup></span>. Then <span class="math-inline">du = -2x dx ⇒ x dx = -du/2</span>. Also, <span class="math-inline">x<sup>2</sup> = 1-u</span>.
+          Let \(u = 1-x^2\). Then \(du = -2x \, dx \Rightarrow x \, dx = -\frac{du}{2}\). Also, \(x^2 = 1-u\).
         </p>
         <p>
           Rewrite the integral:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            ∫ x<sup>3</sup> √(1-x<sup>2</sup>) dx = ∫ x<sup>2</sup> √(1-x<sup>2</sup>) (x dx)<br/>
-            = ∫ (1-u) √u (-du/2)<br/>
-            = -(1/2) ∫ (u<sup>1/2</sup> - u<sup>3/2</sup>) du<br/>
-            = -(1/2) [u<sup>3/2</sup>/(3/2) - u<sup>5/2</sup>/(5/2)] + C<br/>
-            = -(1/3)u<sup>3/2</sup> + (1/5)u<sup>5/2</sup> + C<br/>
-            = (1/5)(1-x<sup>2</sup>)<sup>5/2</sup> - (1/3)(1-x<sup>2</sup>)<sup>3/2</sup> + C
-          </p>
+          \[\begin{align}
+          \int x^3 \sqrt{1-x^2} \, dx &= \int x^2 \sqrt{1-x^2} \, (x \, dx) \\
+          &= \int (1-u) \sqrt{u} \left(-\frac{du}{2}\right) \\
+          &= -\frac{1}{2} \int (u^{1/2} - u^{3/2}) \, du \\
+          &= -\frac{1}{2} \left[\frac{u^{3/2}}{3/2} - \frac{u^{5/2}}{5/2}\right] + C \\
+          &= -\frac{1}{3}u^{3/2} + \frac{1}{5}u^{5/2} + C \\
+          &= \frac{1}{5}(1-x^2)^{5/2} - \frac{1}{3}(1-x^2)^{3/2} + C
+          \end{align}\]
         </div>
       </div>
 
@@ -653,104 +629,94 @@
       <div class="example-box">
         <div class="box-title">Example 21: Simple Partial Fraction Decomposition</div>
         <p>
-          Decompose <span class="math-inline">(5x-3)/((x+1)(x-3))</span>.
+          Decompose \(\dfrac{5x-3}{(x+1)(x-3)}\).
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            (5x-3)/((x+1)(x-3)) = A/(x+1) + B/(x-3)
-          </p>
+          \[ \frac{5x-3}{(x+1)(x-3)} = \frac{A}{x+1} + \frac{B}{x-3} \]
         </div>
         <p>
-          Clear the denominator: <span class="math-inline">5x-3 = A(x-3) + B(x+1)</span>.
+          Clear the denominator: \(5x-3 = A(x-3) + B(x+1)\).
         </p>
         <ul style="margin: 0.5rem 0 0 0;">
-          <li>Let <span class="math-inline">x=3</span>: <span class="math-inline">5(3)-3 = A(0) + B(3+1) ⇒ 12 = 4B ⇒ B=3</span></li>
-          <li>Let <span class="math-inline">x=-1</span>: <span class="math-inline">5(-1)-3 = A(-1-3) + B(0) ⇒ -8 = -4A ⇒ A=2</span></li>
+          <li>Let \(x=3\): \(5(3)-3 = A(0) + B(3+1) \Rightarrow 12 = 4B \Rightarrow B=3\)</li>
+          <li>Let \(x=-1\): \(5(-1)-3 = A(-1-3) + B(0) \Rightarrow -8 = -4A \Rightarrow A=2\)</li>
         </ul>
         <p style="margin-top: 0.5rem;">
-          So, <span class="math-inline">(5x-3)/((x+1)(x-3)) = 2/(x+1) + 3/(x-3)</span>
+          So, \(\dfrac{5x-3}{(x+1)(x-3)} = \dfrac{2}{x+1} + \dfrac{3}{x-3}\)
         </p>
       </div>
 
       <div class="example-box">
         <div class="box-title">Example 22: Partial Fractions with Repeated/Irreducible Roots</div>
         <p>
-          Decompose <span class="math-inline">(-2x+4)/((x<sup>2</sup>+1)(x-1)<sup>2</sup>)</span>.
+          Decompose \(\dfrac{-2x+4}{(x^2+1)(x-1)^2}\).
         </p>
         <p>
-          The form includes a linear term for the irreducible quadratic (<span class="math-inline">x<sup>2</sup>+1</span>) and terms for the repeated root (<span class="math-inline">x-1</span>).
+          The form includes a linear term for the irreducible quadratic \((x^2+1)\) and terms for the repeated root \((x-1)\).
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            (-2x+4)/((x<sup>2</sup>+1)(x-1)<sup>2</sup>) = (Ax+B)/(x<sup>2</sup>+1) + C/(x-1) + D/(x-1)<sup>2</sup>
-          </p>
+          \[ \frac{-2x+4}{(x^2+1)(x-1)^2} = \frac{Ax+B}{x^2+1} + \frac{C}{x-1} + \frac{D}{(x-1)^2} \]
         </div>
         <p>
           After clearing the denominator and equating coefficients:
         </p>
         <ul style="margin: 0.5rem 0 0 0;">
-          <li><span class="math-inline">A=2</span></li>
-          <li><span class="math-inline">B=1</span></li>
-          <li><span class="math-inline">C=-2</span></li>
-          <li><span class="math-inline">D=1</span></li>
+          <li>\(A=2\)</li>
+          <li>\(B=1\)</li>
+          <li>\(C=-2\)</li>
+          <li>\(D=1\)</li>
         </ul>
         <p style="margin-top: 0.5rem;">
-          So, <span class="math-inline">(-2x+4)/((x<sup>2</sup>+1)(x-1)<sup>2</sup>) = (2x+1)/(x<sup>2</sup>+1) - 2/(x-1) + 1/(x-1)<sup>2</sup></span>
+          So, \(\dfrac{-2x+4}{(x^2+1)(x-1)^2} = \dfrac{2x+1}{x^2+1} - \dfrac{2}{x-1} + \dfrac{1}{(x-1)^2}\)
         </p>
       </div>
 
       <div class="example-box">
         <div class="box-title">Example 23: Integration with Partial Fractions</div>
         <p>
-          <span class="math-inline">∫ (x+4)/(x<sup>3</sup>+3x<sup>2</sup>-10x) dx</span>.
+          Evaluate \(\displaystyle \int \frac{x+4}{x^3+3x^2-10x} \, dx\).
         </p>
         <p>
-          <strong>1. Factor denominator:</strong> <span class="math-inline">x(x<sup>2</sup>+3x-10) = x(x+5)(x-2)</span>.
+          <strong>1. Factor denominator:</strong> \(x(x^2+3x-10) = x(x+5)(x-2)\).
         </p>
         <p>
           <strong>2. Set up fractions:</strong>
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            (x+4)/(x(x+5)(x-2)) = A/x + B/(x+5) + C/(x-2)
-          </p>
+          \[ \frac{x+4}{x(x+5)(x-2)} = \frac{A}{x} + \frac{B}{x+5} + \frac{C}{x-2} \]
         </div>
         <p>
           <strong>3. Solve for A, B, C (Cover-up Method):</strong>
         </p>
         <ul style="margin: 0.5rem 0 0 0;">
-          <li>For A (cover x, plug in x=0): <span class="math-inline">A = (0+4)/((0+5)(0-2)) = 4/(-10) = -2/5</span></li>
-          <li>For B (cover x+5, plug in x=-5): <span class="math-inline">B = (-5+4)/((-5)(-5-2)) = (-1)/((-5)(-7)) = -1/35</span></li>
-          <li>For C (cover x-2, plug in x=2): <span class="math-inline">C = (2+4)/((2)(2+5)) = 6/14 = 3/7</span></li>
+          <li>For A (cover x, plug in x=0): \(A = \dfrac{0+4}{(0+5)(0-2)} = \dfrac{4}{-10} = -\dfrac{2}{5}\)</li>
+          <li>For B (cover x+5, plug in x=-5): \(B = \dfrac{-5+4}{(-5)(-5-2)} = \dfrac{-1}{(-5)(-7)} = -\dfrac{1}{35}\)</li>
+          <li>For C (cover x-2, plug in x=2): \(C = \dfrac{2+4}{(2)(2+5)} = \dfrac{6}{14} = \dfrac{3}{7}\)</li>
         </ul>
         <p style="margin-top: 0.5rem;">
           <strong>4. Integrate:</strong>
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            ∫ (-2/(5x) - 1/(35(x+5)) + 3/(7(x-2))) dx<br/>
-            = -(2/5)ln|x| - (1/35)ln|x+5| + (3/7)ln|x-2| + C
-          </p>
+          \[\begin{align}
+          \int \left(-\frac{2}{5x} - \frac{1}{35(x+5)} + \frac{3}{7(x-2)}\right) dx
+          &= -\frac{2}{5}\ln|x| - \frac{1}{35}\ln|x+5| + \frac{3}{7}\ln|x-2| + C
+          \end{align}\]
         </div>
       </div>
 
       <h3>Odd and Even Functions</h3>
       <p>
-        This is a simplification for integrals over symmetric intervals, like <span class="math-inline">∫<sub>-a</sub><sup>a</sup> f(x) dx</span> <a href="#ref1" class="ref-cite">[1]</a>.
+        This is a simplification for integrals over symmetric intervals, like \(\int_{-a}^{a} f(x) \, dx\) <a href="#ref1" class="ref-cite">[1]</a>.
       </p>
       <ul>
-        <li>An <strong>even function</strong> is symmetric about the y-axis, where <span class="math-inline">f(x) = f(-x)</span>.
+        <li>An <strong>even function</strong> is symmetric about the y-axis, where \(f(x) = f(-x)\).
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            ∫<sub>-a</sub><sup>a</sup> f(x) dx = 2 ∫<sub>0</sub><sup>a</sup> f(x) dx
-          </p>
+          \[ \int_{-a}^{a} f(x) \, dx = 2 \int_{0}^{a} f(x) \, dx \]
         </div>
         </li>
-        <li>An <strong>odd function</strong> is anti-symmetric, where <span class="math-inline">f(x) = -f(-x)</span>.
+        <li>An <strong>odd function</strong> is anti-symmetric, where \(f(x) = -f(-x)\).
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            ∫<sub>-a</sub><sup>a</sup> f(x) dx = 0
-          </p>
+          \[ \int_{-a}^{a} f(x) \, dx = 0 \]
         </div>
         </li>
       </ul>
@@ -758,10 +724,10 @@
       <div class="example-box">
         <div class="box-title">Example 24: Odd Function</div>
         <p>
-          <span class="math-inline">f(x) = x e<sup>-x<sup>2</sup>/2</sup></span> is odd, since <span class="math-inline">f(-x) = (-x)e<sup>-(-x)<sup>2</sup>/2</sup> = -xe<sup>-x<sup>2</sup>/2</sup> = -f(x)</span>.
+          \(f(x) = x e^{-x^2/2}\) is odd, since \(f(-x) = (-x)e^{-(-x)^2/2} = -xe^{-x^2/2} = -f(x)\).
         </p>
         <p>
-          Therefore, <span class="math-inline">∫<sub>-5</sub><sup>5</sup> x e<sup>-x<sup>2</sup>/2</sup> dx = 0</span>.
+          Therefore, \(\displaystyle \int_{-5}^{5} x e^{-x^2/2} \, dx = 0\).
         </p>
       </div>
 
@@ -776,48 +742,48 @@
       </p>
 
       <div class="example-box">
-        <div class="box-title">Example 25: tan<sup>-1</sup> form</div>
+        <div class="box-title">Example 25: \(\arctan\) form</div>
         <p>
-          <span class="math-inline">∫ dx/(4x<sup>2</sup>+4x+2)</span>
+          Evaluate \(\displaystyle \int \frac{dx}{4x^2+4x+2}\).
         </p>
         <p>
           Complete the square on the denominator:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            4x<sup>2</sup>+4x+2 = 4(x<sup>2</sup>+x) + 2 = 4(x<sup>2</sup>+x+1/4) - 1 + 2 = 4(x+1/2)<sup>2</sup> + 1 = (2x+1)<sup>2</sup> + 1
-          </p>
+          \[\begin{align}
+          4x^2+4x+2 &= 4(x^2+x) + 2 \\
+          &= 4\left(x^2+x+\frac{1}{4}\right) - 1 + 2 \\
+          &= 4\left(x+\frac{1}{2}\right)^2 + 1 = (2x+1)^2 + 1
+          \end{align}\]
         </div>
         <p>
-          The integral becomes <span class="math-inline">∫ dx/((2x+1)<sup>2</sup> + 1)</span>. Let <span class="math-inline">u = 2x+1</span>, <span class="math-inline">du = 2 dx ⇒ dx = du/2</span>.
+          The integral becomes \(\displaystyle \int \frac{dx}{(2x+1)^2 + 1}\). Let \(u = 2x+1\), \(du = 2 \, dx \Rightarrow dx = \dfrac{du}{2}\).
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            ∫ (du/2)/(u<sup>2</sup> + 1) = (1/2) ∫ du/(u<sup>2</sup>+1) = (1/2)tan<sup>-1</sup>(u) + C = (1/2)tan<sup>-1</sup>(2x+1) + C
-          </p>
+          \[ \int \frac{du/2}{u^2 + 1} = \frac{1}{2} \int \frac{du}{u^2+1} = \frac{1}{2}\arctan(u) + C = \frac{1}{2}\arctan(2x+1) + C \]
         </div>
       </div>
 
       <div class="example-box">
-        <div class="box-title">Example 26: sin<sup>-1</sup> form</div>
+        <div class="box-title">Example 26: \(\arcsin\) form</div>
         <p>
-          <span class="math-inline">∫ dx/√(2x-x<sup>2</sup>)</span>
+          Evaluate \(\displaystyle \int \frac{dx}{\sqrt{2x-x^2}}\).
         </p>
         <p>
           Complete the square on the denominator:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            2x-x<sup>2</sup> = -(x<sup>2</sup>-2x) = -(x<sup>2</sup>-2x+1-1) = -((x-1)<sup>2</sup> - 1) = 1 - (x-1)<sup>2</sup>
-          </p>
+          \[\begin{align}
+          2x-x^2 &= -(x^2-2x) \\
+          &= -(x^2-2x+1-1) \\
+          &= -((x-1)^2 - 1) = 1 - (x-1)^2
+          \end{align}\]
         </div>
         <p>
-          The integral becomes <span class="math-inline">∫ dx/√(1-(x-1)<sup>2</sup>)</span>. Let <span class="math-inline">u = x-1</span>, <span class="math-inline">du = dx</span>.
+          The integral becomes \(\displaystyle \int \frac{dx}{\sqrt{1-(x-1)^2}}\). Let \(u = x-1\), \(du = dx\).
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            ∫ du/√(1-u<sup>2</sup>) = sin<sup>-1</sup>(u) + C = sin<sup>-1</sup>(x-1) + C
-          </p>
+          \[ \int \frac{du}{\sqrt{1-u^2}} = \arcsin(u) + C = \arcsin(x-1) + C \]
         </div>
       </div>
 
@@ -829,31 +795,29 @@
       <div class="theorem-box">
         <div class="box-title">Theorem 6: Fundamental Theorem of Calculus</div>
         <p>
-          Let <span class="math-inline">f</span> be a continuous function on <span class="math-inline">[a, b]</span> <a href="#ref1" class="ref-cite">[1]</a>.
+          Let \(f\) be a continuous function on \([a, b]\) <a href="#ref1" class="ref-cite">[1]</a>.
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            f(x) = d/dx ∫<sub>a</sub><sup>x</sup> f(t) dt
-          </p>
+          \[ f(x) = \frac{d}{dx} \int_{a}^{x} f(t) \, dt \]
         </div>
       </div>
 
       <div class="example-box">
         <div class="box-title">Example 27: Demonstrating the FTC</div>
         <p>
-          Consider <span class="math-inline">f(t) = t<sup>2</sup></span>.
+          Consider \(f(t) = t^2\).
         </p>
         <p>
-          The integral from 0 to <span class="math-inline">x</span> is <span class="math-inline">F(x) = ∫<sub>0</sub><sup>x</sup> t<sup>2</sup> dt = [t<sup>3</sup>/3]<sub>0</sub><sup>x</sup> = x<sup>3</sup>/3</span>.
+          The integral from 0 to \(x\) is \(\displaystyle F(x) = \int_{0}^{x} t^2 \, dt = \left[\frac{t^3}{3}\right]_{0}^{x} = \frac{x^3}{3}\).
         </p>
         <p>
-          The derivative of <span class="math-inline">F(x)</span> is <span class="math-inline">F'(x) = d/dx(x<sup>3</sup>/3) = x<sup>2</sup></span>, which is <span class="math-inline">f(x)</span>.
+          The derivative of \(F(x)\) is \(\displaystyle F'(x) = \frac{d}{dx}\left(\frac{x^3}{3}\right) = x^2\), which is \(f(x)\).
         </p>
       </div>
 
       <figure class="note-figure">
         <img src="figure_7_ftc_pdf_cdf.png" alt="Illustration of the FTC via a PDF and CDF">
-        <figcaption>Illustration of the FTC via a PDF f(x) and its CDF F(x) = ∫<sub>0</sub><sup>x</sup> f(t) dt</figcaption>
+        <figcaption>Illustration of the FTC via a PDF \(f(x)\) and its CDF \(\displaystyle F(x) = \int_{0}^{x} f(t) \, dt\)</figcaption>
       </figure>
 
       <h3>The Gaussian Integral</h3>
@@ -861,9 +825,7 @@
         A famous definite integral that is central to probability and the normal distribution.
       </p>
       <div class="math-display">
-        <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-          I = ∫<sub>-∞</sub><sup>∞</sup> e<sup>-x<sup>2</sup></sup> dx = √π
-        </p>
+        \[ I = \int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi} \]
       </div>
 
       <div class="note-box">
@@ -871,38 +833,30 @@
         <ol style="margin-top: 0.5rem;">
           <li><strong>Square the integral and use different dummy variables:</strong>
           <div class="math-display">
-            <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-              I<sup>2</sup> = (∫<sub>-∞</sub><sup>∞</sup> e<sup>-x<sup>2</sup></sup> dx)(∫<sub>-∞</sub><sup>∞</sup> e<sup>-y<sup>2</sup></sup> dy) = ∫<sub>-∞</sub><sup>∞</sup> ∫<sub>-∞</sub><sup>∞</sup> e<sup>-(x<sup>2</sup>+y<sup>2</sup>)</sup> dx dy
-            </p>
+            \[ I^2 = \left(\int_{-\infty}^{\infty} e^{-x^2} \, dx\right)\left(\int_{-\infty}^{\infty} e^{-y^2} \, dy\right) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{-(x^2+y^2)} \, dx \, dy \]
           </div>
           </li>
 
-          <li style="margin-top: 0.5rem;"><strong>Convert to polar coordinates:</strong> <span class="math-inline">x<sup>2</sup> + y<sup>2</sup> = r<sup>2</sup></span> and <span class="math-inline">dx dy = r dr dθ</span>. The region (entire xy-plane) becomes <span class="math-inline">r ∈ [0, ∞)</span> and <span class="math-inline">θ ∈ [0, 2π)</span>.
+          <li style="margin-top: 0.5rem;"><strong>Convert to polar coordinates:</strong> \(x^2 + y^2 = r^2\) and \(dx \, dy = r \, dr \, d\theta\). The region (entire xy-plane) becomes \(r \in [0, \infty)\) and \(\theta \in [0, 2\pi)\).
           <div class="math-display">
-            <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-              I<sup>2</sup> = ∫<sub>0</sub><sup>2π</sup> (∫<sub>0</sub><sup>∞</sup> e<sup>-r<sup>2</sup></sup> r dr) dθ
-            </p>
+            \[ I^2 = \int_{0}^{2\pi} \left(\int_{0}^{\infty} e^{-r^2} r \, dr\right) d\theta \]
           </div>
           </li>
 
-          <li style="margin-top: 0.5rem;"><strong>Solve the inner integral with substitution</strong> (<span class="math-inline">u = r<sup>2</sup>, du = 2r dr ⇒ r dr = du/2</span>):
+          <li style="margin-top: 0.5rem;"><strong>Solve the inner integral with substitution</strong> \((u = r^2, \, du = 2r \, dr \Rightarrow r \, dr = \frac{du}{2})\):
           <div class="math-display">
-            <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-              ∫<sub>0</sub><sup>∞</sup> e<sup>-r<sup>2</sup></sup> r dr = ∫<sub>0</sub><sup>∞</sup> e<sup>-u</sup> du/2 = (1/2) [-e<sup>-u</sup>]<sub>0</sub><sup>∞</sup> = (1/2) (0 - (-1)) = 1/2
-            </p>
+            \[ \int_{0}^{\infty} e^{-r^2} r \, dr = \int_{0}^{\infty} e^{-u} \frac{du}{2} = \frac{1}{2} \left[-e^{-u}\right]_{0}^{\infty} = \frac{1}{2} (0 - (-1)) = \frac{1}{2} \]
           </div>
           </li>
 
           <li style="margin-top: 0.5rem;"><strong>Solve the outer integral:</strong>
           <div class="math-display">
-            <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-              I<sup>2</sup> = ∫<sub>0</sub><sup>2π</sup> (1/2) dθ = (1/2) [θ]<sub>0</sub><sup>2π</sup> = (1/2) (2π) = π
-            </p>
+            \[ I^2 = \int_{0}^{2\pi} \frac{1}{2} \, d\theta = \frac{1}{2} \left[\theta\right]_{0}^{2\pi} = \frac{1}{2} (2\pi) = \pi \]
           </div>
           </li>
         </ol>
         <p style="margin-top: 0.5rem;">
-          Since <span class="math-inline">I<sup>2</sup> = π</span>, we have <span class="math-inline">I = √π</span>.
+          Since \(I^2 = \pi\), we have \(I = \sqrt{\pi}\).
         </p>
       </div>
 
@@ -912,9 +866,7 @@
           A more general form used in statistics is:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            ∫<sub>-∞</sub><sup>∞</sup> e<sup>-αx<sup>2</sup></sup> dx = √(π/α)
-          </p>
+          \[ \int_{-\infty}^{\infty} e^{-\alpha x^2} \, dx = \sqrt{\frac{\pi}{\alpha}} \]
         </div>
       </div>
 
