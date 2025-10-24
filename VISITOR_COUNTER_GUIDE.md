@@ -28,7 +28,27 @@ This guide covers everything you need to add a visitor counter to any page in yo
 <link rel="stylesheet" href="path/to/visitor-counter.css" />
 ```
 
-#### B. Add Counter HTML (before closing `</article>` or `</footer>`)
+#### B. Add Counter HTML
+
+**For regular pages** (before closing `</article>` or `</footer>`):
+```html
+<!-- Visitor Counter -->
+<div id="visitor-counter-container" class="visitor-counter-container" data-page-id="YOUR_UNIQUE_PAGE_ID">
+  <div class="visitor-stats">
+    <div class="visitor-stat">
+      <span class="visitor-stat-label">Total visits:</span>
+      <span class="visitor-stat-count" id="overall-visitor-count"></span>
+    </div>
+    <span class="visitor-stat-separator">§</span>
+    <div class="visitor-stat">
+      <span class="visitor-stat-label">Page visits:</span>
+      <span class="visitor-stat-count" id="page-visitor-count"></span>
+    </div>
+  </div>
+</div>
+```
+
+**For notebook posts** (after closing `</aside>` references sidebar, but before closing `.note-container`):
 ```html
 <!-- Visitor Counter -->
 <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="YOUR_UNIQUE_PAGE_ID">
@@ -190,17 +210,32 @@ Use descriptive, unique IDs with underscores. Follow these patterns:
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mathematical Analysis - Mahbub Kousar</title>
   <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../notebook.css" />
   <link rel="stylesheet" href="../../../visitor-counter.css" />
 </head>
 
 <body>
-  <article>
-    <h1>Mathematical Analysis</h1>
-    <p>Your content here...</p>
+  <div class="note-container">
+    <!-- Main Content Column -->
+    <article class="note-content">
+      <h1>Mathematical Analysis</h1>
+      <p>Your content here...</p>
 
-    <a href="../../index.html">Back to Notebook Index</a>
+      <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+    </article>
 
-    <!-- Visitor Counter -->
+    <!-- References Sidebar -->
+    <aside class="references-sidebar">
+      <h3>References</h3>
+      <ol class="ref-list">
+        <li class="ref-item" id="ref1">
+          <span class="ref-id">[1]</span>
+          <span class="ref-content">Reference content here</span>
+        </li>
+      </ol>
+    </aside>
+
+    <!-- Visitor Counter (placed after references sidebar) -->
     <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00002">
       <div class="visitor-stats">
         <div class="visitor-stat">
@@ -214,7 +249,7 @@ Use descriptive, unique IDs with underscores. Follow these patterns:
         </div>
       </div>
     </div>
-  </article>
+  </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>

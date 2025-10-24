@@ -285,10 +285,11 @@ body:has(.note-container) {
   text-decoration: underline;
 }
 
-/* Mobile: Stack sidebar below content */
+/* Mobile: Stack sidebar below content, then visitor counter */
 @media (max-width: 1049px) {
   .note-container {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
   .references-sidebar {
@@ -297,9 +298,18 @@ body:has(.note-container) {
     margin-top: 2rem;
     padding: 1.25rem;
     max-width: 80ch;
+    order: 1;
   }
 
   .note-content {
+    max-width: 80ch;
+    order: 0;
+  }
+
+  /* Visitor counter comes after references on mobile */
+  .note-container > .visitor-counter-container {
+    order: 2;
+    margin-top: 2rem;
     max-width: 80ch;
   }
 }
