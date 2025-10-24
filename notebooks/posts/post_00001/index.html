@@ -138,20 +138,20 @@
       <div class="example-box">
         <div class="box-title">Example 3: One-to-One via Derivative</div>
         <p>
-          Is <span class="math-inline">f(x) = xe<sup>x<sup>4</sup></sup></span> one-to-one for <span class="math-inline">x ∈ ℝ</span>?
+          Is \(f(x) = xe^{x^4}\) one-to-one for \(x \in \mathbb{R}\)?
         </p>
         <p>
-          We check its derivative, <span class="math-inline">f'(x)</span>:
+          We check its derivative, \(f'(x)\):
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            f'(x) = (1) · e<sup>x<sup>4</sup></sup> + x · (e<sup>x<sup>4</sup></sup> · 4x<sup>3</sup>)<br/>
-            = e<sup>x<sup>4</sup></sup> + 4x<sup>4</sup>e<sup>x<sup>4</sup></sup><br/>
-            = e<sup>x<sup>4</sup></sup>(1 + 4x<sup>4</sup>)
-          </p>
+          \[\begin{align}
+          f'(x) &= (1) \cdot e^{x^4} + x \cdot (e^{x^4} \cdot 4x^3) \\
+          &= e^{x^4} + 4x^4 e^{x^4} \\
+          &= e^{x^4}(1 + 4x^4)
+          \end{align}\]
         </div>
         <p>
-          Since <span class="math-inline">e<sup>x<sup>4</sup></sup></span> is always positive and <span class="math-inline">(1 + 4x<sup>4</sup>)</span> is always positive for any real <span class="math-inline">x</span>, <span class="math-inline">f'(x)</span> is always positive. Because <span class="math-inline">f'(x) &gt; 0</span> for all <span class="math-inline">x</span>, the function is strictly increasing, and therefore it is one-to-one.
+          Since \(e^{x^4}\) is always positive and \((1 + 4x^4)\) is always positive for any real \(x\), \(f'(x)\) is always positive. Because \(f'(x) > 0\) for all \(x\), the function is strictly increasing, and therefore it is one-to-one.
         </p>
       </div>
 
@@ -186,12 +186,12 @@
       <div class="example-box">
         <div class="box-title">Example 4: Sketching with Multiplicity</div>
         <p>
-          Sketch <span class="math-inline">f(x) = (x-2)<sup>2</sup>(x+1)</span>.
+          Sketch \(f(x) = (x-2)^2(x+1)\).
         </p>
         <ul style="margin: 0.5rem 0 0 0;">
-          <li>Roots are <span class="math-inline">x=2</span> (multiplicity 2, even) and <span class="math-inline">x=-1</span> (multiplicity 1, odd).</li>
-          <li>The graph will <strong>touch</strong> the x-axis at <span class="math-inline">x=2</span>.</li>
-          <li>The graph will <strong>cross</strong> the x-axis at <span class="math-inline">x=-1</span>.</li>
+          <li>Roots are \(x=2\) (multiplicity 2, even) and \(x=-1\) (multiplicity 1, odd).</li>
+          <li>The graph will <strong>touch</strong> the x-axis at \(x=2\).</li>
+          <li>The graph will <strong>cross</strong> the x-axis at \(x=-1\).</li>
         </ul>
       </div>
 
@@ -488,22 +488,20 @@
       <div class="theorem-box">
         <div class="box-title">Theorem 4: Binomial Theorem</div>
         <p>
-          For any real numbers <span class="math-inline">a</span> and <span class="math-inline">b</span> and integer <span class="math-inline">n ≥ 0</span> <a href="#ref1" class="ref-cite">[1]</a>:
+          For any real numbers \(a\) and \(b\) and integer \(n \geq 0\) <a href="#ref1" class="ref-cite">[1]</a>:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            (a+b)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ) a<sup>n-k</sup>b<sup>k</sup>
-          </p>
+          \[ (a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k}b^k \]
         </div>
       </div>
 
       <div class="example-box">
-        <div class="box-title">Example 15: Expanding (x+y)<sup>4</sup></div>
+        <div class="box-title">Example 15: Expanding \((x+y)^4\)</div>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            (x+y)<sup>4</sup> = (⁴₀)x<sup>4</sup>y<sup>0</sup> + (⁴₁)x<sup>3</sup>y<sup>1</sup> + (⁴₂)x<sup>2</sup>y<sup>2</sup> + (⁴₃)x<sup>1</sup>y<sup>3</sup> + (⁴₄)x<sup>0</sup>y<sup>4</sup><br/>
-            = 1x<sup>4</sup> + 4x<sup>3</sup>y + 6x<sup>2</sup>y<sup>2</sup> + 4xy<sup>3</sup> + 1y<sup>4</sup>
-          </p>
+          \[\begin{align}
+          (x+y)^4 &= \binom{4}{0}x^4y^0 + \binom{4}{1}x^3y^1 + \binom{4}{2}x^2y^2 + \binom{4}{3}x^1y^3 + \binom{4}{4}x^0y^4 \\
+          &= x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4
+          \end{align}\]
         </div>
       </div>
 
@@ -542,14 +540,26 @@
       <div class="example-box">
         <div class="box-title">Example 18: Binomial Identities</div>
         <p>
-          By cleverly choosing <span class="math-inline">a</span> and <span class="math-inline">b</span>, we can prove identities:
+          By cleverly choosing \(a\) and \(b\), we can prove identities:
         </p>
         <ol style="margin-top: 0.5rem;">
-          <li><strong>Let a=1, b=1:</strong> <span class="math-inline">(1+1)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ) (1)<sup>n-k</sup>(1)<sup>k</sup> ⇒ 2<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ)</span></li>
+          <li><strong>Let \(a=1, b=1\):</strong>
+          \[
+          (1+1)^n = \sum_{k=0}^{n} \binom{n}{k} (1)^{n-k}(1)^k \quad \Rightarrow \quad 2^n = \sum_{k=0}^{n} \binom{n}{k}
+          \]
+          </li>
 
-          <li style="margin-top: 0.5rem;"><strong>Let a=1, b=-1:</strong> <span class="math-inline">(1-1)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ) (1)<sup>n-k</sup>(-1)<sup>k</sup> ⇒ 0 = Σ<sub>k=0</sub><sup>n</sup> (-1)<sup>k</sup>(ⁿₖ)</span></li>
+          <li style="margin-top: 0.5rem;"><strong>Let \(a=1, b=-1\):</strong>
+          \[
+          (1-1)^n = \sum_{k=0}^{n} \binom{n}{k} (1)^{n-k}(-1)^k \quad \Rightarrow \quad 0 = \sum_{k=0}^{n} (-1)^k\binom{n}{k}
+          \]
+          </li>
 
-          <li style="margin-top: 0.5rem;"><strong>Let a=1, b=2:</strong> <span class="math-inline">(1+2)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ) (1)<sup>n-k</sup>(2)<sup>k</sup> ⇒ 3<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> 2<sup>k</sup>(ⁿₖ)</span></li>
+          <li style="margin-top: 0.5rem;"><strong>Let \(a=1, b=2\):</strong>
+          \[
+          (1+2)^n = \sum_{k=0}^{n} \binom{n}{k} (1)^{n-k}(2)^k \quad \Rightarrow \quad 3^n = \sum_{k=0}^{n} 2^k\binom{n}{k}
+          \]
+          </li>
         </ol>
       </div>
 
@@ -561,12 +571,10 @@
       <div class="theorem-box">
         <div class="box-title">Theorem 5: Pascal's Identity</div>
         <p>
-          Let n and k be positive integers with <span class="math-inline">1 ≤ k ≤ n</span>. Then <a href="#ref1" class="ref-cite">[1]</a>:
+          Let \(n\) and \(k\) be positive integers with \(1 \leq k \leq n\). Then <a href="#ref1" class="ref-cite">[1]</a>:
         </p>
         <div class="math-display">
-          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
-            (ⁿ⁺¹ₖ) = (ⁿₖ₋₁) + (ⁿₖ)
-          </p>
+          \[ \binom{n+1}{k} = \binom{n}{k-1} + \binom{n}{k} \]
         </div>
       </div>
 
