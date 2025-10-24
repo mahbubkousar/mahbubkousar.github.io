@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSE 422: Mathematical Background Review - Mahbub Kousar</title>
+  <meta name="description" content="Review of foundational mathematical concepts for computer science, data science, and engineering" />
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../../prism/prism.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+</head>
+
+<body class="text-justify">
+  <!-- Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <div class="note-container">
+    <!-- Main Content Column -->
+    <article class="note-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="../../index.html">Notebook</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="../../index.html#cs">Computer Science</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>Mathematical Background</span>
+      </nav>
+
+      <!-- Note Header -->
+      <header class="note-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="flex: 1;">
+            <h1 class="note-title">CSE 422: Mathematical Background Review</h1>
+            <div class="note-meta">
+              <span class="note-meta-item">
+                <time datetime="2025-10-24">October 24, 2025</time>
+              </span>
+              <span class="note-meta-item">Computer Science</span>
+              <span class="note-meta-item">Mathematics & Probability</span>
+            </div>
+          </div>
+          <a href="./Math_Preliminary_Knowledge.pdf" download class="pdf-download-icon" title="Download PDF version">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 13H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 9H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      <!-- Abstract -->
+      <p>
+        This document reviews foundational mathematical concepts frequently used in computer science, data science, and engineering. Data science is fundamentally about making decisions under uncertainty, and probability is the mathematical tool for modeling, analyzing, and predicting random events. This review covers topics including functions, polynomials, infinite series (geometric, Taylor), combinatorics (permutations, combinations, binomial theorem), and integration techniques, all of which are essential for this analysis <a href="#ref1" class="ref-cite">[1]</a>. This document combines notes originally prepared by Md Shahriar Karim <a href="#ref2" class="ref-cite">[2]</a> with theoretical background from <a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+
+      <h2>Functions: Inverses and Properties</h2>
+
+      <h3>Inverse Functions</h3>
+      <p>
+        A function <span class="math-inline">f</span> is invertible if and only if it is a <strong>bijection</strong>, meaning it is both:
+      </p>
+      <ul>
+        <li><strong>One-to-one (Injective):</strong> Each element in the range is mapped to by at most one element in the domain.</li>
+        <li><strong>Onto (Surjective):</strong> Each element in the range is mapped to by at least one element in the domain.</li>
+      </ul>
+      <p>
+        When we invert a function, the range of the original function <span class="math-inline">f</span> becomes the domain for the inverse function <span class="math-inline">f<sup>-1</sup></span>.
+      </p>
+
+      <!-- Example Box -->
+      <div class="example-box">
+        <div class="box-title">Example 1: Finding an Inverse</div>
+        <p>
+          Find the inverse of <span class="math-inline">f(x) = 2/(e<sup>x</sup> + 1)</span>.
+        </p>
+        <p>
+          Let <span class="math-inline">y = f(x)</span>. We solve for <span class="math-inline">x</span>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            y = 2/(e<sup>x</sup> + 1)<br/>
+            y(e<sup>x</sup> + 1) = 2<br/>
+            ye<sup>x</sup> + y = 2<br/>
+            ye<sup>x</sup> = 2 - y<br/>
+            e<sup>x</sup> = (2-y)/y<br/>
+            x = ln((2-y)/y) = ln(2/y - 1)
+          </p>
+        </div>
+        <p>
+          Therefore, the inverse function is <span class="math-inline">f<sup>-1</sup>(y) = ln(2/y - 1)</span>. Swapping variables to use <span class="math-inline">x</span>, we get:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            f<sup>-1</sup>(x) = ln(2/x - 1)
+          </p>
+        </div>
+      </div>
+
+      <h3>Checking for One-to-One (Injective)</h3>
+      <p>
+        A function is one-to-one if <span class="math-inline">f(x<sub>1</sub>) = f(x<sub>2</sub>)</span> implies <span class="math-inline">x<sub>1</sub> = x<sub>2</sub></span>.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 2: Testing One-to-One Property</div>
+        <p>
+          Is <span class="math-inline">f(x) = (x+5)/(x-6)</span> one-to-one?
+        </p>
+        <p>
+          Set <span class="math-inline">f(x<sub>1</sub>) = f(x<sub>2</sub>)</span>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            (x<sub>1</sub>+5)/(x<sub>1</sub>-6) = (x<sub>2</sub>+5)/(x<sub>2</sub>-6)<br/>
+            (x<sub>1</sub>+5)(x<sub>2</sub>-6) = (x<sub>2</sub>+5)(x<sub>1</sub>-6)<br/>
+            x<sub>1</sub>x<sub>2</sub> - 6x<sub>1</sub> + 5x<sub>2</sub> - 30 = x<sub>1</sub>x<sub>2</sub> + 5x<sub>1</sub> - 6x<sub>2</sub> - 30<br/>
+            -6x<sub>1</sub> + 5x<sub>2</sub> = 5x<sub>1</sub> - 6x<sub>2</sub><br/>
+            11x<sub>2</sub> = 11x<sub>1</sub> ⇒ x<sub>1</sub> = x<sub>2</sub>
+          </p>
+        </div>
+        <p>Yes, the function is one-to-one.</p>
+      </div>
+
+      <p>
+        A strictly increasing or strictly decreasing function (where <span class="math-inline">f'(x) &gt; 0</span> or <span class="math-inline">f'(x) &lt; 0</span> for all <span class="math-inline">x</span> in the domain) is always one-to-one.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 3: One-to-One via Derivative</div>
+        <p>
+          Is <span class="math-inline">f(x) = xe<sup>x<sup>4</sup></sup></span> one-to-one for <span class="math-inline">x ∈ ℝ</span>?
+        </p>
+        <p>
+          We check its derivative, <span class="math-inline">f'(x)</span>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            f'(x) = (1) · e<sup>x<sup>4</sup></sup> + x · (e<sup>x<sup>4</sup></sup> · 4x<sup>3</sup>)<br/>
+            = e<sup>x<sup>4</sup></sup> + 4x<sup>4</sup>e<sup>x<sup>4</sup></sup><br/>
+            = e<sup>x<sup>4</sup></sup>(1 + 4x<sup>4</sup>)
+          </p>
+        </div>
+        <p>
+          Since <span class="math-inline">e<sup>x<sup>4</sup></sup></span> is always positive and <span class="math-inline">(1 + 4x<sup>4</sup>)</span> is always positive for any real <span class="math-inline">x</span>, <span class="math-inline">f'(x)</span> is always positive. Because <span class="math-inline">f'(x) &gt; 0</span> for all <span class="math-inline">x</span>, the function is strictly increasing, and therefore it is one-to-one.
+        </p>
+      </div>
+
+      <h2>Polynomials</h2>
+      <p>
+        A polynomial of degree <span class="math-inline">n</span> is a function of the form:
+      </p>
+      <div class="math-display">
+        <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+          f(x) = a<sub>n</sub>x<sup>n</sup> + a<sub>n-1</sub>x<sup>n-1</sup> + ⋯ + a<sub>1</sub>x + a<sub>0</sub>
+        </p>
+      </div>
+      <p>
+        The <strong>degree</strong> is the highest power of <span class="math-inline">x</span> with a non-zero coefficient.
+      </p>
+
+      <h3>Roots and Multiplicity</h3>
+      <p>
+        The <strong>roots</strong> of a polynomial are the values of <span class="math-inline">x</span> for which <span class="math-inline">f(x) = 0</span>.
+      </p>
+      <p>
+        The <strong>multiplicity</strong> of a root is the number of times it appears as a factor. For example, in <span class="math-inline">f(x) = (x-2)<sup>3</sup>(x+4)<sup>1</sup></span>, the root <span class="math-inline">x=2</span> has a multiplicity of 3, and the root <span class="math-inline">x=-4</span> has a multiplicity of 1.
+      </p>
+      <p>
+        The multiplicity of a root provides graphical information:
+      </p>
+      <ul>
+        <li><strong>Even multiplicity:</strong> The graph <strong>touches</strong> the x-axis at the root and turns around.</li>
+        <li><strong>Odd multiplicity:</strong> The graph <strong>crosses</strong> the x-axis at the root.</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="box-title">Example 4: Sketching with Multiplicity</div>
+        <p>
+          Sketch <span class="math-inline">f(x) = (x-2)<sup>2</sup>(x+1)</span>.
+        </p>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>Roots are <span class="math-inline">x=2</span> (multiplicity 2, even) and <span class="math-inline">x=-1</span> (multiplicity 1, odd).</li>
+          <li>The graph will <strong>touch</strong> the x-axis at <span class="math-inline">x=2</span>.</li>
+          <li>The graph will <strong>cross</strong> the x-axis at <span class="math-inline">x=-1</span>.</li>
+        </ul>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_1_multiplicity.png" alt="Graph showing root multiplicity">
+        <figcaption>Graph showing root multiplicity</figcaption>
+      </figure>
+
+      <h2>Infinite Series and Approximations</h2>
+      <p>
+        Infinite series are used frequently in probability, such as when evaluating the expectation and variance of random variables <a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+
+      <h3>Geometric Series</h3>
+      <p>
+        A geometric series is a sequence where each term after the first is found by multiplying the previous one by a fixed, non-zero number called the <strong>common ratio</strong>, <span class="math-inline">r</span>.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 5: Motivating Example - Coin Flip</div>
+        <p>
+          Imagine you flip a fair coin until you get a head <a href="#ref1" class="ref-cite">[1]</a>.
+        </p>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>P(1 flip: H) = <span class="math-inline">1/2</span></li>
+          <li>P(2 flips: TH) = <span class="math-inline">1/2 × 1/2 = 1/4</span></li>
+          <li>P(3 flips: TTH) = <span class="math-inline">1/2 × 1/2 × 1/2 = 1/8</span></li>
+        </ul>
+        <p style="margin-top: 0.5rem;">
+          The sequence of probabilities is <span class="math-inline">{1/2, 1/4, 1/8, ...}</span>, a geometric sequence with first term <span class="math-inline">a = 1/2</span> and common ratio <span class="math-inline">r = 1/2</span>.
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_2_geometric_histogram.png" alt="Histogram of a Geometric Sequence">
+        <figcaption>Histogram of a Geometric Sequence</figcaption>
+      </figure>
+
+      <!-- Theorem Box -->
+      <div class="theorem-box">
+        <div class="box-title">Theorem 1: Sum of a Finite Geometric Series</div>
+        <p>
+          The sum of the first <span class="math-inline">n+1</span> terms of a geometric series (starting from <span class="math-inline">k=0</span>) with first term <span class="math-inline">a</span> and common ratio <span class="math-inline">r</span> is <a href="#ref1" class="ref-cite">[1]</a>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            S<sub>n</sub> = Σ<sub>k=0</sub><sup>n</sup> ar<sup>k</sup> = a + ar + ar<sup>2</sup> + ⋯ + ar<sup>n</sup> = a(1-r<sup>n+1</sup>)/(1-r), &nbsp;&nbsp; r ≠ 1
+          </p>
+        </div>
+        <p>
+          For the simple case <span class="math-inline">a=1</span>: <span class="math-inline">Σ<sub>k=0</sub><sup>n</sup> r<sup>k</sup> = (1-r<sup>n+1</sup>)/(1-r)</span>.
+        </p>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Corollary 1: Sum of an Infinite Geometric Series</div>
+        <p>
+          If <span class="math-inline">0 &lt; |r| &lt; 1</span>, the sum of an infinite geometric series converges to <a href="#ref1" class="ref-cite">[1]</a>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            S<sub>∞</sub> = Σ<sub>k=0</sub><sup>∞</sup> ar<sup>k</sup> = a + ar + ar<sup>2</sup> + ⋯ = a/(1-r)
+          </p>
+        </div>
+        <p>
+          For the simple case <span class="math-inline">a=1</span>: <span class="math-inline">Σ<sub>k=0</sub><sup>∞</sup> r<sup>k</sup> = 1/(1-r)</span>. This works because as <span class="math-inline">n → ∞</span>, the term <span class="math-inline">r<sup>n+1</sup></span> approaches 0.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 6: Computing an Infinite Geometric Series</div>
+        <p>
+          Compute <span class="math-inline">Σ<sub>k=2</sub><sup>∞</sup> 1/2<sup>k</sup></span>.
+        </p>
+        <p>
+          This series is <span class="math-inline">1/4 + 1/8 + 1/16 + ...</span>
+        </p>
+        <p>
+          The first term is <span class="math-inline">a = 1/4</span> and the common ratio is <span class="math-inline">r = 1/2</span>. Since <span class="math-inline">|r|&lt;1</span>, the series converges.
+        </p>
+        <p>
+          Using the infinite sum formula:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            S<sub>∞</sub> = a/(1-r) = (1/4)/(1 - 1/2) = (1/4)/(1/2) = 1/2
+          </p>
+        </div>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Corollary 2: Derivative of Geometric Series</div>
+        <p>
+          By taking the derivative of the infinite series formula <span class="math-inline">Σ<sub>k=0</sub><sup>∞</sup> r<sup>k</sup> = 1/(1-r)</span> with respect to <span class="math-inline">r</span>, we get a useful identity for <span class="math-inline">0 &lt; |r| &lt; 1</span> <a href="#ref1" class="ref-cite">[1]</a>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            d/dr Σ<sub>k=0</sub><sup>∞</sup> r<sup>k</sup> = d/dr (1/(1-r))<br/>
+            Σ<sub>k=1</sub><sup>∞</sup> kr<sup>k-1</sup> = 1 + 2r + 3r<sup>2</sup> + ⋯ = 1/(1-r)<sup>2</sup>
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 7: Using the Derivative Formula</div>
+        <p>
+          Compute <span class="math-inline">Σ<sub>k=1</sub><sup>∞</sup> k · 2/3<sup>k</sup></span>.
+        </p>
+        <p>
+          We can manipulate this to match the corollary:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            Σ<sub>k=1</sub><sup>∞</sup> k · 2/3<sup>k</sup> = 2 Σ<sub>k=1</sub><sup>∞</sup> k · (1/3)<sup>k</sup><br/>
+            = 2 · (1/3) Σ<sub>k=1</sub><sup>∞</sup> k · (1/3)<sup>k-1</sup>
+          </p>
+        </div>
+        <p>
+          Now apply the formula with <span class="math-inline">r = 1/3</span>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            = (2/3) · (1/(1 - 1/3)<sup>2</sup>) = (2/3) · (1/(2/3)<sup>2</sup>) = (2/3) · (1/(4/9)) = (2/3) · (9/4) = 3/2
+          </p>
+        </div>
+      </div>
+
+      <h3>Taylor and Maclaurin Series</h3>
+      <p>
+        Taylor approximation is a powerful tool for approximating complex, non-linear functions (like <span class="math-inline">log(1+x)</span>) with simpler polynomials. This is especially useful for analysis when <span class="math-inline">x</span> is close to a certain point <span class="math-inline">a</span>, e.g., <span class="math-inline">x ≪ 1</span> <a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+
+      <figure class="note-figure">
+        <img src="figure_3_log_approximation.png" alt="Linear approximation of log(1+x)">
+        <figcaption>Linear approximation of log(1+x)</figcaption>
+      </figure>
+
+      <!-- Definition Box -->
+      <div class="definition-box">
+        <div class="box-title">Definition: Taylor Approximation</div>
+        <p>
+          The Taylor approximation of an infinitely differentiable function <span class="math-inline">f(x)</span> at a point <span class="math-inline">x=a</span> is <a href="#ref1" class="ref-cite">[1]</a>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            f(x) = Σ<sub>n=0</sub><sup>∞</sup> f<sup>(n)</sup>(a)/n! · (x-a)<sup>n</sup> = f(a) + f'(a)(x-a) + f''(a)/2! · (x-a)<sup>2</sup> + ⋯
+          </p>
+        </div>
+        <p>
+          When <span class="math-inline">a=0</span>, this is called a <strong>Maclaurin Series</strong>.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 8: f(x) = e<sup>x</sup> at a=0</div>
+        <p>
+          All derivatives <span class="math-inline">f<sup>(n)</sup>(x)</span> are <span class="math-inline">e<sup>x</sup></span>, so <span class="math-inline">f<sup>(n)</sup>(0) = e<sup>0</sup> = 1</span> for all <span class="math-inline">n</span>.
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            e<sup>x</sup> = Σ<sub>n=0</sub><sup>∞</sup> 1/n! · (x-0)<sup>n</sup> = 1 + x + x<sup>2</sup>/2! + x<sup>3</sup>/3! + ⋯
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 9: f(x) = sin x at a=0</div>
+        <p>
+          The derivatives at <span class="math-inline">x=0</span> follow a pattern: <span class="math-inline">f(0)=0</span>, <span class="math-inline">f'(0)=1</span>, <span class="math-inline">f''(0)=0</span>, <span class="math-inline">f'''(0)=-1</span>, etc. Plugging these into the formula, all the even-powered terms go to zero:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            sin x = 0 + (1/1!)x + 0 + (-1/3!)x<sup>3</sup> + 0 + (1/5!)x<sup>5</sup> + ⋯<br/>
+            sin x = x - x<sup>3</sup>/3! + x<sup>5</sup>/5! - x<sup>7</sup>/7! + ⋯
+          </p>
+        </div>
+        <p>
+          As you include more terms, the approximation becomes more accurate over a wider range.
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_4_sin_taylor.png" alt="Taylor approximations of sin(x)">
+        <figcaption>Taylor approximations of sin(x)</figcaption>
+      </figure>
+
+      <h2>Combinatorics</h2>
+      <p>
+        Combinatorics is the field of mathematics concerned with counting configurations of discrete events.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 10: Motivating Example - Birthday Paradox</div>
+        <p>
+          In a room of <span class="math-inline">k</span> people, what is the probability that at least one pair shares a birthday <a href="#ref1" class="ref-cite">[1]</a>?
+        </p>
+        <p>
+          It's easier to calculate the complement: the probability that <em>no one</em> shares a birthday (assuming 365 days).
+        </p>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>Person 1: <span class="math-inline">365/365</span> (can have any birthday)</li>
+          <li>Person 2: <span class="math-inline">364/365</span> (must be different from person 1)</li>
+          <li>Person 3: <span class="math-inline">363/365</span> (must be different from 1 and 2)</li>
+          <li>...</li>
+          <li>Person k: <span class="math-inline">(365 - k + 1)/365</span></li>
+        </ul>
+        <p style="margin-top: 0.5rem;">
+          The probability of all <span class="math-inline">k</span> people having different birthdays is:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            P(all different) = (365 × 364 × ⋯ × (365-k+1))/365<sup>k</sup> = 365!/((365-k)!) × 1/365<sup>k</sup>
+          </p>
+        </div>
+        <p>
+          For <span class="math-inline">k=50</span> people, <span class="math-inline">P(all different) ≈ 0.03</span>. So, the probability of at least one match is <span class="math-inline">P(match) = 1 - 0.03 = 0.97</span>, or 97%!
+        </p>
+      </div>
+
+      <h3>Permutation</h3>
+      <p>
+        A permutation is an <strong>ordered</strong> arrangement of <span class="math-inline">k</span> items selected from a set of <span class="math-inline">n</span> distinct items without replacement.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 2: Number of Permutations</div>
+        <p>
+          The number of ways to choose <span class="math-inline">k</span> ordered items from <span class="math-inline">n</span> is <a href="#ref1" class="ref-cite">[1]</a>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            P(n, k) = n(n-1)(n-2)⋯(n-k+1) = n!/(n-k)!
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 11: Awarding Prizes</div>
+        <p>
+          How many ways to award 1st, 2nd, and 3rd prize (ordered) from 100 contestants?
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            P(100, 3) = 100!/(100-3)! = 100!/97! = 100 × 99 × 98 = 970,200
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 12: String Permutations</div>
+        <p>
+          How many permutations of the letters <strong>ABCDEFG</strong> contain:
+        </p>
+        <ol style="margin-top: 0.5rem;">
+          <li><strong>the string BCD?</strong><br/>
+          Treat (BCD) as a single block. We are permuting (BCD), A, E, F, G. These are 5 distinct items. So, the total permutations is <span class="math-inline">5! = 120</span>.</li>
+
+          <li style="margin-top: 0.5rem;"><strong>the strings BA and GF?</strong><br/>
+          Treat (BA) and (GF) as single blocks. We are permuting (BA), (GF), C, D, E. These are 5 distinct items. So, the total permutations is <span class="math-inline">5! = 120</span>.</li>
+
+          <li style="margin-top: 0.5rem;"><strong>the strings ABC and CDE?</strong><br/>
+          This implies the string must be (ABCDE). We are permuting (ABCDE), F, G. These are 3 distinct items. So, the total permutations is <span class="math-inline">3! = 6</span>.</li>
+
+          <li style="margin-top: 0.5rem;"><strong>the strings CBA and BED?</strong><br/>
+          This is impossible, as the letter 'B' must be in two different positions simultaneously. The number of permutations is 0.</li>
+        </ol>
+      </div>
+
+      <h3>Combination</h3>
+      <p>
+        A combination is an <strong>unordered</strong> selection of <span class="math-inline">k</span> items from a set of <span class="math-inline">n</span> distinct items without replacement. The order of selection does not matter.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 3: Number of Combinations</div>
+        <p>
+          This is also called "n choose k" or the binomial coefficient <a href="#ref1" class="ref-cite">[1]</a>.
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            C(n, k) = (ⁿₖ) = P(n, k)/k! = n!/(k!(n-k)!)
+          </p>
+        </div>
+        <p>
+          We divide the number of permutations by <span class="math-inline">k!</span> because there are <span class="math-inline">k!</span> ways to order the <span class="math-inline">k</span> chosen items, and in a combination, all those orderings are counted as one.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 13: Poker Hands</div>
+        <p>
+          How many 5-card poker hands (unordered) can be dealt from a standard 52-card deck?
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            C(52, 5) = (⁵²₅) = 52!/(5!(52-5)!) = 52!/(5!47!) = 2,598,960
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 14: Selecting a Crew</div>
+        <p>
+          How many ways to select a 6-person crew (unordered) from 30 astronauts?
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            C(30, 6) = (³⁰₆) = 30!/(6!(30-6)!) = 30!/(6!24!) = 593,775
+          </p>
+        </div>
+      </div>
+
+      <h3>The Binomial Theorem</h3>
+      <p>
+        The binomial theorem uses combinations (binomial coefficients) to expand a binomial raised to a power.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 4: Binomial Theorem</div>
+        <p>
+          For any real numbers <span class="math-inline">a</span> and <span class="math-inline">b</span> and integer <span class="math-inline">n ≥ 0</span> <a href="#ref1" class="ref-cite">[1]</a>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            (a+b)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ) a<sup>n-k</sup>b<sup>k</sup>
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 15: Expanding (x+y)<sup>4</sup></div>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            (x+y)<sup>4</sup> = (⁴₀)x<sup>4</sup>y<sup>0</sup> + (⁴₁)x<sup>3</sup>y<sup>1</sup> + (⁴₂)x<sup>2</sup>y<sup>2</sup> + (⁴₃)x<sup>1</sup>y<sup>3</sup> + (⁴₄)x<sup>0</sup>y<sup>4</sup><br/>
+            = 1x<sup>4</sup> + 4x<sup>3</sup>y + 6x<sup>2</sup>y<sup>2</sup> + 4xy<sup>3</sup> + 1y<sup>4</sup>
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 16: Finding a Coefficient in (x+y)<sup>25</sup></div>
+        <p>
+          What is the coefficient of <span class="math-inline">x<sup>12</sup>y<sup>13</sup></span> in the expansion of <span class="math-inline">(x+y)<sup>25</sup></span>?
+        </p>
+        <p>
+          The term with <span class="math-inline">y<sup>13</sup></span> corresponds to <span class="math-inline">k=13</span>. The term is <span class="math-inline">(²⁵₁₃) x<sup>25-13</sup>y<sup>13</sup> = (²⁵₁₃) x<sup>12</sup>y<sup>13</sup></span>. The coefficient is <span class="math-inline">(²⁵₁₃) = 25!/(13!(25-13)!) = 25!/(13!12!)</span>.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 17: Finding a Coefficient in (2x-3y)<sup>25</sup></div>
+        <p>
+          What is the coefficient of <span class="math-inline">x<sup>12</sup>y<sup>13</sup></span> in the expansion of <span class="math-inline">(2x-3y)<sup>25</sup></span>?
+        </p>
+        <p>
+          Let <span class="math-inline">a = 2x</span> and <span class="math-inline">b = -3y</span>. We need the term with <span class="math-inline">b<sup>13</sup></span>, which corresponds to <span class="math-inline">k=13</span>. The term is <span class="math-inline">(²⁵₁₃) a<sup>25-13</sup>b<sup>13</sup> = (²⁵₁₃) (2x)<sup>12</sup>(-3y)<sup>13</sup></span>.
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            = (²⁵₁₃) 2<sup>12</sup>x<sup>12</sup>(-3)<sup>13</sup>y<sup>13</sup> = (²⁵₁₃) 2<sup>12</sup>(-1)<sup>13</sup>3<sup>13</sup>x<sup>12</sup>y<sup>13</sup>
+          </p>
+        </div>
+        <p>
+          The coefficient is <span class="math-inline">-(²⁵₁₃) 2<sup>12</sup>3<sup>13</sup> = -(25!/(12!13!)) 2<sup>12</sup>3<sup>13</sup></span>.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 18: Binomial Identities</div>
+        <p>
+          By cleverly choosing <span class="math-inline">a</span> and <span class="math-inline">b</span>, we can prove identities:
+        </p>
+        <ol style="margin-top: 0.5rem;">
+          <li><strong>Let a=1, b=1:</strong> <span class="math-inline">(1+1)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ) (1)<sup>n-k</sup>(1)<sup>k</sup> ⇒ 2<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ)</span></li>
+
+          <li style="margin-top: 0.5rem;"><strong>Let a=1, b=-1:</strong> <span class="math-inline">(1-1)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ) (1)<sup>n-k</sup>(-1)<sup>k</sup> ⇒ 0 = Σ<sub>k=0</sub><sup>n</sup> (-1)<sup>k</sup>(ⁿₖ)</span></li>
+
+          <li style="margin-top: 0.5rem;"><strong>Let a=1, b=2:</strong> <span class="math-inline">(1+2)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> (ⁿₖ) (1)<sup>n-k</sup>(2)<sup>k</sup> ⇒ 3<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> 2<sup>k</sup>(ⁿₖ)</span></li>
+        </ol>
+      </div>
+
+      <h3>Pascal's Identity</h3>
+      <p>
+        This identity shows how the coefficients in one row of Pascal's triangle are formed from the row above it.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 5: Pascal's Identity</div>
+        <p>
+          Let n and k be positive integers with <span class="math-inline">1 ≤ k ≤ n</span>. Then <a href="#ref1" class="ref-cite">[1]</a>:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            (ⁿ⁺¹ₖ) = (ⁿₖ₋₁) + (ⁿₖ)
+          </p>
+        </div>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_5_pascals_identity.png" alt="Pascal's Identity in the triangle">
+        <figcaption>Pascal's Identity in the triangle</figcaption>
+      </figure>
+
+      <h2>Integration Techniques</h2>
+      <p>
+        Integration is a core concept in calculus, often used to find the area under probability density functions to calculate probabilities.
+      </p>
+
+      <h3>Integration by Substitution</h3>
+      <p>
+        Used when an integrand contains a function and its derivative.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 19: Basic Substitution</div>
+        <p>
+          <span class="math-inline">∫ 2x cos(x<sup>2</sup>) dx</span>.
+        </p>
+        <p>
+          Let <span class="math-inline">u = x<sup>2</sup></span>, so <span class="math-inline">du = 2x dx</span>.
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            ∫ cos(u) du = sin(u) + C = sin(x<sup>2</sup>) + C
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 20: More Complex Substitution</div>
+        <p>
+          <span class="math-inline">∫ x<sup>3</sup> √(1-x<sup>2</sup>) dx</span>.
+        </p>
+        <p>
+          Let <span class="math-inline">u = 1-x<sup>2</sup></span>. Then <span class="math-inline">du = -2x dx ⇒ x dx = -du/2</span>. Also, <span class="math-inline">x<sup>2</sup> = 1-u</span>.
+        </p>
+        <p>
+          Rewrite the integral:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            ∫ x<sup>3</sup> √(1-x<sup>2</sup>) dx = ∫ x<sup>2</sup> √(1-x<sup>2</sup>) (x dx)<br/>
+            = ∫ (1-u) √u (-du/2)<br/>
+            = -(1/2) ∫ (u<sup>1/2</sup> - u<sup>3/2</sup>) du<br/>
+            = -(1/2) [u<sup>3/2</sup>/(3/2) - u<sup>5/2</sup>/(5/2)] + C<br/>
+            = -(1/3)u<sup>3/2</sup> + (1/5)u<sup>5/2</sup> + C<br/>
+            = (1/5)(1-x<sup>2</sup>)<sup>5/2</sup> - (1/3)(1-x<sup>2</sup>)<sup>3/2</sup> + C
+          </p>
+        </div>
+      </div>
+
+      <h3>Method of Partial Fractions</h3>
+      <p>
+        Used to integrate rational functions (a polynomial divided by another).
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 21: Simple Partial Fraction Decomposition</div>
+        <p>
+          Decompose <span class="math-inline">(5x-3)/((x+1)(x-3))</span>.
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            (5x-3)/((x+1)(x-3)) = A/(x+1) + B/(x-3)
+          </p>
+        </div>
+        <p>
+          Clear the denominator: <span class="math-inline">5x-3 = A(x-3) + B(x+1)</span>.
+        </p>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>Let <span class="math-inline">x=3</span>: <span class="math-inline">5(3)-3 = A(0) + B(3+1) ⇒ 12 = 4B ⇒ B=3</span></li>
+          <li>Let <span class="math-inline">x=-1</span>: <span class="math-inline">5(-1)-3 = A(-1-3) + B(0) ⇒ -8 = -4A ⇒ A=2</span></li>
+        </ul>
+        <p style="margin-top: 0.5rem;">
+          So, <span class="math-inline">(5x-3)/((x+1)(x-3)) = 2/(x+1) + 3/(x-3)</span>
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 22: Partial Fractions with Repeated/Irreducible Roots</div>
+        <p>
+          Decompose <span class="math-inline">(-2x+4)/((x<sup>2</sup>+1)(x-1)<sup>2</sup>)</span>.
+        </p>
+        <p>
+          The form includes a linear term for the irreducible quadratic (<span class="math-inline">x<sup>2</sup>+1</span>) and terms for the repeated root (<span class="math-inline">x-1</span>).
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            (-2x+4)/((x<sup>2</sup>+1)(x-1)<sup>2</sup>) = (Ax+B)/(x<sup>2</sup>+1) + C/(x-1) + D/(x-1)<sup>2</sup>
+          </p>
+        </div>
+        <p>
+          After clearing the denominator and equating coefficients:
+        </p>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li><span class="math-inline">A=2</span></li>
+          <li><span class="math-inline">B=1</span></li>
+          <li><span class="math-inline">C=-2</span></li>
+          <li><span class="math-inline">D=1</span></li>
+        </ul>
+        <p style="margin-top: 0.5rem;">
+          So, <span class="math-inline">(-2x+4)/((x<sup>2</sup>+1)(x-1)<sup>2</sup>) = (2x+1)/(x<sup>2</sup>+1) - 2/(x-1) + 1/(x-1)<sup>2</sup></span>
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 23: Integration with Partial Fractions</div>
+        <p>
+          <span class="math-inline">∫ (x+4)/(x<sup>3</sup>+3x<sup>2</sup>-10x) dx</span>.
+        </p>
+        <p>
+          <strong>1. Factor denominator:</strong> <span class="math-inline">x(x<sup>2</sup>+3x-10) = x(x+5)(x-2)</span>.
+        </p>
+        <p>
+          <strong>2. Set up fractions:</strong>
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            (x+4)/(x(x+5)(x-2)) = A/x + B/(x+5) + C/(x-2)
+          </p>
+        </div>
+        <p>
+          <strong>3. Solve for A, B, C (Cover-up Method):</strong>
+        </p>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>For A (cover x, plug in x=0): <span class="math-inline">A = (0+4)/((0+5)(0-2)) = 4/(-10) = -2/5</span></li>
+          <li>For B (cover x+5, plug in x=-5): <span class="math-inline">B = (-5+4)/((-5)(-5-2)) = (-1)/((-5)(-7)) = -1/35</span></li>
+          <li>For C (cover x-2, plug in x=2): <span class="math-inline">C = (2+4)/((2)(2+5)) = 6/14 = 3/7</span></li>
+        </ul>
+        <p style="margin-top: 0.5rem;">
+          <strong>4. Integrate:</strong>
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            ∫ (-2/(5x) - 1/(35(x+5)) + 3/(7(x-2))) dx<br/>
+            = -(2/5)ln|x| - (1/35)ln|x+5| + (3/7)ln|x-2| + C
+          </p>
+        </div>
+      </div>
+
+      <h3>Odd and Even Functions</h3>
+      <p>
+        This is a simplification for integrals over symmetric intervals, like <span class="math-inline">∫<sub>-a</sub><sup>a</sup> f(x) dx</span> <a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+      <ul>
+        <li>An <strong>even function</strong> is symmetric about the y-axis, where <span class="math-inline">f(x) = f(-x)</span>.
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            ∫<sub>-a</sub><sup>a</sup> f(x) dx = 2 ∫<sub>0</sub><sup>a</sup> f(x) dx
+          </p>
+        </div>
+        </li>
+        <li>An <strong>odd function</strong> is anti-symmetric, where <span class="math-inline">f(x) = -f(-x)</span>.
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            ∫<sub>-a</sub><sup>a</sup> f(x) dx = 0
+          </p>
+        </div>
+        </li>
+      </ul>
+
+      <div class="example-box">
+        <div class="box-title">Example 24: Odd Function</div>
+        <p>
+          <span class="math-inline">f(x) = x e<sup>-x<sup>2</sup>/2</sup></span> is odd, since <span class="math-inline">f(-x) = (-x)e<sup>-(-x)<sup>2</sup>/2</sup> = -xe<sup>-x<sup>2</sup>/2</sup> = -f(x)</span>.
+        </p>
+        <p>
+          Therefore, <span class="math-inline">∫<sub>-5</sub><sup>5</sup> x e<sup>-x<sup>2</sup>/2</sup> dx = 0</span>.
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_6_odd_even_functions.png" alt="Odd vs. Even functions over a symmetric interval">
+        <figcaption>Odd vs. Even functions over a symmetric interval</figcaption>
+      </figure>
+
+      <h3>Completing the Square</h3>
+      <p>
+        Used to transform quadratic forms into standard integral forms.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 25: tan<sup>-1</sup> form</div>
+        <p>
+          <span class="math-inline">∫ dx/(4x<sup>2</sup>+4x+2)</span>
+        </p>
+        <p>
+          Complete the square on the denominator:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            4x<sup>2</sup>+4x+2 = 4(x<sup>2</sup>+x) + 2 = 4(x<sup>2</sup>+x+1/4) - 1 + 2 = 4(x+1/2)<sup>2</sup> + 1 = (2x+1)<sup>2</sup> + 1
+          </p>
+        </div>
+        <p>
+          The integral becomes <span class="math-inline">∫ dx/((2x+1)<sup>2</sup> + 1)</span>. Let <span class="math-inline">u = 2x+1</span>, <span class="math-inline">du = 2 dx ⇒ dx = du/2</span>.
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            ∫ (du/2)/(u<sup>2</sup> + 1) = (1/2) ∫ du/(u<sup>2</sup>+1) = (1/2)tan<sup>-1</sup>(u) + C = (1/2)tan<sup>-1</sup>(2x+1) + C
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 26: sin<sup>-1</sup> form</div>
+        <p>
+          <span class="math-inline">∫ dx/√(2x-x<sup>2</sup>)</span>
+        </p>
+        <p>
+          Complete the square on the denominator:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            2x-x<sup>2</sup> = -(x<sup>2</sup>-2x) = -(x<sup>2</sup>-2x+1-1) = -((x-1)<sup>2</sup> - 1) = 1 - (x-1)<sup>2</sup>
+          </p>
+        </div>
+        <p>
+          The integral becomes <span class="math-inline">∫ dx/√(1-(x-1)<sup>2</sup>)</span>. Let <span class="math-inline">u = x-1</span>, <span class="math-inline">du = dx</span>.
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            ∫ du/√(1-u<sup>2</sup>) = sin<sup>-1</sup>(u) + C = sin<sup>-1</sup>(x-1) + C
+          </p>
+        </div>
+      </div>
+
+      <h3>The Fundamental Theorem of Calculus</h3>
+      <p>
+        The FTC links integration and differentiation, and is the formal basis for the relationship between a Probability Density Function (PDF) and a Cumulative Distribution Function (CDF) <a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 6: Fundamental Theorem of Calculus</div>
+        <p>
+          Let <span class="math-inline">f</span> be a continuous function on <span class="math-inline">[a, b]</span> <a href="#ref1" class="ref-cite">[1]</a>.
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            f(x) = d/dx ∫<sub>a</sub><sup>x</sup> f(t) dt
+          </p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 27: Demonstrating the FTC</div>
+        <p>
+          Consider <span class="math-inline">f(t) = t<sup>2</sup></span>.
+        </p>
+        <p>
+          The integral from 0 to <span class="math-inline">x</span> is <span class="math-inline">F(x) = ∫<sub>0</sub><sup>x</sup> t<sup>2</sup> dt = [t<sup>3</sup>/3]<sub>0</sub><sup>x</sup> = x<sup>3</sup>/3</span>.
+        </p>
+        <p>
+          The derivative of <span class="math-inline">F(x)</span> is <span class="math-inline">F'(x) = d/dx(x<sup>3</sup>/3) = x<sup>2</sup></span>, which is <span class="math-inline">f(x)</span>.
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_7_ftc_pdf_cdf.png" alt="Illustration of the FTC via a PDF and CDF">
+        <figcaption>Illustration of the FTC via a PDF f(x) and its CDF F(x) = ∫<sub>0</sub><sup>x</sup> f(t) dt</figcaption>
+      </figure>
+
+      <h3>The Gaussian Integral</h3>
+      <p>
+        A famous definite integral that is central to probability and the normal distribution.
+      </p>
+      <div class="math-display">
+        <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+          I = ∫<sub>-∞</sub><sup>∞</sup> e<sup>-x<sup>2</sup></sup> dx = √π
+        </p>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Proof (using Polar Coordinates)</div>
+        <ol style="margin-top: 0.5rem;">
+          <li><strong>Square the integral and use different dummy variables:</strong>
+          <div class="math-display">
+            <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+              I<sup>2</sup> = (∫<sub>-∞</sub><sup>∞</sup> e<sup>-x<sup>2</sup></sup> dx)(∫<sub>-∞</sub><sup>∞</sup> e<sup>-y<sup>2</sup></sup> dy) = ∫<sub>-∞</sub><sup>∞</sup> ∫<sub>-∞</sub><sup>∞</sup> e<sup>-(x<sup>2</sup>+y<sup>2</sup>)</sup> dx dy
+            </p>
+          </div>
+          </li>
+
+          <li style="margin-top: 0.5rem;"><strong>Convert to polar coordinates:</strong> <span class="math-inline">x<sup>2</sup> + y<sup>2</sup> = r<sup>2</sup></span> and <span class="math-inline">dx dy = r dr dθ</span>. The region (entire xy-plane) becomes <span class="math-inline">r ∈ [0, ∞)</span> and <span class="math-inline">θ ∈ [0, 2π)</span>.
+          <div class="math-display">
+            <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+              I<sup>2</sup> = ∫<sub>0</sub><sup>2π</sup> (∫<sub>0</sub><sup>∞</sup> e<sup>-r<sup>2</sup></sup> r dr) dθ
+            </p>
+          </div>
+          </li>
+
+          <li style="margin-top: 0.5rem;"><strong>Solve the inner integral with substitution</strong> (<span class="math-inline">u = r<sup>2</sup>, du = 2r dr ⇒ r dr = du/2</span>):
+          <div class="math-display">
+            <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+              ∫<sub>0</sub><sup>∞</sup> e<sup>-r<sup>2</sup></sup> r dr = ∫<sub>0</sub><sup>∞</sup> e<sup>-u</sup> du/2 = (1/2) [-e<sup>-u</sup>]<sub>0</sub><sup>∞</sup> = (1/2) (0 - (-1)) = 1/2
+            </p>
+          </div>
+          </li>
+
+          <li style="margin-top: 0.5rem;"><strong>Solve the outer integral:</strong>
+          <div class="math-display">
+            <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+              I<sup>2</sup> = ∫<sub>0</sub><sup>2π</sup> (1/2) dθ = (1/2) [θ]<sub>0</sub><sup>2π</sup> = (1/2) (2π) = π
+            </p>
+          </div>
+          </li>
+        </ol>
+        <p style="margin-top: 0.5rem;">
+          Since <span class="math-inline">I<sup>2</sup> = π</span>, we have <span class="math-inline">I = √π</span>.
+        </p>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Generalized Gaussian Integral</div>
+        <p>
+          A more general form used in statistics is:
+        </p>
+        <div class="math-display">
+          <p style="font-family: 'Latin Modern', Georgia, serif; font-style: italic; font-size: 1.1em;">
+            ∫<sub>-∞</sub><sup>∞</sup> e<sup>-αx<sup>2</sup></sup> dx = √(π/α)
+          </p>
+        </div>
+      </div>
+
+      <!-- Back to Index -->
+      <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+    </article>
+
+    <!-- References Sidebar -->
+    <aside class="references-sidebar">
+      <h3>References</h3>
+      <ol class="ref-list">
+        <li class="ref-item" id="ref1">
+          <span class="ref-id">[1]</span>
+          <span class="ref-content">
+            Chan, Stanley H. (2021). <em>Mathematical Background</em>. Introduction to Differentiable Hacking. Chapter 1.
+          </span>
+          <span class="ref-url">https://web.stanford.edu/~hastie/StatLearnSparsity/data.html</span>
+        </li>
+        <li class="ref-item" id="ref2">
+          <span class="ref-id">[2]</span>
+          <span class="ref-content">
+            Karim, Md Shahriar. <em>CSE 422 Course Portal</em>. Assistant Professor, ECE, North South University.
+          </span>
+          <span class="ref-url">https://ece.northsouth.edu/~shahriar.karim/CSE_422.html</span>
+        </li>
+      </ol>
+    </aside>
+  </div>
+
+  <script>
+    // Active link highlighting - Notebook post page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+
+    // Sticky navigation with scroll behavior
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Smooth scroll to references when citation clicked
+    document.querySelectorAll('.ref-cite').forEach(cite => {
+      cite.addEventListener('click', (e) => {
+        e.preventDefault();
+        const refId = cite.getAttribute('href');
+        const refElement = document.querySelector(refId);
+        if (refElement) {
+          refElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Highlight briefly
+          refElement.style.backgroundColor = 'var(--sidenote-target-border-color)';
+          setTimeout(() => {
+            refElement.style.backgroundColor = '';
+          }, 1500);
+        }
+      });
+    });
+  </script>
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../../prism/prism.js"></script>
+</body>
+
+</html>
