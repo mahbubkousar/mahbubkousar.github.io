@@ -438,6 +438,34 @@ body:has(.note-container) {
   margin: 1.5rem 0;
   padding: 1rem 0;
   text-align: center;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Math displays inside boxes - ensure they don't overflow on mobile */
+.example-box .math-display,
+.theorem-box .math-display,
+.definition-box .math-display,
+.note-box .math-display {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure MathJax rendered content is scrollable */
+.example-box mjx-container,
+.theorem-box mjx-container,
+.definition-box mjx-container,
+.note-box mjx-container {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* For inline MathJax that might be too wide */
+mjx-container[display="true"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Image figures */
