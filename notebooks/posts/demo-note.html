@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../../style.css" />
   <link rel="stylesheet" href="../../prism/prism.css" />
   <link rel="stylesheet" href="../notebook.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
 </head>
 
 <body class="text-justify">
@@ -388,6 +389,21 @@ public class Fibonacci {
 
       <!-- Back to Index -->
       <a href="../index.html" class="back-link">Back to Notebook Index</a>
+
+      <!-- Visitor Counter -->
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_demo_note">
+        <div class="visitor-stats">
+          <div class="visitor-stat">
+            <span class="visitor-stat-label">Total visits:</span>
+            <span class="visitor-stat-count" id="overall-visitor-count"></span>
+          </div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat">
+            <span class="visitor-stat-label">Page visits:</span>
+            <span class="visitor-stat-count" id="page-visitor-count"></span>
+          </div>
+        </div>
+      </div>
     </article>
 
     <!-- References Sidebar -->
@@ -494,6 +510,14 @@ public class Fibonacci {
 
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script async src="../../prism/prism.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Firebase Configuration & Visitor Counter -->
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
 </body>
 
 </html>

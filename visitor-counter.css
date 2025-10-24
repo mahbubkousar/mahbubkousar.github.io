@@ -1,0 +1,91 @@
+/* =================================================================== */
+/*                    Minimal Visitor Counter Styles                   */
+/* =================================================================== */
+
+.visitor-counter-container {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: var(--border-width-thin) solid var(--footnotes-border-color);
+  font-size: 0.8em;
+  color: var(--body-color);
+  opacity: 0.6;
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+
+.visitor-counter-container:hover {
+  opacity: 0.85;
+}
+
+.visitor-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.02em;
+}
+
+.visitor-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.visitor-stat-label {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.visitor-stat-count {
+  font-weight: 600;
+  font-family: 'Latin Modern', Georgia, serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+}
+
+.visitor-stat-separator {
+  opacity: 0.3;
+  margin: 0 0.25rem;
+}
+
+/* Skeleton loading animation */
+.visitor-stat-count:empty::before {
+  content: '···';
+  opacity: 0.3;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .visitor-stats {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .visitor-stat-separator {
+    display: none;
+  }
+}
+
+/* For notebook pages - align with back-link styling */
+.note-content .visitor-counter-container {
+  max-width: 80ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Dark mode support */
+.latex-dark .visitor-counter-container {
+  border-top-color: var(--footnotes-border-color);
+}

@@ -11,6 +11,7 @@
 
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="prism/prism.css" />
+  <link rel="stylesheet" href="visitor-counter.css" />
 </head>
 
 <body id="top" class="text-justify">
@@ -404,6 +405,21 @@ Journal of Self-Deprecating Humor, 1(1), 1-∞.</code></pre>
         © 2025 Mahbub Kousar. All rights reserved. All wrongs also reserved, but with less enthusiasm.
       </p>
 
+      <!-- Visitor Counter -->
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="home">
+        <div class="visitor-stats">
+          <div class="visitor-stat">
+            <span class="visitor-stat-label">Total visits:</span>
+            <span class="visitor-stat-count" id="overall-visitor-count"></span>
+          </div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat">
+            <span class="visitor-stat-label">Page visits:</span>
+            <span class="visitor-stat-count" id="page-visitor-count"></span>
+          </div>
+        </div>
+      </div>
+
     </article>
   </main>
 
@@ -705,6 +721,14 @@ Journal of Self-Deprecating Humor, 1(1), 1-∞.</code></pre>
 
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script async src="prism/prism.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Firebase Configuration & Visitor Counter -->
+  <script src="firebase-config.js"></script>
+  <script src="visitor-counter.js"></script>
 
 </body>
 

@@ -8,6 +8,7 @@
   <meta name="description" content="Curated collection of code snippets, notes, tools, and useful links" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="resources.css" />
+  <link rel="stylesheet" href="../visitor-counter.css" />
 </head>
 
 <body class="text-justify">
@@ -195,6 +196,21 @@
 
   <footer class="resources-footer">
     <p>Resources are updated regularly. Contributions and suggestions are welcome at <a href="mailto:mahbubkousar@gmail.com">mahbubkousar@gmail.com</a>.</p>
+
+    <!-- Visitor Counter -->
+    <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="resources_index">
+      <div class="visitor-stats">
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Total visits:</span>
+          <span class="visitor-stat-count" id="overall-visitor-count"></span>
+        </div>
+        <span class="visitor-stat-separator">§</span>
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Page visits:</span>
+          <span class="visitor-stat-count" id="page-visitor-count"></span>
+        </div>
+      </div>
+    </div>
   </footer>
 
   <script>
@@ -293,6 +309,14 @@
       }
     });
   </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Firebase Configuration & Visitor Counter -->
+  <script src="../firebase-config.js"></script>
+  <script src="../visitor-counter.js"></script>
 </body>
 
 </html>

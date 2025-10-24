@@ -8,6 +8,7 @@
   <meta name="description" content="Official Python 3 documentation and useful references" />
   <link rel="stylesheet" href="../../style.css" />
   <link rel="stylesheet" href="../resource.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
 </head>
 
 <body class="text-justify">
@@ -207,6 +208,21 @@
       </section>
 
       <a href="../index.html" class="back-to-resources">Back to Resources</a>
+
+      <!-- Visitor Counter -->
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="resource_link_python_docs">
+        <div class="visitor-stats">
+          <div class="visitor-stat">
+            <span class="visitor-stat-label">Total visits:</span>
+            <span class="visitor-stat-count" id="overall-visitor-count"></span>
+          </div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat">
+            <span class="visitor-stat-label">Page visits:</span>
+            <span class="visitor-stat-count" id="page-visitor-count"></span>
+          </div>
+        </div>
+      </div>
     </article>
   </main>
 
@@ -251,6 +267,14 @@
       }
     });
   </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Firebase Configuration & Visitor Counter -->
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
 </body>
 
 </html>

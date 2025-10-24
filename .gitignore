@@ -1,0 +1,42 @@
+# Firebase - Keep these files out of version control if they contain sensitive data
+# Note: firebase-config.js API keys are safe to commit IF you have proper security rules
+# See FIREBASE_SECURITY_RULES.md for details
+
+# Optional: Uncomment these if you want to keep config private
+# firebase-config.js
+# .firebaserc
+# firebase.json
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Temporary files
+*.tmp
+temp/
+tmp/

@@ -8,6 +8,7 @@
   <meta name="description" content="Technical notes and knowledge sharing on Computer Science and Mathematics" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="notebook.css" />
+  <link rel="stylesheet" href="../visitor-counter.css" />
 </head>
 
 <body class="text-justify">
@@ -60,6 +61,21 @@
 
   <footer class="notebook-footer">
     <p>All notes are works in progress. Corrections and suggestions are welcome at <a href="mailto:mahbubkousar@gmail.com">mahbubkousar@gmail.com</a>.</p>
+
+    <!-- Visitor Counter -->
+    <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_index">
+      <div class="visitor-stats">
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Total visits:</span>
+          <span class="visitor-stat-count" id="overall-visitor-count"></span>
+        </div>
+        <span class="visitor-stat-separator">§</span>
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Page visits:</span>
+          <span class="visitor-stat-count" id="page-visitor-count"></span>
+        </div>
+      </div>
+    </div>
   </footer>
 
   <script>
@@ -104,6 +120,14 @@
       }
     });
   </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Firebase Configuration & Visitor Counter -->
+  <script src="../firebase-config.js"></script>
+  <script src="../visitor-counter.js"></script>
 </body>
 
 </html>
