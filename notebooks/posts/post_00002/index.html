@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Set Theory and Probability I - Mahbub Kousar</title>
+  <meta name="description" content="Fundamental concepts in Set Theory and Probability Theory including set operations, cardinality, probability spaces, axioms, and conditional probability" />
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../../prism/prism.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+  <link rel="stylesheet" href="../../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <!-- Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <div class="note-container">
+    <!-- Main Content Column -->
+    <article class="note-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="../../index.html">Notebook</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="../../index.html#maths">Mathematics</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>Set Theory and Probability</span>
+      </nav>
+
+      <!-- Note Header -->
+      <header class="note-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="flex: 1;">
+            <h1 class="note-title">Set Theory and Probability I</h1>
+            <div class="note-meta">
+              <span class="note-meta-item">
+                <time datetime="2025-10-25">October 25, 2025</time>
+              </span>
+              <span class="note-meta-item">Mathematics</span>
+              <span class="note-meta-item">Probability Theory</span>
+            </div>
+          </div>
+          <a href="Set_Theory_and_Probability_I.pdf" download class="pdf-download-icon" title="Download PDF version">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 13H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 9H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      <!-- Abstract -->
+      <p>
+        This note presents fundamental concepts in Set Theory and Probability Theory. Material from CSE422 class (taught by Md. Shahriar Karim, Assistant Professor, North South University) lectures is enhanced with definitions, theorems, examples, and proofs from faculty notes <a href="#ref1" class="ref-cite">[1]</a><a href="#ref2" class="ref-cite">[2]</a> and textbooks by Ross <a href="#ref3" class="ref-cite">[3]</a> and Chan <a href="#ref4" class="ref-cite">[4]</a>. Topics include set operations, cardinality, probability spaces, axioms, corollaries, probability assignment (pmf/pdf), measure zero sets, and conditional probability.
+      </p>
+
+      <h2>Set Theory</h2>
+      <p>
+        Set theory forms the fundamental language and mathematical basis for understanding probability. We begin by defining the core concepts.
+      </p>
+
+      <h3>Sets and Elements</h3>
+      <p>
+        A <strong>set</strong> is a collection of distinct objects, considered as an entity in itself. The objects within the set are called its <strong>elements</strong> or members. Sets are typically denoted by capital letters (e.g., \(A, B, S\)) and their elements by lowercase letters or symbols.
+      </p>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Set</div>
+        <p>
+          A <strong>set</strong> is a collection of distinct elements. We often denote a set by listing its elements within curly braces <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+        <div class="math-display">
+          \[ A = \{\xi_1, \xi_2, \ldots, \xi_n\} \]
+        </div>
+        <p>where \(\xi_i\) is the \(i\)-th element in the set.</p>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark</div>
+        <p>
+          The elements in a set are <strong>distinct</strong> (no repetitions) and <strong>unordered</strong> (the order in which elements are listed does not matter).
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 1: Basic Sets</div>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>\(A = \{2, 7, 9\}\) is a finite set of numbers.</li>
+          <li>\(B = \{\text{apple, orange, pear}\}\) is a finite set of objects.</li>
+          <li>\(C = \{2, 4, 6, 8, \ldots\}\) is an infinite set (the set of positive even integers).</li>
+        </ul>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Element Membership</div>
+        <p>
+          If an object \(\xi\) is an element of a set \(A\), we write \(\xi \in A\). If \(\xi\) is not an element of \(A\), we write \(\xi \notin A\).
+        </p>
+      </div>
+
+      <h3>Describing Sets</h3>
+      <p>
+        Sets can be described explicitly by listing elements or implicitly using properties.
+      </p>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Set Builder Notation</div>
+        <p>
+          A set can be defined by specifying a property that its elements must satisfy.
+        </p>
+        <div class="math-display">
+          \[ A = \{x \mid P(x)\} \]
+        </div>
+        <p>This reads as "A is the set of all elements \(x\) such that property \(P(x)\) is true."</p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 2: Set Builder Notation</div>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>\(A = \{1, 2, 3, 4, 5, 6, 7, 8, 9\}\) can be written as \(A = \{x \mid x \in \mathbb{Z}^+ \text{ and } 1 \le x \le 9\}\).</li>
+          <li>The set of even integers can be written as \(E = \{x \mid x = 2k \text{ for some integer } k\}\).</li>
+        </ul>
+      </div>
+
+      <h3>Fundamental Set Concepts</h3>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Set Equality</div>
+        <p>
+          Two sets \(A\) and \(B\) are <strong>equal</strong> (\(A = B\)) if and only if they contain exactly the same elements <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.
+        </p>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Cardinality</div>
+        <p>
+          The <strong>cardinality</strong> of a finite set \(A\), denoted \(|A|\), is the number of distinct elements in the set <a href="#ref1" class="ref-cite">[1]</a>.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 3: Cardinality</div>
+        <p>
+          For \(A = \{2, 7, 9\}\), \(|A| = 3\).
+        </p>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Universal Set (\(\Omega\))</div>
+        <p>
+          In a particular context, the <strong>Universal Set</strong> (\(\Omega\) or \(S\)) is the set containing all possible elements under consideration <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Empty Set (\(\emptyset\))</div>
+        <p>
+          The <strong>Empty Set</strong> (\(\emptyset\) or \(\{\}\)) is the unique set containing no elements <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.
+        </p>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Subset (\(A \subseteq B\))</div>
+        <p>
+          Set \(A\) is a <strong>subset</strong> of set \(B\) if every element of \(A\) is also an element of \(B\) <a href="#ref4" class="ref-cite">[4]</a>. If \(A \subseteq B\) and \(A \ne B\), then \(A\) is a <strong>proper subset</strong> of \(B\), denoted \(A \subset B\).
+        </p>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 1: Set Equality via Subsets</div>
+        <p>
+          Two sets \(A\) and \(B\) are equal if and only if \(A \subseteq B\) and \(B \subseteq A\) <a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <h3>Set Operations</h3>
+      <p>
+        These operations allow us to combine or modify sets.
+      </p>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Union (\(A \cup B\))</div>
+        <p>
+          The <strong>union</strong> of sets \(A\) and \(B\) is the set containing all elements that are in \(A\), or in \(B\), or in both <a href="#ref3" class="ref-cite">[3]</a>.
+        </p>
+        <div class="math-display">
+          \[ A \cup B = \{x \mid x \in A \text{ or } x \in B\} \]
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 4: Union</div>
+        <p>
+          If \(A = \{1, 2, 3\}\) and \(B = \{3, 4, 5\}\), then \(A \cup B = \{1, 2, 3, 4, 5\}\).
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_1_union.png" alt="Venn Diagram for Union">
+        <figcaption>Figure 1: Venn Diagram for Union \(A \cup B\)</figcaption>
+      </figure>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Intersection (\(A \cap B\))</div>
+        <p>
+          The <strong>intersection</strong> of sets \(A\) and \(B\) is the set containing all elements that are common to both \(A\) and \(B\) <a href="#ref3" class="ref-cite">[3]</a>.
+        </p>
+        <div class="math-display">
+          \[ A \cap B = \{x \mid x \in A \text{ and } x \in B\} \]
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 5: Intersection</div>
+        <p>
+          If \(A = \{1, 2, 3\}\) and \(B = \{3, 4, 5\}\), then \(A \cap B = \{3\}\).
+        </p>
+        <p style="margin-top: 0.5rem;">
+          If \(C = \{1, 2\}\) and \(D = \{3, 4\}\), then \(C \cap D = \emptyset\).
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_2_intersection.png" alt="Venn Diagram for Intersection">
+        <figcaption>Figure 2: Venn Diagram for Intersection \(A \cap B\)</figcaption>
+      </figure>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Complement (\(A^c\) or \(\bar{A}\))</div>
+        <p>
+          Relative to a universal set \(\Omega\), the <strong>complement</strong> of \(A\) is the set of all elements in \(\Omega\) that are <em>not</em> in \(A\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.
+        </p>
+        <div class="math-display">
+          \[ A^c = \{x \mid x \in \Omega \text{ and } x \notin A\} \]
+        </div>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_3_complement.png" alt="Venn Diagram for Complement">
+        <figcaption>Figure 3: Venn Diagram for Complement \(A^c\)</figcaption>
+      </figure>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Set Difference (\(A \setminus B\))</div>
+        <p>
+          The <strong>difference</strong> of sets \(A\) and \(B\) is the set containing all elements that are in \(A\) but <em>not</em> in \(B\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+        <div class="math-display">
+          \[ A \setminus B = \{x \mid x \in A \text{ and } x \notin B\} \]
+        </div>
+        <p>Note that \(A \setminus B = A \cap B^c\).</p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_4_set_difference.png" alt="Venn Diagram for Set Difference">
+        <figcaption>Figure 4: Venn Diagram for Set Difference \(A \setminus B\)</figcaption>
+      </figure>
+
+      <h3>Disjoint Sets and Partitions</h3>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Disjoint Sets</div>
+        <p>
+          Two sets \(A\) and \(B\) are <strong>disjoint</strong> (or mutually exclusive) if they have no elements in common, i.e., \(A \cap B = \emptyset\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Partition</div>
+        <p>
+          A collection of non-empty sets \(\{A_1, \ldots, A_n\}\) forms a <strong>partition</strong> of a set \(\Omega\) if <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>:
+        </p>
+        <ol style="margin-top: 0.5rem;">
+          <li>The sets are pairwise disjoint: \(A_i \cap A_j = \emptyset\) for all \(i \ne j\).</li>
+          <li>The sets are collectively exhaustive: \(\displaystyle \bigcup_{i=1}^n A_i = \Omega\).</li>
+        </ol>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_5_partition.png" alt="Partition of a set">
+        <figcaption>Figure 5: A partition of the set \(\Omega\)</figcaption>
+      </figure>
+
+      <h3>Set Algebra Properties</h3>
+      <p>
+        These properties are essential for manipulating sets.
+      </p>
+      <ul>
+        <li><strong>Commutative Laws:</strong> \(A \cup B = B \cup A\); \(A \cap B = B \cap A\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.</li>
+        <li><strong>Associative Laws:</strong> \(A \cup (B \cup C) = (A \cup B) \cup C\); \(A \cap (B \cap C) = (A \cap B) \cap C\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.</li>
+        <li><strong>Distributive Laws:</strong> \(A \cap (B \cup C) = (A \cap B) \cup (A \cap C)\); \(A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.</li>
+        <li><strong>De Morgan's Laws:</strong> \((A \cup B)^c = A^c \cap B^c\); \((A \cap B)^c = A^c \cup B^c\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.</li>
+      </ul>
+
+      <h2>Cardinality and Countability</h2>
+      <p>
+        Understanding the "size" of sets, especially infinite sets, is important for defining sample spaces.
+      </p>
+
+      <h3>Equicardinality and Bijective Functions</h3>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Equicardinal Sets</div>
+        <p>
+          Two sets \(A\) and \(B\) are <strong>equicardinal</strong> (have the same cardinality) if there exists a <strong>bijective function</strong> \(f: A \to B\) between them <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Bijective Function</div>
+        <p>
+          A function \(f: A \to B\) is <strong>bijective</strong> (or a one-to-one correspondence) if it is both:
+        </p>
+        <ul style="margin-top: 0.5rem;">
+          <li><strong>Injective (One-to-One):</strong> For every \(a_1, a_2 \in A\), if \(f(a_1) = f(a_2)\), then \(a_1 = a_2\). (Distinct inputs map to distinct outputs) <a href="#ref1" class="ref-cite">[1]</a>.</li>
+          <li><strong>Surjective (Onto):</strong> For every \(b \in B\), there exists at least one \(a \in A\) such that \(f(a) = b\). (Every element in the codomain is mapped to) <a href="#ref1" class="ref-cite">[1]</a>.</li>
+        </ul>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_6_function_types.png" alt="Function Types">
+        <figcaption>Figure 6: Illustrations of injective, surjective, and bijective functions</figcaption>
+      </figure>
+
+      <h3>Types of Sets by Cardinality</h3>
+      <ul>
+        <li><strong>Finite Set:</strong> A set that is equicardinal with \(\{1, 2, \ldots, n\}\) for some non-negative integer \(n\). Its cardinality is \(n\) <a href="#ref1" class="ref-cite">[1]</a>.</li>
+        <li><strong>Infinite Set:</strong> A set that is not finite <a href="#ref1" class="ref-cite">[1]</a>.
+          <ul style="margin-top: 0.5rem;">
+            <li><strong>Countably Infinite Set:</strong> An infinite set that is equicardinal with the set of natural numbers \(\mathbb{N} = \{1,2,3,\ldots\}\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.</li>
+            <li><strong>Uncountable Set:</strong> An infinite set that is not countably infinite <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Countable Set</div>
+        <p>
+          A set is <strong>countable</strong> if it is either finite or countably infinite <a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 6: Countable and Uncountable Sets</div>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>\(\mathbb{N}\) (natural numbers), \(\mathbb{Z}\) (integers), \(\mathbb{Q}\) (rational numbers) are countable <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.</li>
+          <li>\(\mathbb{R}\) (real numbers), intervals like \([0,1]\) or \((0,1)\) are uncountable <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>.</li>
+        </ul>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark</div>
+        <p>
+          Every countably infinite set can be listed as a sequence.
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_7_countability.png" alt="Countability Visualization">
+        <figcaption>Figure 7: Visualization of countable and uncountable sets</figcaption>
+      </figure>
+
+      <h2>The Probability Space \((\Omega, \mathcal{F}, \mathbb{P})\)</h2>
+      <p>
+        Probability theory provides a mathematical framework for modeling experiments with random outcomes. This framework is the <strong>probability space</strong>, a triplet \((\Omega, \mathcal{F}, \mathbb{P})\) <a href="#ref2" class="ref-cite">[2]</a><a href="#ref4" class="ref-cite">[4]</a>.
+      </p>
+
+      <h3>Component 1: The Sample Space (\(\Omega\))</h3>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Sample Space</div>
+        <p>
+          The <strong>Sample Space</strong> (\(\Omega\)) is the set of <em>all possible outcomes</em> of a random experiment <a href="#ref3" class="ref-cite">[3]</a><a href="#ref4" class="ref-cite">[4]</a>. Each outcome \(w\) is an element of \(\Omega\) (\(w \in \Omega\)). A sample space must be <strong>exhaustive</strong> (includes all possibilities) and its elements must be <strong>mutually exclusive</strong> (distinct outcomes) <a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 7: Sample Spaces</div>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>Experiment: Flip a coin. \(\Omega = \{H, T\}\) <a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li>Experiment: Roll a die. \(\Omega = \{1, 2, 3, 4, 5, 6\}\) <a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li>Experiment: Measure lifetime of a device. \(\Omega = [0, \infty) = \{t \mid t \ge 0\}\) <a href="#ref3" class="ref-cite">[3]</a>.</li>
+        </ul>
+      </div>
+
+      <h3>Component 2: The Event Space (\(\mathcal{F}\))</h3>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Event</div>
+        <p>
+          An <strong>Event</strong> (\(A\)) is a subset of the sample space (\(A \subseteq \Omega\)) <a href="#ref3" class="ref-cite">[3]</a><a href="#ref4" class="ref-cite">[4]</a>. An event is said to <strong>occur</strong> if the outcome of the experiment is an element of that event.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 8: Events</div>
+        <p>
+          Experiment: Roll a die, \(\Omega = \{1, 2, 3, 4, 5, 6\}\).
+        </p>
+        <ul style="margin: 0.5rem 0 0 0;">
+          <li>Event \(A\): "An even number is rolled." \(A = \{2, 4, 6\}\).</li>
+          <li>Event \(B\): "A number less than 3 is rolled." \(B = \{1, 2\}\).</li>
+          <li>Event \(C\): "The number 5 is rolled." \(C = \{5\}\).</li>
+        </ul>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Event Space (\(\sigma\)-field)</div>
+        <p>
+          The <strong>Event Space</strong> (\(\mathcal{F}\)) is a collection of subsets of \(\Omega\) (i.e., a set of events) that satisfies the properties of a <strong>\(\sigma\)-field</strong> (or \(\sigma\)-algebra). This ensures that we can consistently assign probabilities and perform operations like complements and unions <a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+        <p style="margin-top: 0.5rem;">
+          A collection \(\mathcal{F}\) of subsets of \(\Omega\) is a \(\sigma\)-field if:
+        </p>
+        <ol style="margin-top: 0.5rem;">
+          <li>\(\Omega \in \mathcal{F}\) (The sample space itself is an event).</li>
+          <li>If \(A \in \mathcal{F}\), then \(A^c \in \mathcal{F}\) (Closed under complementation).</li>
+          <li>If \(A_1, A_2, \ldots \in \mathcal{F}\) (a countable sequence), then \(\displaystyle \bigcup_{i=1}^{\infty} A_i \in \mathcal{F}\) (Closed under countable unions).</li>
+        </ol>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark</div>
+        <p>
+          For discrete sample spaces, \(\mathcal{F}\) is usually the <strong>power set</strong> \(P(\Omega)\) (the set of all subsets) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref4" class="ref-cite">[4]</a>. For continuous spaces like \(\mathbb{R}\), \(\mathcal{F}\) is the <strong>Borel \(\sigma\)-field</strong> \(\mathcal{B}(\mathbb{R})\), generated by intervals <a href="#ref2" class="ref-cite">[2]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <h3>Component 3: The Probability Law (\(\mathbb{P}\))</h3>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Probability Law/Measure</div>
+        <p>
+          The <strong>Probability Law</strong> or <strong>Probability Measure</strong> \(\mathbb{P}\) is a function that assigns a real number \(\mathbb{P}[A]\) to each event \(A \in \mathcal{F}\), satisfying the Axioms of Probability <a href="#ref2" class="ref-cite">[2]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+        <div class="math-display">
+          \[ \mathbb{P}: \mathcal{F} \rightarrow [0, 1] \]
+        </div>
+        <p>
+          It quantifies the likelihood of each measurable event in \(\mathcal{F}\), serving as a measure of its relative size within the sample space <a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_8_probability_law.png" alt="Probability Law Mapping">
+        <figcaption>Figure 8: The Probability Law \(\mathbb{P}\) maps events from \(\mathcal{F}\) to values in \([0, 1]\)</figcaption>
+      </figure>
+
+      <h3>Measurable Sets and the Need for a \(\sigma\)-Field</h3>
+      <p>
+        Not every subset of a sample space can be consistently assigned a probability. To avoid contradictions, probability is defined only on a specific collection of subsets \(\mathcal{F}\) called a \(\sigma\)-field.
+      </p>
+      <p>
+        The sets in \(\mathcal{F}\) are called <strong>measurable sets</strong>. A probability measure \(\mathbb{P}\) assigns values only to these measurable events, not to arbitrary subsets <a href="#ref4" class="ref-cite">[4]</a>.
+      </p>
+
+      <div class="note-box">
+        <div class="box-title">Remark</div>
+        <p>
+          In continuous sample spaces such as \(\mathbb{R}\), the event space is usually the Borel \(\sigma\)-field \(\mathcal{B}(\mathbb{R})\), which contains intervals and any set formed from them using countable unions, intersections, and complements.
+        </p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 9: Measurable Sets</div>
+        <p>
+          Every interval in \(\mathbb{R}\) such as \((0,1)\) or \([2,\infty)\) is measurable. However, there exist subsets of \(\mathbb{R}\) that are not measurable, and probability cannot be meaningfully assigned to them.
+        </p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_9_measurable_sets.png" alt="Measurable Sets Illustration">
+        <figcaption>Figure 9: Visualization of measurable sets within a \(\sigma\)-field</figcaption>
+      </figure>
+
+      <p>
+        Intuitively, probability measures the likelihood of measurable events. A \(\sigma\)-field ensures that this measurement behaves consistently.
+      </p>
+
+      <h2>The Axioms of Probability</h2>
+      <p>
+        Any function \(\mathbb{P}: \mathcal{F} \to [0, 1]\) must satisfy the following three axioms to be considered a valid probability measure <a href="#ref3" class="ref-cite">[3]</a><a href="#ref4" class="ref-cite">[4]</a>.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Axiom I: Non-negativity</div>
+        <p>
+          For any event \(A \in \mathcal{F}\),
+        </p>
+        <div class="math-display">
+          \[ \mathbb{P}[A] \ge 0 \]
+        </div>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Axiom II: Normalization</div>
+        <p>
+          The probability assigned to the entire sample space is 1.
+        </p>
+        <div class="math-display">
+          \[ \mathbb{P}[\Omega] = 1 \]
+        </div>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Axiom III: Countable Additivity</div>
+        <p>
+          For any countable sequence of <strong>pairwise disjoint</strong> events \(\{A_1, A_2, \ldots\} \subseteq \mathcal{F}\) (i.e., \(A_i \cap A_j = \emptyset\) for all \(i \ne j\)), the probability of their union is the sum of their individual probabilities.
+        </p>
+        <div class="math-display">
+          \[ \mathbb{P}\left[\bigcup_{i=1}^{\infty} A_i\right] = \sum_{i=1}^{\infty} \mathbb{P}[A_i] \]
+        </div>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark</div>
+        <p>
+          Axiom III implies <strong>finite additivity</strong>: For any finite collection of pairwise disjoint events \(A_1, \ldots, A_n\),
+        </p>
+        <div class="math-display">
+          \[ \mathbb{P}\left[\bigcup_{i=1}^{n} A_i\right] = \sum_{i=1}^{n} \mathbb{P}[A_i] \]
+        </div>
+        <p>
+          In particular, for two disjoint events \(A\) and \(B\), \(\mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B]\) <a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+      </div>
+
+      <h2>Corollaries from the Axioms</h2>
+      <p>
+        These fundamental properties are direct consequences of the axioms.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Corollary 1: Probability of the Complement</div>
+        <p>
+          For any event \(A\), \(\mathbb{P}[A^c] = 1 - \mathbb{P}[A]\) <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+        <p><strong>Proof:</strong></p>
+        <p>
+          Since \(A\) and \(A^c\) form a partition of \(\Omega\) (they are disjoint and \(A \cup A^c = \Omega\)), Axioms II and III (finite additivity) give:
+        </p>
+        <div class="math-display">
+          \[ 1 = \mathbb{P}[\Omega] = \mathbb{P}[A \cup A^c] = \mathbb{P}[A] + \mathbb{P}[A^c] \]
+        </div>
+        <p>Rearranging yields the result.</p>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Corollary 2: Probability of the Empty Set</div>
+        <p>
+          \(\mathbb{P}[\emptyset] = 0\) <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+        <p><strong>Proof:</strong></p>
+        <p>
+          Since \(\emptyset = \Omega^c\), apply Corollary 1: \(\mathbb{P}[\emptyset] = \mathbb{P}[\Omega^c] = 1 - \mathbb{P}[\Omega] = 1 - 1 = 0\).
+        </p>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Corollary 3: Monotonicity</div>
+        <p>
+          If \(A \subseteq B\), then \(\mathbb{P}[A] \le \mathbb{P}[B]\) <a href="#ref4" class="ref-cite">[4]</a>.
+        </p>
+        <p><strong>Proof:</strong></p>
+        <p>
+          We can write \(B = A \cup (B \setminus A)\). The sets \(A\) and \(B \setminus A\) are disjoint. By Axiom III, \(\mathbb{P}[B] = \mathbb{P}[A] + \mathbb{P}[B \setminus A]\). Since \(\mathbb{P}[B \setminus A] \ge 0\) by Axiom I, it follows that \(\mathbb{P}[B] \ge \mathbb{P}[A]\).
+        </p>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Corollary 4: Inclusion-Exclusion Principle (for 2 events)</div>
+        <p>
+          For <em>any</em> two events \(A\) and \(B\):
+        </p>
+        <div class="math-display">
+          \[ \mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B] - \mathbb{P}[A \cap B] \]
+        </div>
+        <p style="margin-top: 0.5rem;">
+          <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref4" class="ref-cite">[4]</a>
+        </p>
+        <p><strong>Proof:</strong></p>
+        <p>
+          We can write \(A \cup B\) as the union of three disjoint sets: \((A \setminus B)\), \((B \setminus A)\), and \((A \cap B)\).
+        </p>
+        <p>
+          Thus, \(\mathbb{P}[A \cup B] = \mathbb{P}[A \setminus B] + \mathbb{P}[B \setminus A] + \mathbb{P}[A \cap B]\).
+        </p>
+        <p>
+          Also, \(A = (A \setminus B) \cup (A \cap B)\) (disjoint union), so \(\mathbb{P}[A] = \mathbb{P}[A \setminus B] + \mathbb{P}[A \cap B]\), which implies \(\mathbb{P}[A \setminus B] = \mathbb{P}[A] - \mathbb{P}[A \cap B]\).
+        </p>
+        <p>
+          Similarly, \(\mathbb{P}[B \setminus A] = \mathbb{P}[B] - \mathbb{P}[A \cap B]\).
+        </p>
+        <p>
+          Substituting these into the first equation gives:
+        </p>
+        <div class="math-display">
+          \[ \mathbb{P}[A \cup B] = (\mathbb{P}[A] - \mathbb{P}[A \cap B]) + (\mathbb{P}[B] - \mathbb{P}[A \cap B]) + \mathbb{P}[A \cap B] \]
+        </div>
+        <p>which simplifies to \(\mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B] - \mathbb{P}[A \cap B]\).</p>
+      </div>
+
+      <h2>Conditional Probability</h2>
+      <p>
+        Conditional probability allows us to update the probability of an event based on the knowledge that another event has occurred.
+      </p>
+
+      <h3>Definition</h3>
+
+      <div class="definition-box">
+        <div class="box-title">Definition: Conditional Probability</div>
+        <p>
+          Given two events \(A\) and \(B\), with \(\mathbb{P}[B] > 0\), the <strong>conditional probability of \(A\) given \(B\)</strong> is defined as:
+        </p>
+        <div class="math-display">
+          \[ \mathbb{P}[A \mid B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} \]
+        </div>
+        <p style="margin-top: 0.5rem;">
+          <a href="#ref2" class="ref-cite">[2]</a>
+        </p>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark</div>
+        <p>
+          Intuitively, knowing that \(B\) has occurred restricts the relevant sample space to just the outcomes within \(B\). \(\mathbb{P}[A \mid B]\) measures the proportion of the probability mass within \(B\) that also corresponds to outcomes in \(A\).
+        </p>
+      </div>
+
+      <h3>Conditional Probability as a Valid Probability Measure</h3>
+      <p>
+        For a fixed event \(B\) with \(\mathbb{P}[B] > 0\), the function \(P_B(\cdot) = \mathbb{P}[\cdot \mid B]\) defines a new, valid probability measure on the original sample space \(\Omega\) and event space \(\mathcal{F}\). It satisfies the three axioms <a href="#ref2" class="ref-cite">[2]</a>.
+      </p>
+
+      <div class="note-box">
+        <div class="box-title">Proof: Verifying the axioms for \(P_B(\cdot)\)</div>
+        <ol style="margin-top: 0.5rem;">
+          <li><strong>Non-negativity:</strong> For any event \(A\), \(\mathbb{P}[A \cap B] \ge 0\) (Axiom I for \(\mathbb{P}\)) and \(\mathbb{P}[B] > 0\). Therefore, \(P_B(A) = \dfrac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} \ge 0\).</li>
+
+          <li style="margin-top: 0.5rem;"><strong>Normalization:</strong> We need to show \(P_B(\Omega) = 1\). \(P_B(\Omega) = \mathbb{P}[\Omega \mid B] = \dfrac{\mathbb{P}[\Omega \cap B]}{\mathbb{P}[B]}\). Since \(B \subseteq \Omega\), \(\Omega \cap B = B\). Thus, \(P_B(\Omega) = \dfrac{\mathbb{P}[B]}{\mathbb{P}[B]} = 1\).</li>
+
+          <li style="margin-top: 0.5rem;"><strong>Countable Additivity:</strong> Let \(A_1, A_2, \ldots\) be a sequence of pairwise disjoint events. We need to show \(P_B(\bigcup A_i) = \sum P_B(A_i)\).
+          <div class="math-display">
+            \[\begin{align}
+            P_B\left(\bigcup_{i=1}^{\infty} A_i\right) &= \mathbb{P}\left[\bigcup_{i=1}^{\infty} A_i \;\middle|\; B\right] \\
+            &= \frac{\mathbb{P}\left[\left(\bigcup_{i=1}^{\infty} A_i\right) \cap B\right]}{\mathbb{P}[B]} \\
+            &= \frac{\mathbb{P}\left[\bigcup_{i=1}^{\infty} (A_i \cap B)\right]}{\mathbb{P}[B]}
+            \end{align}\]
+          </div>
+          <p>
+            Since \(A_i\) are disjoint, the events \((A_i \cap B)\) are also disjoint. Applying Axiom III for \(\mathbb{P}\):
+          </p>
+          <div class="math-display">
+            \[\begin{align}
+            P_B\left(\bigcup_{i=1}^{\infty} A_i\right) &= \frac{\sum_{i=1}^{\infty} \mathbb{P}[A_i \cap B]}{\mathbb{P}[B]} \\
+            &= \sum_{i=1}^{\infty} \frac{\mathbb{P}[A_i \cap B]}{\mathbb{P}[B]} \\
+            &= \sum_{i=1}^{\infty} \mathbb{P}[A_i \mid B] = \sum_{i=1}^{\infty} P_B(A_i)
+            \end{align}\]
+          </div>
+          </li>
+        </ol>
+        <p style="margin-top: 0.5rem;">
+          Thus, \(P_B(\cdot)\) is a valid probability measure.
+        </p>
+      </div>
+
+      <!-- Back to Index -->
+      <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+    </article>
+
+    <!-- References Sidebar -->
+    <aside class="references-sidebar">
+      <h3>References</h3>
+      <ol class="ref-list">
+        <li class="ref-item" id="ref1">
+          <span class="ref-id">[1]</span>
+          <span class="ref-content">
+            Karim, Md. Shahriar. (2025). <em>CSE 422: Set Theory</em>. Faculty course material, Assistant Professor, ECE, North South University.
+          </span>
+          <span class="ref-url">https://ece.northsouth.edu/~shahriar.karim/CSE_422.html</span>
+        </li>
+        <li class="ref-item" id="ref2">
+          <span class="ref-id">[2]</span>
+          <span class="ref-content">
+            Karim, Md. Shahriar. (2025). <em>CSE 422: Probability Measures</em>. Faculty course material, Assistant Professor, ECE, North South University.
+          </span>
+          <span class="ref-url">https://ece.northsouth.edu/~shahriar.karim/CSE_422.html</span>
+        </li>
+        <li class="ref-item" id="ref3">
+          <span class="ref-id">[3]</span>
+          <span class="ref-content">
+            Ross, Sheldon M. (2006). <em>Introduction to Probability Models</em>. Academic Press.
+          </span>
+        </li>
+        <li class="ref-item" id="ref4">
+          <span class="ref-id">[4]</span>
+          <span class="ref-content">
+            Chan, Stanley H. (2021). <em>Introduction to probability for data science</em>. Michigan Publishing.
+          </span>
+        </li>
+      </ol>
+    </aside>
+
+    <!-- Visitor Counter -->
+    <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00002">
+      <div class="visitor-stats">
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Total visits:</span>
+          <span class="visitor-stat-count" id="overall-visitor-count"></span>
+        </div>
+        <span class="visitor-stat-separator">§</span>
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Page visits:</span>
+          <span class="visitor-stat-count" id="page-visitor-count"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Active link highlighting - Notebook post page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+
+    // Sticky navigation with scroll behavior
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Smooth scroll to references when citation clicked
+    document.querySelectorAll('.ref-cite').forEach(cite => {
+      cite.addEventListener('click', (e) => {
+        e.preventDefault();
+        const refId = cite.getAttribute('href');
+        const refElement = document.querySelector(refId);
+        if (refElement) {
+          refElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Highlight briefly
+          refElement.style.backgroundColor = 'var(--sidenote-target-border-color)';
+          setTimeout(() => {
+            refElement.style.backgroundColor = '';
+          }, 1500);
+        }
+      });
+    });
+  </script>
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../../prism/prism.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Firebase Configuration & Visitor Counter -->
+  <script src="../../../firebase-config.js"></script>
+  <script src="../../../visitor-counter.js"></script>
+</body>
+
+</html>
