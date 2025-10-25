@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Set Theory and Probability II - Mahbub Kousar</title>
+  <meta name="description" content="Foundational concepts in probability theory including conditional probability, statistical independence, law of total probability, and Bayes' theorem" />
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../../prism/prism.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+  <link rel="stylesheet" href="../../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <!-- Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <div class="note-container">
+    <!-- Main Content Column -->
+    <article class="note-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="../../index.html">Notebook</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="../../index.html#maths">Mathematics</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>Set Theory and Probability II</span>
+      </nav>
+
+      <!-- Note Header -->
+      <header class="note-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="flex: 1;">
+            <h1 class="note-title">Set Theory and Probability II</h1>
+            <div class="note-meta">
+              <span class="note-meta-item">
+                <time datetime="2025-10-26">October 26, 2025</time>
+              </span>
+              <span class="note-meta-item">Mathematics</span>
+              <span class="note-meta-item">Probability Theory</span>
+            </div>
+          </div>
+          <a href="Probability_II.pdf" download class="pdf-download-icon" title="Download PDF version">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 13H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 9H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      <!-- Abstract -->
+      <p>
+        This document covers foundational concepts in probability theory. Key topics discussed include conditional probability (definition, properties, multiplication rule), statistical independence (definitions via product rule and conditional probability, properties, distinction from disjoint events, independence of multiple events), the law of total probability, and Bayes' theorem (including its proof and the full formula incorporating total probability). This material is synthesized from faculty-provided resources <a href="#ref1" class="ref-cite">[1]</a> and standard probability textbooks by Sheldon M. Ross <a href="#ref2" class="ref-cite">[2]</a> and Stanley H. Chan <a href="#ref3" class="ref-cite">[3]</a>.
+      </p>
+
+      <!-- Table of Contents -->
+      <div class="note-box">
+        <div class="box-title">Table of Contents</div>
+        <ol style="margin: 0.5rem 0 0 0;">
+          <li><a href="#section1">Applications of Total Probability and Bayes' Theorem</a></li>
+          <li><a href="#section2">Conditional Probability</a></li>
+          <li><a href="#section3">Statistical Independence</a></li>
+          <li><a href="#section4">Law of Total Probability</a></li>
+          <li><a href="#section5">Bayes' Theorem</a></li>
+          <li><a href="#section6">Advanced Application: The Three Prisoners Problem</a></li>
+          <li><a href="#section7">Random Variable (Brief Definition)</a></li>
+        </ol>
+      </div>
+
+      <h2 id="section1">Applications of Total Probability and Bayes' Theorem</h2>
+      <p>
+        Two fundamental principles frequently applied in probability are the <strong>Law of Total Probability</strong>, which facilitates calculating the probability of an event by partitioning the sample space, and <strong>Bayes' Theorem</strong>, which enables the calculation of posterior probabilities by "inverting" conditional probabilities.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 1: Tennis Tournament / Player Types <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a></div>
+        <p><strong>(Example)</strong> Consider a tennis tournament with three categories of players: A, B, and C.</p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Prior Probabilities (Partition):</strong> The distribution of player types is:
+            <ul style="margin: 0.5rem 0 0 0;">
+              <li>\(\mathbb{P}[A] = 0.5\)</li>
+              <li>\(\mathbb{P}[B] = 0.25\)</li>
+              <li>\(\mathbb{P}[C] = 0.25\)</li>
+            </ul>
+            These form a partition as \(A, B, C\) are disjoint and \(\mathbb{P}[A]+\mathbb{P}[B]+\mathbb{P}[C] = 1\).
+          </li>
+          <li style="margin-top: 0.5rem;"><strong>Conditional Probabilities (Win Rates):</strong> Let \(W\) denote the event that you win a match. Your probability of winning depends on the opponent's type:
+            <ul style="margin: 0.5rem 0 0 0;">
+              <li>\(\mathbb{P}[W \mid A] = 0.3\)</li>
+              <li>\(\mathbb{P}[W \mid B] = 0.4\)</li>
+              <li>\(\mathbb{P}[W \mid C] = 0.5\)</li>
+            </ul>
+          </li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Question (a):</strong> Determine the overall probability of winning a randomly selected match, \(\mathbb{P}[W]\).</p>
+        <p>Applying the <strong>Law of Total Probability</strong>, we sum the win probabilities over the partition \(\{A, B, C\}\):</p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Formula:</strong> \(\mathbb{P}[W] = \mathbb{P}[W \mid A]\mathbb{P}[A] + \mathbb{P}[W \mid B]\mathbb{P}[B] + \mathbb{P}[W \mid C]\mathbb{P}[C]\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li><strong>Calculation:</strong>
+            \[ \mathbb{P}[W] = (0.3)(0.5) + (0.4)(0.25) + (0.5)(0.25) = 0.15 + 0.10 + 0.125 = 0.375 \]
+          </li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Question (b):</strong> Given that you have won a match, what is the probability that your opponent was a type A player, \(\mathbb{P}[A \mid W]\)?</p>
+        <p>Applying <strong>Bayes' Theorem</strong>, we calculate the posterior probability:</p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Formula:</strong> \(\mathbb{P}[A \mid W] = \dfrac{\mathbb{P}[W \mid A]\mathbb{P}[A]}{\mathbb{P}[W]}\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li><strong>Calculation:</strong>
+            \[ \mathbb{P}[A \mid W] = \frac{(0.3)(0.5)}{0.375} = \frac{0.15}{0.375} = 0.4 \]
+            <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 2: Laboratory Blood Test (Base Rate Fallacy) <a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Example)</strong> This example illustrates the importance of base rates in conditional probability calculations.</p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Problem:</strong> A diagnostic test for a specific disease has the following characteristics:
+            <ul style="margin: 0.5rem 0 0 0;">
+              <li>Sensitivity: The test correctly identifies the disease (positive result) in 95% of cases where it is present.</li>
+              <li>False Positive Rate: The test incorrectly indicates the disease (positive result) in 1% of cases where it is absent <a href="#ref2" class="ref-cite">[2]</a>.</li>
+            </ul>
+          </li>
+          <li><strong>Base Rate:</strong> The prevalence of the disease in the population is 0.5% (or 0.005).</li>
+          <li><strong>Question:</strong> If a randomly selected individual tests positive, what is the probability they actually have the disease?</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Setup:</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>Let \(D\) be the event that the person has the disease. \(\mathbb{P}[D] = 0.005\).</li>
+          <li>Let \(D^c\) be the event that the person is healthy. \(\mathbb{P}[D^c] = 1 - 0.005 = 0.995\).</li>
+          <li>Let \(E\) be the event that the test result is positive.</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Conditional Probabilities:</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>\(\mathbb{P}[E \mid D] = 0.95\) (Sensitivity).</li>
+          <li>\(\mathbb{P}[E \mid D^c] = 0.01\) (False Positive Rate).</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Goal:</strong> Calculate \(\mathbb{P}[D \mid E]\).</p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Step 1: Calculate \(\mathbb{P}[E]\) using the Law of Total Probability.</strong>
+            \[ \mathbb{P}[E] = \mathbb{P}[E \mid D]\mathbb{P}[D] + \mathbb{P}[E \mid D^c]\mathbb{P}[D^c] \]
+            \[ \mathbb{P}[E] = (0.95)(0.005) + (0.01)(0.995) = 0.00475 + 0.00995 = 0.0147 \]
+          </li>
+          <li style="margin-top: 0.5rem;"><strong>Step 2: Apply Bayes' Formula.</strong>
+            \[ \mathbb{P}[D \mid E] = \frac{\mathbb{P}[E \mid D]\mathbb{P}[D]}{\mathbb{P}[E]} = \frac{(0.95)(0.005)}{0.0147} \approx 0.323 \]
+          </li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Conclusion:</strong> Despite the test's 95% sensitivity, the probability that a person with a positive test result actually has the disease is only approximately 32.3%. This highlights the impact of the low base rate of the disease <a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 3: Multiple Choice Test <a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Example)</strong> This example demonstrates Bayesian updating of belief based on evidence.</p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Problem:</strong> A student answers a multiple-choice question with \(m\) options <a href="#ref2" class="ref-cite">[2]</a>.
+            <ul style="margin: 0.5rem 0 0 0;">
+              <li>The probability the student knows the answer is \(p\).</li>
+              <li>The probability the student guesses is \(1-p\).</li>
+              <li>If guessing, the probability of selecting the correct answer is \(1/m\).</li>
+            </ul>
+          </li>
+          <li><strong>Question:</strong> Given the student answered correctly, what is the probability they knew the answer?</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Setup:</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>Let \(K\) be the event the student knows the answer. \(\mathbb{P}[K] = p\).</li>
+          <li>Let \(K^c\) be the event the student guesses. \(\mathbb{P}[K^c] = 1-p\).</li>
+          <li>Let \(C\) be the event the answer is correct.</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Conditional Probabilities:</strong> \(\mathbb{P}[C \mid K] = 1\) and \(\mathbb{P}[C \mid K^c] = 1/m\).</p>
+        <p><strong>Goal:</strong> Calculate \(\mathbb{P}[K \mid C]\).</p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Step 1: Calculate \(\mathbb{P}[C]\) using the Law of Total Probability.</strong>
+            \[ \mathbb{P}[C] = \mathbb{P}[C \mid K]\mathbb{P}[K] + \mathbb{P}[C \mid K^c]\mathbb{P}[K^c] \]
+            \[ \mathbb{P}[C] = (1)(p) + (1/m)(1-p) \]
+          </li>
+          <li style="margin-top: 0.5rem;"><strong>Step 2: Apply Bayes' Formula.</strong>
+            \[ \mathbb{P}[K \mid C] = \frac{\mathbb{P}[C \mid K]\mathbb{P}[K]}{\mathbb{P}[C]} = \frac{p}{p + (1/m)(1-p)} \]
+            Simplifying yields: \(\mathbb{P}[K \mid C] = \dfrac{mp}{1 + (m-1)p}\).
+          </li>
+        </ul>
+        <p style="margin-top: 1rem;">For instance, if \(m=5\) and \(p=0.5\), then \(\mathbb{P}[K \mid C] = \dfrac{5(0.5)}{1+(4)(0.5)} = \dfrac{2.5}{3} = 5/6\) <a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <h2 id="section2">Conditional Probability</h2>
+      <p>
+        Conditional probability addresses the likelihood of an event occurring given that another event has already occurred. This knowledge often modifies the original probability assessment <a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a>. In many situations, we do not know the precise outcome of an experiment, but we have partial information suggesting that the outcome belongs to a specific event (subset of the sample space). Conditional probability formalizes reasoning under such partial information <a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 4: Intuitive Example <a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Example)</strong> Consider the experiment of tossing two fair dice.</p>
+        <ul style="margin: 0.5rem 0;">
+          <li>The probability that the sum is 6 is \(\mathbb{P}[\text{Sum}=6] = 5/36\). The sample space consists of 36 equally likely outcomes. The event includes \(\{(1,5), (2,4), (3,3), (4,2), (5,1)\}\).</li>
+          <li>Suppose it is known that the first die resulted in a 4 <a href="#ref2" class="ref-cite">[2]</a>.</li>
+          <li>This information reduces the effective sample space to 6 outcomes: \(\{(4,1), (4,2), (4,3), (4,4), (4,5), (4,6)\}\) <a href="#ref2" class="ref-cite">[2]</a>.</li>
+          <li>Assuming these outcomes remain equally likely within the reduced space, each now has a probability of \(1/6\) <a href="#ref2" class="ref-cite">[2]</a>.</li>
+          <li>Within this reduced sample space, only the outcome \((4,2)\) results in a sum of 6.</li>
+          <li>Thus, the <em>conditional probability</em> that the sum is 6, <em>given</em> the first die was 4, is \(1/6\).</li>
+        </ul>
+      </div>
+
+      <h3>Formal Definition</h3>
+      <p>
+        The intuition involves considering the conditioning event F as the new (reduced) sample space. For event E to also occur under this condition, the outcome must lie within the intersection \(E \cap F\). The probability is then normalized by the probability of this new sample space, \(\mathbb{P}[F]\) <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+
+      <div class="definition-box">
+        <div class="box-title">Definition 2.1: Conditional Probability <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a></div>
+        <p><strong>(Definition)</strong> Given a probability space \((\Omega, \mathcal{F}, \mathbb{P}[\cdot])\), the <strong>conditional probability</strong> of event E given that event F has occurred (assuming \(\mathbb{P}[F] > 0\)) is defined as:</p>
+        <div class="math-display">
+          \[ \mathbb{P}[E \mid F] \stackrel{\text{def}}{=} \frac{\mathbb{P}[E \cap F]}{\mathbb{P}[F]} \]
+        </div>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_1.png" alt="Comparison of joint probability and conditional probability">
+        <figcaption>Comparison of joint probability \(\mathbb{P}[A \cap B]\) and conditional probability \(\mathbb{P}[A \mid B]\) <a href="#ref3" class="ref-cite">[3]</a>.</figcaption>
+      </figure>
+
+      <h3>The Multiplication Rule</h3>
+      <p>
+        Rearranging the definition provides the <strong>multiplication rule</strong>:
+        \[ \mathbb{P}[E \cap F] = \mathbb{P}[F]\mathbb{P}[E \mid F] \quad (\text{if } \mathbb{P}[F] > 0) \]
+        This rule is fundamental for calculating the probability of the simultaneous occurrence of events, particularly in sequential experiments <a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+
+      <div class="example-box">
+        <div class="box-title">Example 5: Drawing from an Urn <a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Example)</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Problem:</strong> An urn contains 7 black and 5 white balls. Two balls are drawn sequentially <em>without replacement</em>. Calculate the probability that both drawn balls are black <a href="#ref2" class="ref-cite">[2]</a>.</li>
+          <li>Let \(F\) be the event that the first ball drawn is black.</li>
+          <li>Let \(E\) be the event that the second ball drawn is black.</li>
+          <li>We seek \(\mathbb{P}[E \cap F]\).</li>
+          <li>The probability of the first ball being black is \(\mathbb{P}[F] = 7/12\).</li>
+          <li>Given the first was black, there are 6 black and 5 white balls remaining (11 total). Thus, the conditional probability of the second being black given the first was black is \(\mathbb{P}[E \mid F] = 6/11\) <a href="#ref2" class="ref-cite">[2]</a>.</li>
+          <li>Applying the multiplication rule: \(\mathbb{P}[E \cap F] = \mathbb{P}[F]\mathbb{P}[E \mid F] = \left(\frac{7}{12}\right)\left(\frac{6}{11}\right) = \frac{42}{132}\).</li>
+        </ul>
+      </div>
+
+      <h3>Examples of Calculating Conditional Probability</h3>
+
+      <div class="example-box">
+        <div class="box-title">Example 6: Die Roll <a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a></div>
+        <p><strong>(Example)</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>Experiment: Roll a fair six-sided die. Let \(A = \{\text{outcome is 3}\}\) and \(B = \{\text{outcome is odd}\}\) <a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li>Calculate \(\mathbb{P}[A \mid B]\) and \(\mathbb{P}[B \mid A]\).</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Probabilities:</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>\(\mathbb{P}[A] = \mathbb{P}[\{3\}] = 1/6\).</li>
+          <li>\(\mathbb{P}[B] = \mathbb{P}[\{1, 3, 5\}] = 3/6 = 1/2\).</li>
+          <li>\(A \cap B = \{3\}\). \(\mathbb{P}[A \cap B] = 1/6\).</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Calculations:</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>\(\mathbb{P}[A \mid B] = \dfrac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} = \dfrac{1/6}{3/6} = 1/3\). Interpretation: Given the outcome is odd, the reduced sample space is \(\{1, 3, 5\}\), making the probability of getting a 3 equal to 1/3 <a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li>\(\mathbb{P}[B \mid A] = \dfrac{\mathbb{P}[A \cap B]}{\mathbb{P}[A]} = \dfrac{1/6}{1/6} = 1\). Interpretation: Given the outcome is 3, it is certain (probability 1) that the outcome is odd <a href="#ref3" class="ref-cite">[3]</a>.</li>
+        </ul>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 7: Tetrahedral Die <a href="#ref3" class="ref-cite">[3]</a></div>
+        <p><strong>(Example)</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>Experiment: Roll a fair 4-sided die twice. Let \(X\) be the result of the first roll and \(Y\) the result of the second. The sample space has \(4 \times 4 = 16\) equally likely outcomes.</li>
+          <li>Define events: \(B = \{\min(X, Y) = 2\}\) and \(M = \{\max(X, Y) = 3\}\).</li>
+          <li><strong>Question:</strong> Calculate \(\mathbb{P}[M \mid B]\).</li>
+        </ul>
+
+        <figure class="note-figure">
+          <img src="figure_2.png" alt="Visualization of events B, M, and their intersection for the 4-sided die example">
+          <figcaption>Visualization of events B, M, and their intersection for the 4-sided die example <a href="#ref3" class="ref-cite">[3]</a>.</figcaption>
+        </figure>
+
+        <p><strong>Probabilities:</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>Event B consists of 5 outcomes: \(\mathbb{P}[B] = 5/16\).</li>
+          <li>Event \(M \cap B\) consists of 2 outcomes: \(\mathbb{P}[M \cap B] = 2/16\).</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Calculation:</strong></p>
+        <div class="math-display">
+          \[ \mathbb{P}[M \mid B] = \frac{\mathbb{P}[M \cap B]}{\mathbb{P}[B]} = \frac{2/16}{5/16} = 2/5 \]
+        </div>
+        <p><a href="#ref3" class="ref-cite">[3]</a></p>
+      </div>
+
+      <h3>Conditional Probability as a Probability Measure</h3>
+      <p>
+        For a fixed event B with \(\mathbb{P}[B]>0\), the function \(\mathbb{P}[\cdot \mid B]\) mapping events A to \(\mathbb{P}[A \mid B]\) satisfies the three axioms of probability <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 2.1: Axioms of Conditional Probability</div>
+        <ol style="margin-top: 0.5rem;">
+          <li><strong>Axiom I (Non-negativity):</strong> \(\mathbb{P}[A \mid B] \ge 0\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li><strong>Axiom II (Normalization):</strong> \(\mathbb{P}[\Omega \mid B] = 1\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li><strong>Axiom III (Additivity):</strong> If A and C are disjoint events, then \(\mathbb{P}[A \cup C \mid B] = \mathbb{P}[A \mid B] + \mathbb{P}[C \mid B]\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.</li>
+        </ol>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Proof</div>
+        <p><strong>(Proof)</strong> The proofs follow directly from the definition of conditional probability and the axioms satisfied by the original probability measure \(\mathbb{P}[\cdot]\) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.</p>
+        <ol style="margin-top: 0.5rem;">
+          <li>Non-negativity: Since \(\mathbb{P}[A \cap B] \ge 0\) and \(\mathbb{P}[B] > 0\), the ratio \(\mathbb{P}[A \mid B] = \dfrac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}\) must be non-negative.</li>
+          <li style="margin-top: 0.5rem;">Normalization: \(\mathbb{P}[\Omega \mid B] = \dfrac{\mathbb{P}[\Omega \cap B]}{\mathbb{P}[B]} = \dfrac{\mathbb{P}[B]}{\mathbb{P}[B]} = 1\).</li>
+          <li style="margin-top: 0.5rem;">Additivity:
+            \begin{align*}
+            \mathbb{P}[A \cup C \mid B] &= \frac{\mathbb{P}[(A \cup C) \cap B]}{\mathbb{P}[B]} \quad \text{(by def.)} \\
+            &= \frac{\mathbb{P}[(A \cap B) \cup (C \cap B)]}{\mathbb{P}[B]} \quad \text{(Distributive Law)}
+            \end{align*}
+            Since A and C are disjoint, \((A \cap B)\) and \((C \cap B)\) are also disjoint <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.
+            \begin{align*}
+            &= \frac{\mathbb{P}[A \cap B] + \mathbb{P}[C \cap B]}{\mathbb{P}[B]} \quad \text{(Axiom III for P)} \\
+            &= \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} + \frac{\mathbb{P}[C \cap B]}{\mathbb{P}[B]} \\
+            &= \mathbb{P}[A \mid B] + \mathbb{P}[C \mid B]
+            \end{align*}
+          </li>
+        </ol>
+      </div>
+
+      <h2 id="section3">Statistical Independence</h2>
+
+      <h3>Definitions</h3>
+      <p>
+        Statistical independence captures the notion that the occurrence (or non-occurrence) of one event provides no probabilistic information about another event.
+      </p>
+
+      <div class="definition-box">
+        <div class="box-title">Definition 3.1: Independence - Product Rule <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Definition)</strong> Events E and F are <strong>statistically independent</strong> if and only if:</p>
+        <div class="math-display">
+          \[ \mathbb{P}[E \cap F] = \mathbb{P}[E]\mathbb{P}[F] \]
+        </div>
+      </div>
+
+      <div class="definition-box">
+        <div class="box-title">Definition 3.2: Independence - Conditional Rule <a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Definition)</strong> Events E and F (with \(\mathbb{P}[F]>0\)) are independent if and only if:</p>
+        <div class="math-display">
+          \[ \mathbb{P}[E \mid F] = \mathbb{P}[E] \]
+        </div>
+        <p style="margin-top: 0.5rem;">Equivalently, if \(\mathbb{P}[E]>0\), independence holds if \(\mathbb{P}[F \mid E] = \mathbb{P}[F]\) <a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a>. This means knowledge that F has occurred does not affect the probability that E occurs <a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark</div>
+        <p><strong>(Remark)</strong> The two definitions are equivalent. If \(\mathbb{P}[E \mid F] = \mathbb{P}[E]\), substituting into the definition of conditional probability yields \(\dfrac{\mathbb{P}[E \cap F]}{\mathbb{P}[F]} = \mathbb{P}[E]\), which directly implies \(\mathbb{P}[E \cap F] = \mathbb{P}[E]\mathbb{P}[F]\) (assuming \(\mathbb{P}[F]>0\)) <a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a>.</p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_3.png" alt="Visual interpretation of Independence">
+        <figcaption>Visual interpretation of Independence: \(\mathbb{P}[A \mid B] = \mathbb{P}[A]\) <a href="#ref3" class="ref-cite">[3]</a>.</figcaption>
+      </figure>
+
+      <h3>Distinction: Independent vs. Disjoint</h3>
+      <p>
+        It is crucial to differentiate between independent events and disjoint (mutually exclusive) events <a href="#ref3" class="ref-cite">[3]</a>. These concepts are fundamentally different.
+      </p>
+      <ul>
+        <li><strong>Disjoint:</strong> Events cannot occur simultaneously (\(A \cap B = \emptyset\), thus \(\mathbb{P}[A \cap B] = 0\)).</li>
+        <li><strong>Independent:</strong> Occurrence of one event does not alter the probability of the other (\(\mathbb{P}[A \cap B] = \mathbb{P}[A]\mathbb{P}[B]\)).</li>
+      </ul>
+      <p>
+        If \(\mathbb{P}[A]>0\) and \(\mathbb{P}[B]>0\), disjoint events are necessarily <strong>dependent</strong>. Knowing A occurred implies B did not occur (\(\mathbb{P}[B \mid A] = 0\), which is generally not equal to \(\mathbb{P}[B]\)) <a href="#ref3" class="ref-cite">[3]</a>.
+      </p>
+
+      <figure class="note-figure">
+        <img src="figure_4.png" alt="Comparing Independence and Disjointness">
+        <figcaption>Comparing Independence (\(\mathbb{P}[A \mid B]=\mathbb{P}[A]\)) and Disjointness (\(A \cap B = \emptyset\)) <a href="#ref3" class="ref-cite">[3]</a>.</figcaption>
+      </figure>
+
+      <h3>Properties of Independence</h3>
+      <p>
+        A key property is that if events A and B are independent, then their complements are also independent in any combination <a href="#ref1" class="ref-cite">[1]</a>.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 3.1: Independence of Complements <a href="#ref1" class="ref-cite">[1]</a></div>
+        <p><strong>(Theorem)</strong> If A and B are independent events, then the following pairs are also independent:</p>
+        <ol style="margin-top: 0.5rem;">
+          <li>\(A^c\) and B</li>
+          <li>A and \(B^c\)</li>
+          <li>\(A^c\) and \(B^c\)</li>
+        </ol>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Proof (that A and \(B^c\) are independent)</div>
+        <p><strong>(Proof)</strong> Event A can be partitioned into two disjoint sets: \(A = (A \cap B) \cup (A \cap B^c)\) <a href="#ref1" class="ref-cite">[1]</a>.</p>
+        <p>By Axiom III: \(\mathbb{P}[A] = \mathbb{P}[A \cap B] + \mathbb{P}[A \cap B^c]\).</p>
+        <p>Since A and B are independent, \(\mathbb{P}[A \cap B] = \mathbb{P}[A]\mathbb{P}[B]\).</p>
+        <p>Substituting: \(\mathbb{P}[A] = \mathbb{P}[A]\mathbb{P}[B] + \mathbb{P}[A \cap B^c]\).</p>
+        <p>Rearranging: \(\mathbb{P}[A \cap B^c] = \mathbb{P}[A] - \mathbb{P}[A]\mathbb{P}[B] = \mathbb{P}[A](1 - \mathbb{P}[B])\).</p>
+        <p>Since \(1 - \mathbb{P}[B] = \mathbb{P}[B^c]\), we have \(\mathbb{P}[A \cap B^c] = \mathbb{P}[A]\mathbb{P}[B^c]\). By Definition 3.1, A and \(B^c\) are independent. (Proven). The other cases follow similar logic <a href="#ref1" class="ref-cite">[1]</a>.</p>
+      </div>
+
+      <h3>Examples of Independence</h3>
+
+      <div class="example-box">
+        <div class="box-title">Example 8: Die Roll <a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Example)</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>Experiment: Roll two fair six-sided dice. Sample space has 36 equally likely outcomes.</li>
+          <li>Let \(A = \{\text{first die is 3}\}\). Then \(\mathbb{P}[A] = 6/36 = 1/6\).</li>
+          <li>Let \(B = \{\text{sum is 7}\}\). \(B = \{(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)\}\). \(\mathbb{P}[B] = 6/36 = 1/6\).</li>
+          <li>The intersection is \(A \cap B = \{(3,4)\}\). \(\mathbb{P}[A \cap B] = 1/36\).</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Check Independence:</strong> We compare \(\mathbb{P}[A \cap B]\) with \(\mathbb{P}[A]\mathbb{P}[B]\).</p>
+        <div class="math-display">
+          \[ \mathbb{P}[A]\mathbb{P}[B] = (1/6)(1/6) = 1/36 \]
+        </div>
+        <p>Since \(\mathbb{P}[A \cap B] = \mathbb{P}[A]\mathbb{P}[B]\), events A and B are <strong>independent</strong> <a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 9: Die Roll (Dependent) <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a></div>
+        <p><strong>(Example)</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>Same experiment as above.</li>
+          <li>Let \(A = \{\text{first die is 3}\}\). \(\mathbb{P}[A] = 1/6\).</li>
+          <li>Let \(B = \{\text{sum is 8}\}\). \(B = \{(2,6), (3,5), (4,4), (5,3), (6,2)\}\). \(\mathbb{P}[B] = 5/36\).</li>
+          <li>The intersection is \(A \cap B = \{(3,5)\}\). \(\mathbb{P}[A \cap B] = 1/36\).</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Check Independence:</strong> We compare \(\mathbb{P}[A \cap B]\) with \(\mathbb{P}[A]\mathbb{P}[B]\).</p>
+        <div class="math-display">
+          \[ \mathbb{P}[A]\mathbb{P}[B] = (1/6)(5/36) = 5/216 \]
+        </div>
+        <p>Since \(\mathbb{P}[A \cap B] \neq \mathbb{P}[A]\mathbb{P}[B]\) (\(1/36 \neq 5/216\)), events A and B are <strong>dependent</strong> <a href="#ref3" class="ref-cite">[3]</a>. Intuitively, knowing the first die is 3 increases the chance the sum is 8 compared to the baseline probability of the sum being 8.</p>
+      </div>
+
+      <h3>Independence of Multiple Events</h3>
+      <p>
+        The concept extends naturally to collections of more than two events.
+      </p>
+
+      <div class="definition-box">
+        <div class="box-title">Definition 3.3: Independence of n Events <a href="#ref1" class="ref-cite">[1]</a><a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Definition)</strong> A collection of events \(E_1, E_2, \ldots, E_n\) is said to be <strong>mutually independent</strong> (or simply <strong>independent</strong>) if, for <em>every</em> subcollection of \(k\) events \(\{E_{i_1}, E_{i_2}, \ldots, E_{i_k}\}\) (where \(2 \le k \le n\)):</p>
+        <div class="math-display">
+          \[ \mathbb{P}[E_{i_1} \cap E_{i_2} \cap \cdots \cap E_{i_k}] = \mathbb{P}[E_{i_1}]\mathbb{P}[E_{i_2}]\cdots\mathbb{P}[E_{i_k}] \]
+        </div>
+        <p style="margin-top: 0.5rem;">This condition must hold for all pairs, all triplets, ..., and for the intersection of all \(n\) events <a href="#ref2" class="ref-cite">[2]</a><a href="#ref1" class="ref-cite">[1]</a>.</p>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark: Pairwise vs. Mutual Independence <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a></div>
+        <p><strong>(Remark)</strong> It is important to note that events can be <strong>pairwise independent</strong> (meaning \(\mathbb{P}[E_i \cap E_j] = \mathbb{P}[E_i]\mathbb{P}[E_j]\) for all \(i \neq j\)) without being mutually independent (the product rule fails for some triplet or larger subset). Mutual independence requires the product rule to apply to all possible subsets <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a>.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="box-title">Example 10: Pairwise vs. Mutual Independence <a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Example)</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>An urn contains 4 balls labeled 1, 2, 3, 4. One ball is drawn randomly.</li>
+          <li>Define events: \(E = \{1, 2\}\), \(F = \{1, 3\}\), \(G = \{1, 4\}\).</li>
+          <li>\(\mathbb{P}[E] = \mathbb{P}[F] = \mathbb{P}[G] = 2/4 = 1/2\).</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Pairwise Independence Checks:</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>\(\mathbb{P}[E \cap F] = \mathbb{P}[\{1\}] = 1/4\). \(\mathbb{P}[E]\mathbb{P}[F] = (1/2)(1/2) = 1/4\). They are equal.</li>
+          <li>\(\mathbb{P}[E \cap G] = \mathbb{P}[\{1\}] = 1/4\). \(\mathbb{P}[E]\mathbb{P}[G] = (1/2)(1/2) = 1/4\). They are equal.</li>
+          <li>\(\mathbb{P}[F \cap G] = \mathbb{P}[\{1\}] = 1/4\). \(\mathbb{P}[F]\mathbb{P}[G] = (1/2)(1/2) = 1/4\). They are equal.</li>
+        </ul>
+        <p style="margin-top: 1rem;">Thus, E, F, and G are pairwise independent <a href="#ref2" class="ref-cite">[2]</a>.</p>
+        <p><strong>Mutual Independence Check:</strong></p>
+        <ul style="margin: 0.5rem 0;">
+          <li>\(\mathbb{P}[E \cap F \cap G] = \mathbb{P}[\{1\}] = 1/4\).</li>
+          <li>\(\mathbb{P}[E]\mathbb{P}[F]\mathbb{P}[G] = (1/2)(1/2)(1/2) = 1/8\).</li>
+        </ul>
+        <p style="margin-top: 1rem;">Since \(\mathbb{P}[E \cap F \cap G] \neq \mathbb{P}[E]\mathbb{P}[F]\mathbb{P}[G]\), the events E, F, G are pairwise independent but <strong>not mutually independent</strong> <a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <h2 id="section4">Law of Total Probability</h2>
+      <p>
+        This law provides a method to calculate the probability of an event B by conditioning on a partition of the sample space <a href="#ref1" class="ref-cite">[1]</a>. It decomposes the calculation of \(\mathbb{P}[B]\) into simpler conditional probabilities.
+      </p>
+
+      <div class="definition-box">
+        <div class="box-title">Definition 4.1: Partition <a href="#ref1" class="ref-cite">[1]</a></div>
+        <p><strong>(Definition)</strong> A collection of events \(\{A_1, A_2, \ldots, A_n\}\) is a <strong>partition</strong> of the sample space \(\Omega\) if:</p>
+        <ol style="margin-top: 0.5rem;">
+          <li>The events are mutually exclusive (disjoint): \(A_i \cap A_j = \emptyset\) for all \(i \neq j\).</li>
+          <li>The union of the events covers the entire sample space: \(\displaystyle \bigcup_{i=1}^{n} A_i = \Omega\).</li>
+        </ol>
+        <p style="margin-top: 0.5rem;">Essentially, exactly one of the events \(A_i\) must occur <a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 4.1: Law of Total Probability <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a></div>
+        <p><strong>(Theorem)</strong> Let \(\{A_1, A_2, \ldots, A_n\}\) be a partition of the sample space \(\Omega\), such that \(\mathbb{P}[A_i] > 0\) for all \(i\). Then for any event B:</p>
+        <div class="math-display">
+          \[ \mathbb{P}[B] = \sum_{i=1}^{n} \mathbb{P}[B \cap A_i] = \sum_{i=1}^{n} \mathbb{P}[B \mid A_i]\mathbb{P}[A_i] \]
+        </div>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Proof</div>
+        <p><strong>(Proof)</strong> Since \(\{A_1, \ldots, A_n\}\) is a partition of \(\Omega\), the sets \(\{B \cap A_1, \ldots, B \cap A_n\}\) form a partition of event B. That is, \(B = \bigcup_{i=1}^{n} (B \cap A_i)\), and these intersection events \((B \cap A_i)\) are mutually exclusive because the \(A_i\) are mutually exclusive <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a>.</p>
+        <p>By Axiom III of probability (additivity for disjoint events):</p>
+        <div class="math-display">
+          \[ \mathbb{P}[B] = \mathbb{P}\left[\bigcup_{i=1}^{n} (B \cap A_i)\right] = \sum_{i=1}^{n} \mathbb{P}[B \cap A_i] \]
+        </div>
+        <p>Applying the multiplication rule \(\mathbb{P}[B \cap A_i] = \mathbb{P}[B \mid A_i]\mathbb{P}[A_i]\) (since \(\mathbb{P}[A_i] > 0\)) to each term yields the result:</p>
+        <div class="math-display">
+          \[ \mathbb{P}[B] = \sum_{i=1}^{n} \mathbb{P}[B \mid A_i]\mathbb{P}[A_i] \]
+        </div>
+        <p>(Proven) <a href="#ref1" class="ref-cite">[1]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark</div>
+        <p><strong>(Remark)</strong> The Law of Total Probability states that \(\mathbb{P}[B]\) is a weighted average of the conditional probabilities \(\mathbb{P}[B \mid A_i]\), where the weights are the probabilities \(\mathbb{P}[A_i]\) of the events in the partition <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a>. It allows computing \(\mathbb{P}[B]\) by first conditioning on which of the mutually exclusive and exhaustive events \(A_i\) occurs <a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_5.png" alt="Visualization of the Law of Total Probability">
+        <figcaption>Visualization of the Law of Total Probability <a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a>.</figcaption>
+      </figure>
+
+      <h2 id="section5">Bayes' Theorem</h2>
+      <p>
+        Bayes' Theorem relates the conditional probability of an event A given B to the conditional probability of B given A. It is fundamental for statistical inference and updating beliefs based on evidence <a href="#ref3" class="ref-cite">[3]</a>.
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Theorem 5.1: Bayes' Theorem <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a></div>
+        <p><strong>(Theorem)</strong> Let A and B be events with \(\mathbb{P}[A]>0\) and \(\mathbb{P}[B]>0\). Then:</p>
+        <div class="math-display">
+          \[ \mathbb{P}[A \mid B] = \frac{\mathbb{P}[B \mid A]\mathbb{P}[A]}{\mathbb{P}[B]} \]
+        </div>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Proof</div>
+        <p><strong>(Proof)</strong> The theorem follows directly from the definition of conditional probability and the commutative property of intersection <a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a>.</p>
+        <p>From the multiplication rule, we have two expressions for the joint probability \(\mathbb{P}[A \cap B]\):</p>
+        <ol style="margin-top: 0.5rem;">
+          <li>\(\mathbb{P}[A \cap B] = \mathbb{P}[A \mid B]\mathbb{P}[B]\)</li>
+          <li>\(\mathbb{P}[A \cap B] = \mathbb{P}[B \cap A] = \mathbb{P}[B \mid A]\mathbb{P}[A]\)</li>
+        </ol>
+        <p style="margin-top: 0.5rem;">Equating the right-hand sides gives:</p>
+        <div class="math-display">
+          \[ \mathbb{P}[A \mid B]\mathbb{P}[B] = \mathbb{P}[B \mid A]\mathbb{P}[A] \]
+        </div>
+        <p>Dividing by \(\mathbb{P}[B]\) (which is non-zero by assumption) yields Bayes' Theorem. (Proven).</p>
+      </div>
+
+      <h3>Bayes' Formula with Total Probability</h3>
+      <p>
+        Often, the denominator \(\mathbb{P}[B]\) in Bayes' Theorem is not directly known. If we have a partition \(\{A_1, \ldots, A_n\}\) of the sample space, we can compute \(\mathbb{P}[B]\) using the Law of Total Probability. Substituting this expansion into Bayes' Theorem gives the commonly used form:
+      </p>
+
+      <div class="theorem-box">
+        <div class="box-title">Corollary 5.1: Full Bayes' Formula <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a><a href="#ref1" class="ref-cite">[1]</a></div>
+        <p><strong>(Corollary)</strong> Let \(\{A_1, \ldots, A_n\}\) be a partition of \(\Omega\) with \(\mathbb{P}[A_i] > 0\) for all \(i\). Then for any event \(A_j\) in the partition and any event B with \(\mathbb{P}[B]>0\):</p>
+        <div class="math-display">
+          \[ \mathbb{P}[A_j \mid B] = \frac{\mathbb{P}[B \mid A_j]\mathbb{P}[A_j]}{\sum_{i=1}^{n} \mathbb{P}[B \mid A_i]\mathbb{P}[A_i]} \]
+        </div>
+        <p style="margin-top: 0.5rem;">This formula allows us to calculate the posterior probability \(\mathbb{P}[A_j \mid B]\) using the prior probabilities \(\mathbb{P}[A_i]\) and the likelihoods \(\mathbb{P}[B \mid A_i]\) <a href="#ref2" class="ref-cite">[2]</a><a href="#ref3" class="ref-cite">[3]</a>.</p>
+      </div>
+
+      <div class="note-box">
+        <div class="box-title">Remark: Terminology <a href="#ref3" class="ref-cite">[3]</a></div>
+        <p>In the context of Bayes' Theorem \(\mathbb{P}[A \mid B] = \dfrac{\mathbb{P}[B \mid A]\mathbb{P}[A]}{\mathbb{P}[B]}\):</p>
+        <ul style="margin-top: 0.5rem;">
+          <li>\(\mathbb{P}[A]\) is often called the <strong>prior probability</strong> of A (belief before observing B).</li>
+          <li>\(\mathbb{P}[A \mid B]\) is the <strong>posterior probability</strong> of A (updated belief after observing B).</li>
+          <li>\(\mathbb{P}[B \mid A]\) is the <strong>likelihood</strong> of observing B given A occurred.</li>
+          <li>\(\mathbb{P}[B]\) is the <strong>evidence</strong> or marginal probability of B.</li>
+        </ul>
+      </div>
+
+      <h2 id="section6">Advanced Application: The Three Prisoners Problem</h2>
+
+      <div class="example-box">
+        <div class="box-title">Example 11: The Three Prisoners Problem <a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a></div>
+        <p><strong>(Example)</strong> This problem illustrates potential pitfalls in intuitive reasoning about conditional probability.</p>
+        <ul style="margin: 0.5rem 0;">
+          <li><strong>Setup:</strong> Prisoners A, B, C. One chosen randomly (prob 1/3 each) to be sentenced, the other two pardoned. Prisoner A asks a guard, who knows the outcome, to name one of the <em>other</em> prisoners (B or C) who will be pardoned. The guard complies (if A is to be sentenced, the guard randomly chooses between B and C to name; if B is sentenced, guard names C; if C is sentenced, guard names B). Suppose the guard names B <a href="#ref3" class="ref-cite">[3]</a>.</li>
+          <li><strong>A's (Flawed) Reasoning:</strong> "Initially, \(\mathbb{P}[\text{A sentenced}] = 1/3\). After the guard says B is pardoned, only A and C remain as possibilities for sentencing. My probability must now be \(1/2\)." <a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a>.</li>
+          <li><strong>Analysis:</strong> Let \(X_A, X_B, X_C\) be the events that A, B, C are sentenced, respectively (\(\mathbb{P}[X_A]=\mathbb{P}[X_B]=\mathbb{P}[X_C]=1/3\)). Let \(G_B\) be the event the guard says B is pardoned. We want to compute \(\mathbb{P}[X_A \mid G_B]\).</li>
+          <li><strong>Guard's Protocol (Likelihoods):</strong> Based on the rules the guard follows:
+            <ul style="margin: 0.5rem 0 0 0;">
+              <li>\(\mathbb{P}[G_B \mid X_A] = 1/2\): If A is sentenced, B and C are pardoned; guard chooses one randomly <a href="#ref3" class="ref-cite">[3]</a>.</li>
+              <li>\(\mathbb{P}[G_B \mid X_B] = 0\): If B is sentenced, guard cannot name B <a href="#ref3" class="ref-cite">[3]</a>.</li>
+              <li>\(\mathbb{P}[G_B \mid X_C] = 1\): If C is sentenced, A and B are pardoned; guard must name B <a href="#ref3" class="ref-cite">[3]</a>.</li>
+            </ul>
+          </li>
+          <li style="margin-top: 1rem;"><strong>Evidence \(\mathbb{P}[G_B]\) (using Law of Total Probability):</strong>
+            \begin{align*}
+            \mathbb{P}[G_B] &= \mathbb{P}[G_B \mid X_A]\mathbb{P}[X_A] + \mathbb{P}[G_B \mid X_B]\mathbb{P}[X_B] + \mathbb{P}[G_B \mid X_C]\mathbb{P}[X_C] \\
+            &= (1/2)(1/3) + (0)(1/3) + (1)(1/3) = 1/6 + 0 + 1/3 = 1/2
+            \end{align*}
+            <a href="#ref3" class="ref-cite">[3]</a>
+          </li>
+          <li style="margin-top: 1rem;"><strong>Posterior Probability \(\mathbb{P}[X_A \mid G_B]\) (using Bayes' Theorem):</strong>
+            \[ \mathbb{P}[X_A \mid G_B] = \frac{\mathbb{P}[G_B \mid X_A]\mathbb{P}[X_A]}{\mathbb{P}[G_B]} = \frac{(1/2)(1/3)}{1/2} = 1/3 \]
+            <a href="#ref3" class="ref-cite">[3]</a>
+          </li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Conclusion:</strong> Prisoner A's probability of being sentenced remains \(1/3\), unchanged by the guard's statement. The guard's statement \(G_B\) provides no information about A's fate because the events \(X_A\) and \(G_B\) are independent in this scenario. A's intuitive reasoning was flawed because it didn't correctly account for the conditional nature of the guard's statement <a href="#ref3" class="ref-cite">[3]</a><a href="#ref2" class="ref-cite">[2]</a>.</p>
+      </div>
+
+      <h2 id="section7">Random Variable (Brief Definition)</h2>
+
+      <div class="definition-box">
+        <div class="box-title">Definition 7.1: Random Variable <a href="#ref1" class="ref-cite">[1]</a></div>
+        <p><strong>(Definition)</strong> A <strong>Random Variable</strong> (RV), typically denoted by a capital letter (e.g., \(X\)), is a function that maps outcomes \(\omega\) from a sample space \(\Omega\) to real numbers (\(\mathbb{R}\)) <a href="#ref1" class="ref-cite">[1]</a>.</p>
+        <div class="math-display">
+          \[ X: \Omega \rightarrow \mathbb{R} \]
+        </div>
+        <p style="margin-top: 0.5rem;">It is a way to assign a numerical value to the result of a random experiment.</p>
+      </div>
+
+      <figure class="note-figure">
+        <img src="figure_6.png" alt="Visualization of a Random Variable as a function mapping outcomes to real numbers">
+        <figcaption>Visualization of a Random Variable as a function mapping outcomes to real numbers <a href="#ref1" class="ref-cite">[1]</a>.</figcaption>
+      </figure>
+
+      <!-- Back to Index -->
+      <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+    </article>
+
+    <!-- References Sidebar -->
+    <aside class="references-sidebar">
+      <h3>References</h3>
+      <ol class="ref-list">
+        <li class="ref-item" id="ref1">
+          <span class="ref-id">[1]</span>
+          <span class="ref-content">
+            Md Shahriar Karim. (2025). <em>CSE 422: Lecture Notes on Conditional Probability and Statistical Independence</em>. Lecture Notes, Assistant Professor, ECE, North South University.
+          </span>
+          <span class="ref-url">https://ece.northsouth.edu/~shahriar.karim/CSE_422.html</span>
+        </li>
+        <li class="ref-item" id="ref2">
+          <span class="ref-id">[2]</span>
+          <span class="ref-content">
+            Ross, Sheldon M. (2019). <em>Introduction To Probability Models</em>. Academic Press.
+          </span>
+        </li>
+        <li class="ref-item" id="ref3">
+          <span class="ref-id">[3]</span>
+          <span class="ref-content">
+            Chan, Stanley H. (2021). <em>Introduction to probability for data science</em>. Michigan Publishing.
+          </span>
+        </li>
+      </ol>
+    </aside>
+
+    <!-- Visitor Counter -->
+    <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00003">
+      <div class="visitor-stats">
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Total visits:</span>
+          <span class="visitor-stat-count" id="overall-visitor-count"></span>
+        </div>
+        <span class="visitor-stat-separator">§</span>
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Page visits:</span>
+          <span class="visitor-stat-count" id="page-visitor-count"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Active link highlighting - Notebook post page
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+
+    // Sticky navigation with scroll behavior
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    function updateNavigation(scrollPos) {
+      if (scrollPos > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+
+      if (scrollPos > scrollThreshold) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Smooth scroll to references when citation clicked
+    document.querySelectorAll('.ref-cite').forEach(cite => {
+      cite.addEventListener('click', (e) => {
+        e.preventDefault();
+        const refId = cite.getAttribute('href');
+        const refElement = document.querySelector(refId);
+        if (refElement) {
+          refElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Highlight briefly
+          refElement.style.backgroundColor = 'var(--sidenote-target-border-color)';
+          setTimeout(() => {
+            refElement.style.backgroundColor = '';
+          }, 1500);
+        }
+      });
+    });
+  </script>
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../../prism/prism.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Firebase Configuration & Visitor Counter -->
+  <script src="../../../firebase-config.js"></script>
+  <script src="../../../visitor-counter.js"></script>
+</body>
+
+</html>
