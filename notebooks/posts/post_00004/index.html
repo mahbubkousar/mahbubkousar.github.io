@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 0 — The Intellectual Genealogy of Deep Neural Networks</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Source+Sans+3:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']], macros: { R: '\\mathbb{R}', bm: ['\\boldsymbol{#1}', 1] } }, svg: { fontCache: 'global' } };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+    <style>
+        :root {
+            --bg: #faf8f5;
+            --bg-alt: #f0ece6;
+            --text: #2c2824;
+            --text-muted: #6b6560;
+            --accent: #8b2500;
+            --accent-bg: #fdf0ea;
+            --border: #d4cfc8;
+            --blue: #1a5276;
+            --blue-bg: #e8f0f7;
+            --green: #1e6e3e;
+            --green-bg: #e8f5ec;
+            --purple: #5b2c8e;
+            --purple-bg: #f0e8f7;
+            --gold: #8b6914;
+            --gold-bg: #fdf5e0;
+            --teal: #0e6655;
+            --teal-bg: #e5f5f2;
+            --orange: #b35900;
+            --orange-bg: #fff3e6;
+            --slate: #3d4f5f;
+            --slate-bg: #e8ecf0;
+            --rose: #8b1a4a;
+            --rose-bg: #fce8f0;
+            --timeline: #c9b99a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 19px;
+            line-height: 1.78;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px 120px;
+        }
+
+        /* Header */
+        .doc-header {
+            text-align: center;
+            padding: 60px 0 50px;
+            border-bottom: 3px double var(--border);
+            margin-bottom: 50px;
+        }
+
+        .doc-header .part-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .doc-header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .doc-header .subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            font-style: italic;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Headings */
+        h2 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 27px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 70px;
+            margin-bottom: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        h2 .sec-num {
+            font-weight: 300;
+            opacity: .6;
+            margin-right: 6px;
+        }
+
+        h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        /* Boxes */
+        .box {
+            padding: 18px 22px;
+            margin: 24px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .box .label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+
+        .def-box {
+            background: var(--blue-bg);
+            border-left: 4px solid var(--blue);
+        }
+
+        .def-box .label {
+            color: var(--blue);
+        }
+
+        .theorem-box {
+            background: var(--purple-bg);
+            border-left: 4px solid var(--purple);
+        }
+
+        .theorem-box .label {
+            color: var(--purple);
+        }
+
+        .compute-box {
+            background: var(--gold-bg);
+            border-left: 4px solid var(--gold);
+        }
+
+        .compute-box .label {
+            color: var(--gold);
+        }
+
+        .example-box {
+            background: var(--green-bg);
+            border-left: 4px solid var(--green);
+        }
+
+        .example-box .label {
+            color: var(--green);
+        }
+
+        .warning-box {
+            background: var(--accent-bg);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box .label {
+            color: var(--accent);
+        }
+
+        .insight-box {
+            background: var(--teal-bg);
+            border-left: 4px solid var(--teal);
+        }
+
+        .insight-box .label {
+            color: var(--teal);
+        }
+
+        .hist-box {
+            background: var(--orange-bg);
+            border-left: 4px solid var(--orange);
+        }
+
+        .hist-box .label {
+            color: var(--orange);
+        }
+
+        .junction-box {
+            background: var(--rose-bg);
+            border-left: 4px solid var(--rose);
+        }
+
+        .junction-box .label {
+            color: var(--rose);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 15.5px;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        th {
+            background: var(--bg-alt);
+            font-weight: 700;
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: var(--text-muted);
+        }
+
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: 2px solid var(--border);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            background: var(--bg-alt);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* Figures */
+        .figure {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .figure svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .figure-caption {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .figure-caption strong {
+            color: var(--text);
+            font-style: normal;
+        }
+
+        /* References */
+        .ref-section {
+            background: var(--bg-alt);
+            padding: 24px 28px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .ref-section h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ref-section p {
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-left: 24px;
+            text-indent: -24px;
+            line-height: 1.55;
+        }
+
+        /* TOC */
+        .toc {
+            background: var(--bg-alt);
+            padding: 28px 32px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+        }
+
+        .toc h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            margin-top: 0;
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 16px;
+            padding: 4px 0;
+            color: var(--text-muted);
+        }
+
+        .toc li a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .toc li a:hover {
+            text-decoration: underline;
+        }
+
+        .toc li.sub {
+            padding-left: 24px;
+            font-size: 15px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--timeline);
+        }
+
+        .timeline-entry {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .timeline-entry::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 3px solid var(--timeline);
+            z-index: 1;
+        }
+
+        .timeline-entry.major::before {
+            background: var(--accent);
+            border-color: var(--accent);
+            width: 16px;
+            height: 16px;
+            left: -34px;
+            top: 5px;
+        }
+
+        .timeline-entry.junction::before {
+            background: var(--rose);
+            border-color: var(--rose);
+            width: 18px;
+            height: 18px;
+            left: -35px;
+            top: 4px;
+        }
+
+        .timeline-year {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--accent);
+            display: inline-block;
+            min-width: 48px;
+        }
+
+        .timeline-title {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+        }
+
+        .timeline-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            line-height: 1.55;
+        }
+
+        .timeline-entry.major .timeline-title {
+            color: var(--accent);
+            font-size: 17px;
+        }
+
+        .timeline-entry.junction .timeline-title {
+            color: var(--rose);
+            font-size: 17px;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 50px 0;
+        }
+
+        mjx-container[jax="SVG"][display="true"] {
+            margin: 20px 0 !important;
+            overflow-x: auto;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: var(--bg-alt);
+            padding: 15px 20px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-bar a {
+            text-decoration: none;
+            color: var(--text);
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-bar a.active {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        img,
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            padding: 20px 20px 120px;
+        }
+    </style>
+  <!-- Portfolio CSS -->
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+  <link rel="stylesheet" href="../../../visitor-counter.css" />
+
+<body class="text-justify">
+  <!-- Portfolio Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <!-- DNN Series Navigation -->
+  <nav class="nav-bar">
+    <a href="../../index.html#dnn">Home</a>
+    <a href="../post_00004/index.html" class="active">Part 0</a>
+    <a href="../post_00005/index.html">Part I</a>
+    <a href="../post_00006/index.html">Part II</a>
+    <a href="../post_00007/index.html">Part III</a>
+    <a href="../post_00008/index.html">Part IV</a>
+    <a href="../post_00009/index.html">Part V</a>
+    <a href="../post_00010/index.html">Part VI</a>
+  </nav>
+    
+    <div class="container">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" style="margin-bottom:1.5rem; font-size:0.85em; opacity:0.7;">
+    <a href="../../index.html" style="text-decoration:none; color:var(--body-color);">Notebook</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#cs" style="text-decoration:none; color:var(--body-color);">Computer Science</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#dnn" style="text-decoration:none; color:var(--body-color);">Deep Neural Networks</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <span>Part 0: Prologue</span>
+  </nav>
+
+
+        <!-- ==================== HEADER ==================== -->
+        <div class="doc-header">
+            <div class="part-label">Part 0 — Prologue</div>
+            <h1>The Intellectual Genealogy of Deep Neural Networks</h1>
+            <div class="subtitle">Where the ideas came from, how they connect, and a precise taxonomy of AI, Machine
+                Learning, Deep Learning, and their sub-disciplines — the conceptual map that should exist before any
+                equation is written</div>
+        </div>
+
+        <!-- ==================== TOC ==================== -->
+        <div class="toc">
+            <h3>Contents</h3>
+            <ul>
+                <li><a href="#sec0">0. Why This Document Exists</a></li>
+                <li><a href="#sec1">1. The Conceptual Hierarchy — Precise Definitions</a></li>
+                <li class="sub"><a href="#sec1-1">1.1 Artificial Intelligence (AI)</a></li>
+                <li class="sub"><a href="#sec1-2">1.2 Machine Learning (ML)</a></li>
+                <li class="sub"><a href="#sec1-3">1.3 Deep Learning (DL)</a></li>
+                <li class="sub"><a href="#sec1-4">1.4 Neural Networks vs. Deep Neural Networks</a></li>
+                <li class="sub"><a href="#sec1-5">1.5 The Complete Taxonomy Map</a></li>
+                <li><a href="#sec2">2. The Intellectual Pre-History — Where the Ideas Came From</a></li>
+                <li class="sub"><a href="#sec2-1">2.1 Neuroscience and the Biological Neuron (1890s–1940s)</a></li>
+                <li class="sub"><a href="#sec2-2">2.2 Mathematical Logic and Computation Theory (1930s–1950s)</a></li>
+                <li class="sub"><a href="#sec2-3">2.3 Statistical Learning and Optimization (1800s–1960s)</a></li>
+                <li class="sub"><a href="#sec2-4">2.4 Information Theory (1948)</a></li>
+                <li><a href="#sec3">3. The Six Historical Eras of Neural Networks</a></li>
+                <li class="sub"><a href="#sec3-1">3.1 Era I — The McCulloch-Pitts Neuron and the Perceptron
+                        (1943–1969)</a></li>
+                <li class="sub"><a href="#sec3-2">3.2 Era II — The First AI Winter (1969–1986)</a></li>
+                <li class="sub"><a href="#sec3-3">3.3 Era III — Backpropagation and the Connectionist Revival
+                        (1986–1995)</a></li>
+                <li class="sub"><a href="#sec3-4">3.4 Era IV — The Kernel Machines Interlude (1995–2006)</a></li>
+                <li class="sub"><a href="#sec3-5">3.5 Era V — The Deep Learning Revolution (2006–2017)</a></li>
+                <li class="sub"><a href="#sec3-6">3.6 Era VI — The Transformer Era and Foundation Models
+                        (2017–Present)</a></li>
+                <li><a href="#sec4">4. The Key Junctions — Where Separate Ideas Converged</a></li>
+                <li class="sub"><a href="#sec4-1">4.1 Junction 1: Neuroscience × Mathematical Optimization =
+                        Perceptron</a></li>
+                <li class="sub"><a href="#sec4-2">4.2 Junction 2: Chain Rule × Automatic Differentiation × Multi-Layer
+                        Networks = Backpropagation</a></li>
+                <li class="sub"><a href="#sec4-3">4.3 Junction 3: Statistical Learning Theory × Convolutions × GPUs =
+                        Deep CNNs</a></li>
+                <li class="sub"><a href="#sec4-4">4.4 Junction 4: Attention × Parallel Computation × Scale =
+                        Transformers</a></li>
+                <li><a href="#sec5">5. Commonly Confused Concepts — Precise Distinctions</a></li>
+                <li class="sub"><a href="#sec5-1">5.1 AI vs. ML vs. DL</a></li>
+                <li class="sub"><a href="#sec5-2">5.2 Learning Paradigms: Supervised, Unsupervised, Reinforcement,
+                        Self-Supervised</a></li>
+                <li class="sub"><a href="#sec5-3">5.3 Models vs. Algorithms vs. Architectures vs. Frameworks</a></li>
+                <li class="sub"><a href="#sec5-4">5.4 Training vs. Inference vs. Fine-Tuning</a></li>
+                <li class="sub"><a href="#sec5-5">5.5 Parameters vs. Hyperparameters vs. Architecture Choices</a></li>
+                <li><a href="#sec6">6. The Prerequisite Knowledge Map</a></li>
+                <li><a href="#sec-refs">References</a></li>
+            </ul>
+        </div>
+
+
+        <!-- ============================================================ -->
+        <!-- SECTION 0                                                     -->
+        <!-- ============================================================ -->
+        <h2 id="sec0"><span class="sec-num">§0</span> Why This Document Exists</h2>
+
+        <p>
+            Deep neural networks did not appear from nowhere. They sit at the intersection of at least four major
+            intellectual traditions — neuroscience, mathematical optimization, statistical learning theory, and computer
+            hardware engineering — each of which developed over decades or centuries before converging into what we now
+            call "deep learning." Without understanding these roots, the field appears as a disconnected collection of
+            clever tricks rather than what it actually is: a deeply coherent system of ideas with clear intellectual
+            ancestry.
+        </p>
+
+        <p>
+            There is a second problem. The terms "artificial intelligence," "machine learning," "deep learning," "neural
+            networks," and many others are used loosely, inconsistently, and often interchangeably in popular discourse,
+            in journalism, in marketing, and even in some academic papers. A student encountering this field for the
+            first time faces a tangle of overlapping vocabulary with no authoritative map. This document provides that
+            map.
+        </p>
+
+        <p>
+            This is <strong>Part 0</strong> — it should be read before the six technical parts that follow. It contains
+            no equations that aren't also in the later parts. Its purpose is entirely conceptual: to establish where the
+            ideas came from, how they relate to each other, and what the words mean.
+        </p>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 1: THE CONCEPTUAL HIERARCHY                           -->
+        <!-- ============================================================ -->
+        <h2 id="sec1"><span class="sec-num">§1</span> The Conceptual Hierarchy — Precise Definitions</h2>
+
+        <p>
+            The relationship between AI, ML, DL, and DNNs is one of strict containment: each is a subset of the one
+            above it. This hierarchy is not a matter of opinion — it follows from the definitions. Understanding it
+            eliminates the most common source of confusion in the field.
+        </p>
+
+        <h3 id="sec1-1">1.1 Artificial Intelligence (AI)</h3>
+
+        <div class="def-box box">
+            <div class="label">Artificial Intelligence</div>
+            <p><strong>AI is the broadest category.</strong> It encompasses <em>any</em> technique that enables a
+                machine to mimic, simulate, or exhibit behavior that would be considered "intelligent" if performed by a
+                human. This includes rule-based expert systems, search algorithms, logic programming, planning systems,
+                robotics controllers, and machine learning — among many other approaches.</p>
+            <p><strong>The key characteristic of AI:</strong> It is defined by the <em>goal</em> (intelligent behavior),
+                not by the <em>method</em>. A hand-coded chess engine with millions of if-else rules is AI. A decision
+                tree trained on data is AI. A deep neural network is AI. They are all AI because they all produce
+                intelligent behavior — but they use completely different methods.</p>
+        </div>
+
+        <p>
+            The term was coined by John McCarthy in 1956 at the Dartmouth Conference, where it was defined as "the
+            science and engineering of making intelligent machines." This definition is deliberately broad — it includes
+            approaches that have nothing to do with learning from data, such as symbolic reasoning, search algorithms
+            (A*, minimax), expert systems (MYCIN, DENDRAL), and formal logic systems. These "classical AI" or "Good
+            Old-Fashioned AI" (GOFAI) methods dominated the field from the 1950s through the 1980s and remain important
+            in specific domains (planning, scheduling, formal verification).
+        </p>
+
+        <h3 id="sec1-2">1.2 Machine Learning (ML)</h3>
+
+        <div class="def-box box">
+            <div class="label">Machine Learning</div>
+            <p><strong>ML is a subset of AI.</strong> It comprises methods where the system <em>learns from data</em>
+                rather than being explicitly programmed with rules. Tom Mitchell's (1997) definition is the most
+                precise: "A computer program is said to learn from experience $E$ with respect to some class of tasks
+                $T$ and performance measure $P$, if its performance at tasks in $T$, as measured by $P$, improves with
+                experience $E$."</p>
+            <p><strong>The key characteristic of ML:</strong> It is defined by the <em>method</em> — learning from data.
+                The system improves its performance by being exposed to more data, without a human explicitly coding the
+                rules for each new situation.</p>
+        </div>
+
+        <p>
+            Machine learning encompasses a vast landscape of algorithms that have nothing to do with neural networks.
+            The major families include:
+        </p>
+
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>ML Family</th>
+                    <th>Core Idea</th>
+                    <th>Key Algorithms</th>
+                    <th>Relation to DNN</th>
+                </tr>
+                <tr>
+                    <td><strong>Linear Models</strong></td>
+                    <td>Output is a linear function of inputs</td>
+                    <td>Linear regression, logistic regression, perceptron</td>
+                    <td>A single DNN neuron <em>is</em> a linear model + activation</td>
+                </tr>
+                <tr>
+                    <td><strong>Tree-Based</strong></td>
+                    <td>Partition input space via hierarchical decisions</td>
+                    <td>Decision trees, random forests, gradient boosting (XGBoost)</td>
+                    <td>Completely different paradigm — no gradient-based learning</td>
+                </tr>
+                <tr>
+                    <td><strong>Kernel Methods</strong></td>
+                    <td>Implicit mapping to high-dimensional space</td>
+                    <td>SVM, Gaussian processes</td>
+                    <td>Competed with DNNs in 1995–2012; now largely superseded for perception tasks</td>
+                </tr>
+                <tr>
+                    <td><strong>Instance-Based</strong></td>
+                    <td>No explicit model; compare to stored examples</td>
+                    <td>k-NN, locally weighted regression</td>
+                    <td>No overlap with DNNs</td>
+                </tr>
+                <tr>
+                    <td><strong>Probabilistic Graphical Models</strong></td>
+                    <td>Explicit probabilistic dependencies between variables</td>
+                    <td>Bayesian networks, HMMs, CRFs</td>
+                    <td>DNNs can be combined with graphical models (e.g., VAEs)</td>
+                </tr>
+                <tr>
+                    <td><strong>Ensemble Methods</strong></td>
+                    <td>Combine many weak learners</td>
+                    <td>Bagging, boosting, stacking</td>
+                    <td>Still dominant for tabular data; DNNs dominate for perception</td>
+                </tr>
+                <tr>
+                    <td><strong>Neural Networks</strong></td>
+                    <td>Learn hierarchical representations via differentiable functions</td>
+                    <td>MLPs, CNNs, RNNs, Transformers</td>
+                    <td><strong>This is the family we study in Parts I–VI</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="warning-box box">
+            <div class="label">Critical Clarification</div>
+            <p><strong>Machine learning is NOT synonymous with deep learning.</strong> Most ML algorithms have nothing
+                to do with neural networks. Random forests, SVMs, k-NN, and gradient boosting are all ML — and they
+                remain the best choice for many problems (particularly tabular/structured data). Deep learning is one
+                branch of ML that happens to have achieved spectacular success on perception tasks (vision, language,
+                speech) — but it is a branch, not the trunk.</p>
+        </div>
+
+
+        <h3 id="sec1-3">1.3 Deep Learning (DL)</h3>
+
+        <div class="def-box box">
+            <div class="label">Deep Learning</div>
+            <p><strong>DL is a subset of ML.</strong> It refers specifically to machine learning using <em>neural
+                    networks with multiple layers</em> (typically more than 2 hidden layers). The "deep" refers to the
+                <em>depth</em> of the network — the number of sequential processing layers between input and output.</p>
+            <p><strong>The key characteristic of DL:</strong> It is defined by both the method (learning from data)
+                <em>and</em> the tool (deep neural networks). The crucial innovation is <em>representation learning</em>
+                — the network automatically discovers the relevant features from raw data, rather than requiring
+                human-engineered features.</p>
+        </div>
+
+        <p>
+            The distinction between "shallow" ML and "deep" learning is fundamentally about <em>feature
+                engineering</em>. In traditional ML, a human expert must design features (e.g., SIFT descriptors for
+            images, TF-IDF for text, spectral features for audio). The ML algorithm then learns a mapping from these
+            hand-crafted features to the output. In deep learning, the network learns both the features <em>and</em> the
+            mapping — the early layers learn to extract low-level features, the middle layers combine them into
+            higher-level concepts, and the final layers map these to the output. This end-to-end learning is what makes
+            deep learning qualitatively different from previous ML approaches.
+        </p>
+
+
+        <h3 id="sec1-4">1.4 Neural Networks vs. Deep Neural Networks</h3>
+
+        <div class="def-box box">
+            <div class="label">The Depth Boundary</div>
+            <p>A <strong>neural network</strong> is any parameterized function composed of layers of artificial neurons
+                (linear transformations followed by non-linear activations), trained by gradient-based optimization.</p>
+            <p>A <strong>deep neural network (DNN)</strong> is a neural network with "many" layers. There is no
+                universally agreed-upon threshold for "deep," but in practice:</p>
+            <p><strong>Shallow:</strong> 1–2 hidden layers (classic MLPs, single-layer perceptrons)</p>
+            <p><strong>Deep:</strong> 3+ hidden layers (the universal approximation theorem guarantees that even shallow
+                networks can represent any function, but deep networks represent the <em>same</em> functions with
+                exponentially fewer parameters)</p>
+            <p>The practical motivation for depth is not theoretical expressiveness but <em>efficiency</em>: deep
+                networks learn hierarchical representations that reuse features across the hierarchy, requiring far
+                fewer parameters than shallow networks for the same task.</p>
+        </div>
+
+
+        <h3 id="sec1-5">1.5 The Complete Taxonomy Map</h3>
+
+        <div class="figure">
+            <svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg" style="max-width:800px;">
+
+                <!-- AI (outermost) -->
+                <rect x="20" y="20" width="760" height="480" rx="20" fill="none" stroke="#1a5276" stroke-width="3" />
+                <text x="50" y="52" font-family="Source Sans 3" font-size="18" font-weight="700"
+                    fill="#1a5276">Artificial Intelligence</text>
+                <text x="50" y="72" font-family="Source Sans 3" font-size="12" fill="#6b6560">Any technique producing
+                    intelligent behavior</text>
+
+                <!-- Non-ML AI items -->
+                <rect x="540" y="48" width="215" height="120" rx="8" fill="#e8f0f7" stroke="#1a5276" stroke-width="1"
+                    stroke-dasharray="5,3" />
+                <text x="550" y="68" font-family="Source Sans 3" font-size="11" font-weight="600" fill="#1a5276">Non-ML
+                    AI Methods:</text>
+                <text x="550" y="86" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Expert systems
+                    (rules)</text>
+                <text x="550" y="102" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Search (A*,
+                    minimax)</text>
+                <text x="550" y="118" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Logic
+                    programming</text>
+                <text x="550" y="134" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Planning &amp;
+                    scheduling</text>
+                <text x="550" y="150" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Robotics
+                    controllers</text>
+
+                <!-- ML (second ring) -->
+                <rect x="50" y="90" width="470" height="395" rx="16" fill="none" stroke="#5b2c8e" stroke-width="2.5" />
+                <text x="75" y="115" font-family="Source Sans 3" font-size="17" font-weight="700" fill="#5b2c8e">Machine
+                    Learning</text>
+                <text x="75" y="133" font-family="Source Sans 3" font-size="12" fill="#6b6560">Systems that learn from
+                    data</text>
+
+                <!-- Non-DL ML items -->
+                <rect x="310" y="145" width="190" height="155" rx="8" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="1"
+                    stroke-dasharray="5,3" />
+                <text x="320" y="165" font-family="Source Sans 3" font-size="11" font-weight="600" fill="#5b2c8e">Non-DL
+                    ML Methods:</text>
+                <text x="320" y="183" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Linear / logistic
+                    regression</text>
+                <text x="320" y="199" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Decision trees, random
+                    forests</text>
+                <text x="320" y="215" font-family="Source Sans 3" font-size="11" fill="#6b6560">• SVM, kernel
+                    methods</text>
+                <text x="320" y="231" font-family="Source Sans 3" font-size="11" fill="#6b6560">• k-NN, Naïve
+                    Bayes</text>
+                <text x="320" y="247" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Gradient boosting
+                    (XGBoost)</text>
+                <text x="320" y="263" font-family="Source Sans 3" font-size="11" fill="#6b6560">• Bayesian networks,
+                    HMMs</text>
+                <text x="320" y="279" font-family="Source Sans 3" font-size="11" fill="#6b6560">• PCA, k-Means
+                    clustering</text>
+
+                <!-- DL (third ring) -->
+                <rect x="75" y="150" width="220" height="320" rx="12" fill="none" stroke="#8b2500" stroke-width="2.5" />
+                <text x="95" y="175" font-family="Source Sans 3" font-size="16" font-weight="700" fill="#8b2500">Deep
+                    Learning</text>
+                <text x="95" y="193" font-family="Source Sans 3" font-size="11" fill="#6b6560">Neural networks with
+                    multiple layers</text>
+
+                <!-- DL architectures -->
+                <rect x="95" y="210" width="180" height="38" rx="6" fill="#fdf0ea" stroke="#8b2500"
+                    stroke-width="1.5" />
+                <text x="185" y="234" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="600"
+                    fill="#8b2500">CNNs (vision)</text>
+
+                <rect x="95" y="256" width="180" height="38" rx="6" fill="#fdf0ea" stroke="#8b2500"
+                    stroke-width="1.5" />
+                <text x="185" y="280" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="600"
+                    fill="#8b2500">RNNs / LSTMs (sequences)</text>
+
+                <rect x="95" y="302" width="180" height="38" rx="6" fill="#fdf0ea" stroke="#8b2500"
+                    stroke-width="1.5" />
+                <text x="185" y="326" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="600"
+                    fill="#8b2500">Transformers (attention)</text>
+
+                <rect x="95" y="348" width="180" height="38" rx="6" fill="#fdf0ea" stroke="#8b2500"
+                    stroke-width="1.5" />
+                <text x="185" y="372" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="600"
+                    fill="#8b2500">GANs (generative)</text>
+
+                <rect x="95" y="394" width="180" height="38" rx="6" fill="#fdf0ea" stroke="#8b2500"
+                    stroke-width="1.5" />
+                <text x="185" y="418" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="600"
+                    fill="#8b2500">Autoencoders / VAEs</text>
+
+                <rect x="95" y="440" width="85" height="20" rx="4" fill="#fdf0ea" stroke="#8b2500" stroke-width="1" />
+                <text x="137" y="455" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#8b2500">GNNs</text>
+                <rect x="188" y="440" width="85" height="20" rx="4" fill="#fdf0ea" stroke="#8b2500" stroke-width="1" />
+                <text x="230" y="455" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#8b2500">SSMs/Mamba</text>
+
+                <!-- Arrows showing containment -->
+                <text x="610" y="200" font-family="Source Sans 3" font-size="12" fill="#1a5276" font-weight="600">DL ⊂
+                    ML ⊂ AI</text>
+                <text x="610" y="220" font-family="Source Sans 3" font-size="11" fill="#6b6560">Every DL system is
+                    also</text>
+                <text x="610" y="236" font-family="Source Sans 3" font-size="11" fill="#6b6560">an ML system, which
+                    is</text>
+                <text x="610" y="252" font-family="Source Sans 3" font-size="11" fill="#6b6560">also an AI
+                    system.</text>
+
+                <!-- Key insight -->
+                <rect x="540" y="280" width="225" height="80" rx="8" fill="#e5f5f2" stroke="#0e6655"
+                    stroke-width="1.5" />
+                <text x="553" y="303" font-family="Source Sans 3" font-size="12" font-weight="700" fill="#0e6655">KEY
+                    INSIGHT</text>
+                <text x="553" y="322" font-family="Source Sans 3" font-size="12" fill="#0e6655">Not all AI uses
+                    ML.</text>
+                <text x="553" y="338" font-family="Source Sans 3" font-size="12" fill="#0e6655">Not all ML uses neural
+                    nets.</text>
+                <text x="553" y="354" font-family="Source Sans 3" font-size="12" fill="#0e6655">Not all neural nets are
+                    "deep."</text>
+
+            </svg>
+            <div class="figure-caption"><strong>Figure 1.1.</strong> The strict containment hierarchy: Deep Learning ⊂
+                Machine Learning ⊂ Artificial Intelligence. Each ring is a proper subset of the one enclosing it. The
+                dashed boxes show methods that belong to the enclosing ring but <em>not</em> to the inner ring — these
+                are the non-ML AI methods and the non-DL ML methods that are often forgotten in popular accounts of the
+                field.</div>
+        </div>
+
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 2: INTELLECTUAL PRE-HISTORY                            -->
+        <!-- ============================================================ -->
+        <h2 id="sec2"><span class="sec-num">§2</span> The Intellectual Pre-History — Where the Ideas Came From</h2>
+
+        <p>
+            Deep neural networks draw on at least four distinct intellectual traditions that developed largely
+            independently before converging. Understanding these roots reveals that DNNs are not a single invention but
+            a <em>synthesis</em> — and this synthesis is what makes the field both powerful and confusing.
+        </p>
+
+        <h3 id="sec2-1">2.1 Neuroscience and the Biological Neuron (1890s–1940s)</h3>
+
+        <div class="hist-box box">
+            <div class="label">The Biological Root</div>
+            <p><strong>Santiago Ramón y Cajal</strong> (1890s) established the "neuron doctrine" — that the nervous
+                system is composed of discrete cells (neurons) that communicate via electrochemical signals across
+                synapses. This was the first scientific understanding that the brain is a <em>network of computing
+                    units</em>.</p>
+            <p><strong>Donald Hebb</strong> (1949) proposed Hebb's rule: "Neurons that fire together wire together."
+                This was the first learning rule for neural connections — the idea that the strength of a synapse should
+                increase when both the pre-synaptic and post-synaptic neurons are active simultaneously. Hebb's rule is
+                the conceptual ancestor of weight updates in modern neural networks.</p>
+            <p><strong>What it contributed to DNNs:</strong> The fundamental metaphor — computation as a network of
+                simple processing units connected by weighted links, where learning changes the weights. This metaphor
+                shaped the entire field's vocabulary (neurons, layers, weights, activation, etc.).</p>
+        </div>
+
+        <h3 id="sec2-2">2.2 Mathematical Logic and Computation Theory (1930s–1950s)</h3>
+
+        <div class="hist-box box">
+            <div class="label">The Computational Root</div>
+            <p><strong>Alan Turing</strong> (1936) formalized the concept of computation itself with the Turing machine.
+                His work showed that any computable function can be realized by a sufficiently complex machine —
+                establishing the theoretical possibility that machines can perform any intellectual task that humans can
+                describe algorithmically.</p>
+            <p><strong>Warren McCulloch and Walter Pitts</strong> (1943) combined Turing's formalism with Cajal's neuron
+                doctrine. They showed that networks of simplified neurons (binary threshold units) could compute any
+                logical function computable by a Turing machine. This was the birth of <em>artificial neural
+                    networks</em> as a concept — the first demonstration that brain-like computing elements could, in
+                principle, perform arbitrary computation.</p>
+            <p><strong>What it contributed to DNNs:</strong> The theoretical foundation — neural networks as universal
+                computers. Also the crucial simplification: real biological neurons are enormously complex, but their
+                essential computational behavior can be captured by a simple mathematical model (weighted sum +
+                threshold/activation function).</p>
+        </div>
+
+        <h3 id="sec2-3">2.3 Statistical Learning and Optimization (1800s–1960s)</h3>
+
+        <div class="hist-box box">
+            <div class="label">The Mathematical Root</div>
+            <p><strong>Adrien-Marie Legendre</strong> (1805) and <strong>Carl Friedrich Gauss</strong> (1809) developed
+                the method of least squares — fitting a model to data by minimizing the sum of squared errors. This is
+                the direct ancestor of the loss function in neural network training.</p>
+            <p><strong>Augustin-Louis Cauchy</strong> (1847) described gradient descent — the iterative algorithm for
+                finding the minimum of a function by taking steps proportional to the negative gradient. This is still
+                the core algorithm used to train every neural network today.</p>
+            <p><strong>Ronald Fisher</strong> (1922, 1936) formalized maximum likelihood estimation and developed the
+                framework of statistical inference — the idea that you can learn the parameters of a model by maximizing
+                how well it explains observed data. The connection between maximum likelihood and neural network loss
+                functions (cross-entropy loss = negative log-likelihood) is direct.</p>
+            <p><strong>What it contributed to DNNs:</strong> The entire training procedure. Loss functions are from
+                statistics (Gauss/Fisher). The optimizer is from mathematics (Cauchy). Backpropagation is an application
+                of the chain rule (Leibniz, 1676). The fundamental components of training a neural network are all
+                centuries old — what was new was applying them to networks of artificial neurons.</p>
+        </div>
+
+        <h3 id="sec2-4">2.4 Information Theory (1948)</h3>
+
+        <div class="hist-box box">
+            <div class="label">The Information-Theoretic Root</div>
+            <p><strong>Claude Shannon</strong> (1948) founded information theory with his landmark paper "A Mathematical
+                Theory of Communication." He introduced entropy, mutual information, and the concept of channel capacity
+                — a precise mathematical framework for quantifying information.</p>
+            <p><strong>What it contributed to DNNs:</strong> Cross-entropy loss (the standard loss function for
+                classification) is directly derived from Shannon's entropy. The concept of "bits" of information in a
+                representation, the information bottleneck theory of deep learning (Tishby & Zaslavsky, 2015), and the
+                connections between compression and prediction all flow from Shannon's work. Additionally, modern
+                efficiency analysis (quantization, minimal description length) is grounded in information theory.</p>
+        </div>
+
+        <div class="figure">
+            <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" style="max-width:790px;">
+                <text x="400" y="25" text-anchor="middle" font-family="Source Sans 3" font-size="15" font-weight="700"
+                    fill="#2c2824">Four Intellectual Traditions Converging into Deep Learning</text>
+
+                <!-- Four source boxes -->
+                <rect x="20" y="50" width="170" height="80" rx="8" fill="#e8f0f7" stroke="#1a5276" stroke-width="2" />
+                <text x="105" y="78" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#1a5276">Neuroscience</text>
+                <text x="105" y="97" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Cajal, Hebb</text>
+                <text x="105" y="112" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Neurons, synapses,</text>
+                <text x="105" y="124" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">learning as weight change</text>
+
+                <rect x="210" y="50" width="170" height="80" rx="8" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="2" />
+                <text x="295" y="78" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#5b2c8e">Computation Theory</text>
+                <text x="295" y="97" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Turing, McCulloch-Pitts</text>
+                <text x="295" y="112" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Universal computation,</text>
+                <text x="295" y="124" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">formal neuron model</text>
+
+                <rect x="400" y="50" width="170" height="80" rx="8" fill="#fdf5e0" stroke="#8b6914" stroke-width="2" />
+                <text x="485" y="78" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#8b6914">Statistics &amp; Optimization</text>
+                <text x="485" y="97" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Gauss, Cauchy, Fisher</text>
+                <text x="485" y="112" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Least squares, gradient</text>
+                <text x="485" y="124" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">descent, max. likelihood</text>
+
+                <rect x="590" y="50" width="170" height="80" rx="8" fill="#e5f5f2" stroke="#0e6655" stroke-width="2" />
+                <text x="675" y="78" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#0e6655">Information Theory</text>
+                <text x="675" y="97" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Shannon</text>
+                <text x="675" y="112" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Entropy, cross-entropy,</text>
+                <text x="675" y="124" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">compression</text>
+
+                <!-- Convergence arrows -->
+                <line x1="105" y1="130" x2="345" y2="195" stroke="#1a5276" stroke-width="1.5" />
+                <line x1="295" y1="130" x2="360" y2="195" stroke="#5b2c8e" stroke-width="1.5" />
+                <line x1="485" y1="130" x2="420" y2="195" stroke="#8b6914" stroke-width="1.5" />
+                <line x1="675" y1="130" x2="465" y2="195" stroke="#0e6655" stroke-width="1.5" />
+
+                <!-- Central convergence -->
+                <rect x="300" y="195" width="200" height="65" rx="12" fill="#fdf0ea" stroke="#8b2500"
+                    stroke-width="3" />
+                <text x="400" y="222" text-anchor="middle" font-family="Source Sans 3" font-size="17" font-weight="700"
+                    fill="#8b2500">Deep Neural</text>
+                <text x="400" y="245" text-anchor="middle" font-family="Source Sans 3" font-size="17" font-weight="700"
+                    fill="#8b2500">Networks</text>
+
+            </svg>
+            <div class="figure-caption"><strong>Figure 2.1.</strong> Deep neural networks are not a single invention.
+                They are the convergence of four intellectual traditions developed across two centuries. The neuron
+                model comes from neuroscience. The formal computation framework comes from mathematical logic. The
+                training algorithm comes from statistics and optimization. The loss function comes from information
+                theory.</div>
+        </div>
+
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 3: THE SIX ERAS                                       -->
+        <!-- ============================================================ -->
+        <h2 id="sec3"><span class="sec-num">§3</span> The Six Historical Eras of Neural Networks</h2>
+
+        <p>
+            The history of neural networks is not a steady upward climb. It is a story of dramatic cycles — breakthrough
+            followed by disappointment, winter followed by explosive revival. Understanding these cycles explains why
+            certain ideas were "discovered" multiple times, why the field has recurring tensions between different
+            schools of thought, and why progress was not smooth.
+        </p>
+
+        <h3 id="sec3-1">3.1 Era I — The McCulloch-Pitts Neuron and the Perceptron (1943–1969)</h3>
+
+        <div class="timeline">
+            <div class="timeline-entry major">
+                <span class="timeline-year">1943</span> <span class="timeline-title">McCulloch & Pitts — "A Logical
+                    Calculus of Ideas Immanent in Nervous Activity"</span>
+                <div class="timeline-desc">First mathematical model of an artificial neuron. Binary threshold units that
+                    can compute any logical function. Established that neural networks are universal computers.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">1949</span> <span class="timeline-title">Donald Hebb — <em>The Organization
+                        of Behavior</em></span>
+                <div class="timeline-desc">Proposed the first biologically-motivated learning rule: strengthen
+                    connections between co-active neurons. Conceptual ancestor of weight updates.</div>
+            </div>
+            <div class="timeline-entry major">
+                <span class="timeline-year">1957</span> <span class="timeline-title">Frank Rosenblatt — The
+                    Perceptron</span>
+                <div class="timeline-desc">First learning algorithm for a neural network. The perceptron could learn to
+                    classify linearly separable patterns from data — no explicit programming needed. Built as hardware
+                    (the Mark I Perceptron). Generated enormous excitement.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">1960</span> <span class="timeline-title">Widrow & Hoff — ADALINE</span>
+                <div class="timeline-desc">Adaptive Linear Neuron. Used least mean squares (LMS) for training —
+                    essentially gradient descent. More mathematically principled than Rosenblatt's rule.</div>
+            </div>
+            <div class="timeline-entry major">
+                <span class="timeline-year">1969</span> <span class="timeline-title">Minsky & Papert —
+                    <em>Perceptrons</em></span>
+                <div class="timeline-desc">Published a rigorous analysis proving that single-layer perceptrons cannot
+                    learn XOR or any function that is not linearly separable. This was mathematically correct, but the
+                    field interpreted it as proving that neural networks in general were a dead end — triggering the
+                    first AI winter for neural networks.</div>
+            </div>
+        </div>
+
+
+        <h3 id="sec3-2">3.2 Era II — The First AI Winter (1969–1986)</h3>
+
+        <p>
+            Funding for neural network research dried up dramatically after Minsky and Papert's critique. The field
+            shifted to symbolic AI (expert systems, logic programming). However, several crucial developments happened
+            quietly during this "winter":
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-entry">
+                <span class="timeline-year">1974</span> <span class="timeline-title">Paul Werbos — Backpropagation (PhD
+                    thesis)</span>
+                <div class="timeline-desc">Derived the backpropagation algorithm for training multi-layer networks. This
+                    directly addressed Minsky & Papert's critique — multi-layer networks <em>can</em> learn XOR, and
+                    backprop is how to train them. But the work went largely unnoticed for over a decade.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">1980</span> <span class="timeline-title">Kunihiko Fukushima —
+                    Neocognitron</span>
+                <div class="timeline-desc">First neural network with convolutional structure and pooling, inspired by
+                    Hubel & Wiesel's work on the visual cortex. Direct ancestor of CNNs. Not trained by backprop.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">1982</span> <span class="timeline-title">John Hopfield — Hopfield
+                    Networks</span>
+                <div class="timeline-desc">Introduced recurrent neural networks with an energy function, connecting
+                    neural networks to statistical physics. Helped restore academic credibility.</div>
+            </div>
+        </div>
+
+
+        <h3 id="sec3-3">3.3 Era III — Backpropagation and the Connectionist Revival (1986–1995)</h3>
+
+        <div class="timeline">
+            <div class="timeline-entry junction">
+                <span class="timeline-year">1986</span> <span class="timeline-title">Rumelhart, Hinton & Williams —
+                    "Learning Representations by Back-Propagating Errors"</span>
+                <div class="timeline-desc"><strong>JUNCTION MOMENT.</strong> Published backpropagation in
+                    <em>Nature</em>, making it accessible to the broad scientific community. Demonstrated that
+                    multi-layer networks could learn useful internal representations. Triggered a renaissance in neural
+                    network research.</div>
+            </div>
+            <div class="timeline-entry major">
+                <span class="timeline-year">1989</span> <span class="timeline-title">Yann LeCun — Convolutional Neural
+                    Networks (LeNet)</span>
+                <div class="timeline-desc">Combined Fukushima's convolutional architecture with Rumelhart's
+                    backpropagation algorithm. Trained on handwritten digits. First practical CNN. Used commercially by
+                    US Postal Service.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">1989</span> <span class="timeline-title">Cybenko, Hornik — Universal
+                    Approximation Theorem</span>
+                <div class="timeline-desc">Proved that a single hidden layer neural network with sufficient width can
+                    approximate any continuous function. Powerful theoretical result, but said nothing about how to
+                    <em>learn</em> such a network — and in practice, shallow wide networks were hard to train.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">1991</span> <span class="timeline-title">Sepp Hochreiter — Vanishing
+                    Gradient Problem</span>
+                <div class="timeline-desc">Identified the fundamental obstacle to training deep networks: gradients
+                    shrink exponentially with depth, preventing learning in early layers. This would not be solved for
+                    another 19 years (ReLU, 2010).</div>
+            </div>
+            <div class="timeline-entry major">
+                <span class="timeline-year">1997</span> <span class="timeline-title">Hochreiter & Schmidhuber —
+                    LSTM</span>
+                <div class="timeline-desc">Long Short-Term Memory networks: a recurrent architecture with gating
+                    mechanisms that solved the vanishing gradient problem for sequences. Enabled learning long-range
+                    dependencies. Dominant sequence model for the next 20 years.</div>
+            </div>
+        </div>
+
+
+        <h3 id="sec3-4">3.4 Era IV — The Kernel Machines Interlude (1995–2006)</h3>
+
+        <p>
+            Despite the backpropagation revival, neural networks gradually fell out of favor in the late 1990s. The
+            reasons were practical: training was unstable, results were not reproducible, and there was little
+            theoretical understanding of when or why they worked. Meanwhile, Support Vector Machines (SVMs) offered
+            strong theoretical guarantees, well-defined optimization (convex problems with unique global minima), and
+            competitive empirical results. For about a decade, SVMs and kernel methods dominated machine learning
+            research.
+        </p>
+
+        <div class="insight-box box">
+            <div class="label">Why Neural Networks Lost (Temporarily)</div>
+            <p>The issues were all <em>practical</em>, not theoretical. In order:</p>
+            <p>(1) <strong>Vanishing gradients</strong> prevented training deep networks (only 2–3 layers were
+                practical).</p>
+            <p>(2) <strong>No good initialization</strong> — random initialization often led to convergence failures.
+            </p>
+            <p>(3) <strong>Insufficient compute</strong> — GPUs were not yet used for neural network training.</p>
+            <p>(4) <strong>Insufficient data</strong> — large labeled datasets like ImageNet did not yet exist.</p>
+            <p>(5) <strong>No batch normalization</strong> — training was highly sensitive to hyperparameters.</p>
+            <p>Every one of these problems would be solved between 2006 and 2015.</p>
+        </div>
+
+
+        <h3 id="sec3-5">3.5 Era V — The Deep Learning Revolution (2006–2017)</h3>
+
+        <div class="timeline">
+            <div class="timeline-entry major">
+                <span class="timeline-year">2006</span> <span class="timeline-title">Hinton, Osindero & Teh — Deep
+                    Belief Networks</span>
+                <div class="timeline-desc">Showed that deep networks could be pre-trained layer by layer using
+                    unsupervised learning (Restricted Boltzmann Machines), then fine-tuned with backprop. First
+                    demonstration that deep networks (>3 layers) could be trained at all. Coined the term "deep
+                    learning."</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">2009</span> <span class="timeline-title">Deng et al. — ImageNet</span>
+                <div class="timeline-desc">Created a dataset of 14 million labeled images in 21,000+ categories.
+                    Provided the data fuel that deep learning needed. The associated ILSVRC competition became the
+                    benchmark that drove progress.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">2010</span> <span class="timeline-title">Nair & Hinton — Rectified Linear
+                    Units (ReLU)</span>
+                <div class="timeline-desc">Showed that ReLU activation ($\max(0, x)$) dramatically improved training of
+                    deep networks by avoiding the vanishing gradient problem. Simple, computationally cheap, and
+                    transformative. Made deep unsupervised pre-training unnecessary.</div>
+            </div>
+            <div class="timeline-entry junction">
+                <span class="timeline-year">2012</span> <span class="timeline-title">Krizhevsky, Sutskever & Hinton —
+                    AlexNet</span>
+                <div class="timeline-desc"><strong>JUNCTION MOMENT.</strong> Won the ImageNet competition by a massive
+                    margin (26.2% → 16.4% top-5 error). Combined: deep CNN architecture + ReLU + dropout + GPU training.
+                    Proved that deep learning outperforms all prior approaches on large-scale vision. Triggered the
+                    current deep learning era.</div>
+            </div>
+            <div class="timeline-entry major">
+                <span class="timeline-year">2014</span> <span class="timeline-title">GoogLeNet / Inception &amp;
+                    VGGNet</span>
+                <div class="timeline-desc">Showed that going deeper (16–22 layers) continued to improve accuracy.
+                    Introduced 1×1 convolutions for efficiency (Inception) and exclusive 3×3 kernels (VGG).</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">2014</span> <span class="timeline-title">Goodfellow et al. — GANs</span>
+                <div class="timeline-desc">Generative Adversarial Networks: two networks trained against each other.
+                    Opened the door to generative AI.</div>
+            </div>
+            <div class="timeline-entry major">
+                <span class="timeline-year">2015</span> <span class="timeline-title">He et al. — ResNet</span>
+                <div class="timeline-desc">Residual connections enabled training networks with 152+ layers. Solved the
+                    degradation problem (deeper networks performing worse, even on training data). Skip connections
+                    became a universal component.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">2015</span> <span class="timeline-title">Ioffe & Szegedy — Batch
+                    Normalization</span>
+                <div class="timeline-desc">Normalized intermediate activations during training. Stabilized training,
+                    enabled larger learning rates, reduced sensitivity to initialization. Another universally adopted
+                    component.</div>
+            </div>
+        </div>
+
+
+        <h3 id="sec3-6">3.6 Era VI — The Transformer Era and Foundation Models (2017–Present)</h3>
+
+        <div class="timeline">
+            <div class="timeline-entry junction">
+                <span class="timeline-year">2017</span> <span class="timeline-title">Vaswani et al. — "Attention Is All
+                    You Need"</span>
+                <div class="timeline-desc"><strong>JUNCTION MOMENT.</strong> Replaced recurrent computation entirely
+                    with self-attention, enabling full parallelization. The Transformer architecture would become the
+                    foundation of modern NLP, and increasingly vision and other domains.</div>
+            </div>
+            <div class="timeline-entry major">
+                <span class="timeline-year">2018</span> <span class="timeline-title">Devlin et al. — BERT; Radford et
+                    al. — GPT</span>
+                <div class="timeline-desc">BERT: bidirectional pre-training via masked language modeling. GPT:
+                    unidirectional pre-training via next-token prediction. Both demonstrated that pre-training on
+                    massive unlabeled text, then fine-tuning, dominates task-specific training. Birth of the "foundation
+                    model" paradigm.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">2020</span> <span class="timeline-title">Kaplan et al. — Scaling Laws</span>
+                <div class="timeline-desc">Showed that Transformer loss follows predictable power laws in model size,
+                    dataset size, and compute. Converted model design from art to engineering — compute-budget planning
+                    became systematic.</div>
+            </div>
+            <div class="timeline-entry major">
+                <span class="timeline-year">2020</span> <span class="timeline-title">Brown et al. — GPT-3 (175B
+                    parameters)</span>
+                <div class="timeline-desc">Demonstrated that scale alone produces qualitatively new capabilities:
+                    in-context learning, few-shot reasoning, emergent abilities. Shifted the field toward scale as the
+                    primary research variable.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">2020</span> <span class="timeline-title">Dosovitskiy et al. — Vision
+                    Transformer (ViT)</span>
+                <div class="timeline-desc">Applied the Transformer architecture to images (splitting images into patches
+                    treated as tokens). Showed that Transformers can match or beat CNNs for vision, given sufficient
+                    data.</div>
+            </div>
+            <div class="timeline-entry">
+                <span class="timeline-year">2022</span> <span class="timeline-title">Hoffmann et al. — Chinchilla
+                    Scaling Laws</span>
+                <div class="timeline-desc">Showed that prior large models were undertrained: compute-optimal training
+                    requires ~20 tokens per parameter.</div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 4: KEY JUNCTIONS                                      -->
+        <!-- ============================================================ -->
+        <h2 id="sec4"><span class="sec-num">§4</span> The Key Junctions — Where Separate Ideas Converged</h2>
+
+        <p>
+            The history of deep learning is not just a list of inventions. It is a story of <em>convergences</em> —
+            moments when ideas from different fields came together to produce something greater than the sum of its
+            parts. These "junctions" are the most intellectually interesting points in the timeline.
+        </p>
+
+        <h3 id="sec4-1">4.1 Junction 1: Neuroscience × Mathematical Optimization = Perceptron (1957)</h3>
+
+        <div class="junction-box box">
+            <div class="label">Junction 1</div>
+            <p><strong>From neuroscience:</strong> The idea that the brain computes via networks of neurons that have
+                weighted connections and threshold-based activation.</p>
+            <p><strong>From optimization:</strong> The idea that you can minimize an error function by iteratively
+                adjusting parameters (gradient descent / error-correcting rules).</p>
+            <p><strong>The synthesis:</strong> Rosenblatt's perceptron — a network of artificial neurons that
+                <em>learns</em> its weights from data by minimizing classification errors. For the first time, a machine
+                could learn to recognize patterns without being explicitly programmed.</p>
+        </div>
+
+        <h3 id="sec4-2">4.2 Junction 2: Chain Rule × Automatic Differentiation × Multi-Layer Networks = Backpropagation
+            (1986)</h3>
+
+        <div class="junction-box box">
+            <div class="label">Junction 2</div>
+            <p><strong>From calculus:</strong> The chain rule (Leibniz, 1676) — derivatives of composed functions can be
+                computed by multiplying the derivatives of each component.</p>
+            <p><strong>From control theory:</strong> Automatic differentiation / dynamic programming applied to
+                multi-stage systems (Werbos, 1974).</p>
+            <p><strong>From connectionism:</strong> Multi-layer neural networks that can represent non-linear functions
+                (addressing Minsky & Papert's critique).</p>
+            <p><strong>The synthesis:</strong> Rumelhart, Hinton & Williams (1986) showed that the chain rule, applied
+                systematically through a multi-layer network, gives an efficient algorithm (backpropagation) for
+                computing the gradient of the loss with respect to every weight — making it possible to train deep
+                networks by gradient descent. This is arguably the single most important synthesis in the history of the
+                field.</p>
+        </div>
+
+        <h3 id="sec4-3">4.3 Junction 3: Statistical Learning Theory × Convolutions × GPUs = Deep CNNs (2012)</h3>
+
+        <div class="junction-box box">
+            <div class="label">Junction 3</div>
+            <p><strong>From signal processing:</strong> Convolution operations for shift-equivariant feature extraction
+                (used in image processing since the 1960s).</p>
+            <p><strong>From statistical learning:</strong> Large labeled datasets (ImageNet) enabling generalization of
+                complex models.</p>
+            <p><strong>From hardware engineering:</strong> GPUs (originally for graphics rendering) repurposed for
+                massively parallel matrix multiplication.</p>
+            <p><strong>From prior NN research:</strong> ReLU activation (solving vanishing gradients), dropout
+                (regularization), batch normalization (training stability).</p>
+            <p><strong>The synthesis:</strong> AlexNet (2012) combined all of these. The "deep learning revolution" was
+                not a single breakthrough — it was the simultaneous maturation of architecture (CNNs + ReLU), data
+                (ImageNet), hardware (GPUs), and training techniques (dropout). Remove any one of these, and AlexNet
+                would not have worked.</p>
+        </div>
+
+        <h3 id="sec4-4">4.4 Junction 4: Attention × Parallel Computation × Scale = Transformers (2017)</h3>
+
+        <div class="junction-box box">
+            <div class="label">Junction 4</div>
+            <p><strong>From neural machine translation:</strong> The attention mechanism (Bahdanau et al., 2015) —
+                allowing the decoder to "look at" any part of the input, weighted by learned relevance scores.</p>
+            <p><strong>From the parallelism problem:</strong> RNNs are inherently sequential, wasting GPU parallelism.
+                The desire for fully parallel sequence processing.</p>
+            <p><strong>From representation learning:</strong> The idea that the same input should be represented
+                differently depending on context (contextual embeddings).</p>
+            <p><strong>The synthesis:</strong> Vaswani et al. (2017) eliminated recurrence entirely, replacing it with
+                self-attention — every position attends to every other position in parallel. The Transformer
+                architecture enabled: (1) full parallelization during training, (2) direct modeling of long-range
+                dependencies, and (3) easy scaling to billions of parameters. When combined with massive data and
+                compute (GPT-3), this produced qualitatively new capabilities.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 5: COMMONLY CONFUSED CONCEPTS                         -->
+        <!-- ============================================================ -->
+        <h2 id="sec5"><span class="sec-num">§5</span> Commonly Confused Concepts — Precise Distinctions</h2>
+
+        <h3 id="sec5-1">5.1 AI vs. ML vs. DL</h3>
+
+        <table>
+            <tr>
+                <th>Aspect</th>
+                <th>AI</th>
+                <th>ML</th>
+                <th>DL</th>
+            </tr>
+            <tr>
+                <td><strong>Defining characteristic</strong></td>
+                <td>Goal: intelligent behavior</td>
+                <td>Method: learns from data</td>
+                <td>Tool: deep neural networks</td>
+            </tr>
+            <tr>
+                <td><strong>Requires data?</strong></td>
+                <td>Not necessarily (rules can be hand-coded)</td>
+                <td>Yes (by definition)</td>
+                <td>Yes (typically very large amounts)</td>
+            </tr>
+            <tr>
+                <td><strong>Requires neural networks?</strong></td>
+                <td>No</td>
+                <td>No</td>
+                <td>Yes (by definition)</td>
+            </tr>
+            <tr>
+                <td><strong>Feature engineering?</strong></td>
+                <td>Varies</td>
+                <td>Usually manual</td>
+                <td>Automatic (learned end-to-end)</td>
+            </tr>
+            <tr>
+                <td><strong>Example without the subset</strong></td>
+                <td>Chess engine (minimax search)</td>
+                <td>Random forest, SVM</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>Temporal scope</strong></td>
+                <td>Since 1956</td>
+                <td>Since 1959</td>
+                <td>Since 2006 (term), practice since ~2012</td>
+            </tr>
+        </table>
+
+
+        <h3 id="sec5-2">5.2 Learning Paradigms</h3>
+
+        <table>
+            <tr>
+                <th>Paradigm</th>
+                <th>Data</th>
+                <th>Signal</th>
+                <th>Example</th>
+                <th>DL Example</th>
+            </tr>
+            <tr>
+                <td><strong>Supervised</strong></td>
+                <td>$(x, y)$ pairs</td>
+                <td>Correct label for each input</td>
+                <td>Email spam detection</td>
+                <td>ImageNet classification (ResNet)</td>
+            </tr>
+            <tr>
+                <td><strong>Unsupervised</strong></td>
+                <td>$x$ only (no labels)</td>
+                <td>Structure in data itself</td>
+                <td>Customer segmentation</td>
+                <td>Autoencoders, GANs</td>
+            </tr>
+            <tr>
+                <td><strong>Self-Supervised</strong></td>
+                <td>$x$ only, but labels derived from $x$</td>
+                <td>Predict part of input from another part</td>
+                <td>—</td>
+                <td>BERT (mask prediction), GPT (next-token prediction)</td>
+            </tr>
+            <tr>
+                <td><strong>Reinforcement</strong></td>
+                <td>State-action-reward sequences</td>
+                <td>Delayed reward signal</td>
+                <td>Game playing</td>
+                <td>AlphaGo, RLHF for LLMs</td>
+            </tr>
+        </table>
+
+        <div class="insight-box box">
+            <div class="label">Self-Supervised Learning — The Key Modern Paradigm</div>
+            <p>Self-supervised learning (SSL) is the paradigm behind the most impactful recent models (GPT, BERT, CLIP,
+                DINO). It is sometimes called "unsupervised" in older literature, but it is more precise to call it
+                self-supervised because there <em>are</em> labels — they're just derived automatically from the data
+                itself (e.g., the next word in a sentence, a masked word, or a rotated image). SSL enables training on
+                virtually unlimited data without human annotation, which is what enables the scale of modern foundation
+                models.</p>
+        </div>
+
+
+        <h3 id="sec5-3">5.3 Models vs. Algorithms vs. Architectures vs. Frameworks</h3>
+
+        <div class="def-box box">
+            <div class="label">Four Levels of Abstraction</div>
+            <p><strong>Architecture:</strong> The structural design — how layers are arranged, what operations each
+                layer performs, how information flows. Examples: ResNet-50, Transformer, U-Net. An architecture is a
+                <em>template</em> — it has no learned parameters yet.</p>
+            <p><strong>Model:</strong> A specific architecture with specific learned parameter values. A model is the
+                result of training. "GPT-4" is a model — it is a specific Transformer architecture with specific trained
+                weights. Two different training runs of the same architecture produce two different models.</p>
+            <p><strong>Algorithm:</strong> A procedure for accomplishing a task. "Backpropagation" is an algorithm (for
+                computing gradients). "Adam" is an algorithm (for updating parameters). "Gradient descent" is an
+                algorithm. Algorithms are not learned; they are designed.</p>
+            <p><strong>Framework:</strong> A software library that implements architectures, algorithms, and training
+                infrastructure. Examples: PyTorch, TensorFlow, JAX. A framework is an engineering tool, not a
+                mathematical concept.</p>
+        </div>
+
+
+        <h3 id="sec5-4">5.4 Training vs. Inference vs. Fine-Tuning</h3>
+
+        <table>
+            <tr>
+                <th>Phase</th>
+                <th>What Happens</th>
+                <th>Parameters Change?</th>
+                <th>Data Needed</th>
+                <th>Cost (typical)</th>
+            </tr>
+            <tr>
+                <td><strong>Training</strong></td>
+                <td>Learn parameters from scratch</td>
+                <td>Yes (all)</td>
+                <td>Large labeled dataset</td>
+                <td>Very high (days–months on GPUs)</td>
+            </tr>
+            <tr>
+                <td><strong>Inference</strong></td>
+                <td>Use trained model on new inputs</td>
+                <td><strong>No</strong></td>
+                <td>One input at a time</td>
+                <td>Low (milliseconds per input)</td>
+            </tr>
+            <tr>
+                <td><strong>Fine-Tuning</strong></td>
+                <td>Adapt pre-trained model to new task</td>
+                <td>Yes (some or all)</td>
+                <td>Small task-specific dataset</td>
+                <td>Moderate (hours–days)</td>
+            </tr>
+            <tr>
+                <td><strong>Pre-Training</strong></td>
+                <td>Train on large general corpus</td>
+                <td>Yes (all)</td>
+                <td>Massive unlabeled data</td>
+                <td>Extremely high</td>
+            </tr>
+        </table>
+
+
+        <h3 id="sec5-5">5.5 Parameters vs. Hyperparameters vs. Architecture Choices</h3>
+
+        <table>
+            <tr>
+                <th>Concept</th>
+                <th>Set By</th>
+                <th>When</th>
+                <th>Examples</th>
+            </tr>
+            <tr>
+                <td><strong>Parameters</strong> ($\bm{\theta}$)</td>
+                <td>Learning algorithm (gradient descent)</td>
+                <td>During training</td>
+                <td>Weights, biases in all layers</td>
+            </tr>
+            <tr>
+                <td><strong>Hyperparameters</strong></td>
+                <td>Human (or automated search)</td>
+                <td>Before training</td>
+                <td>Learning rate, batch size, dropout rate, weight decay</td>
+            </tr>
+            <tr>
+                <td><strong>Architecture choices</strong></td>
+                <td>Human (or NAS)</td>
+                <td>Before training</td>
+                <td>Number of layers, layer widths, kernel sizes, activation function</td>
+            </tr>
+        </table>
+
+        <div class="warning-box box">
+            <div class="label">The Distinction Matters for Efficiency</div>
+            <p>Parameters are what the network learns. Their count ($P$) determines model memory ($4P$ bytes at FP32)
+                and most of the FLOPs. Hyperparameters determine <em>how well</em> the parameters are learned — a bad
+                learning rate can waste 10× the training FLOPs by requiring 10× more epochs. Architecture choices
+                determine the <em>structure</em> of computation — the same parameter budget can be 10× more efficient as
+                a MobileNet than as a VGG. All three levels independently affect total training cost.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 6: PREREQUISITE MAP                                   -->
+        <!-- ============================================================ -->
+        <h2 id="sec6"><span class="sec-num">§6</span> The Prerequisite Knowledge Map</h2>
+
+        <p>
+            Understanding deep neural networks at the level of detail in Parts I–VI of this series requires knowledge
+            from several areas of mathematics and computer science. Here is a precise map of what is needed and where it
+            connects.
+        </p>
+
+        <div class="figure">
+            <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" style="max-width:790px;">
+                <defs>
+                    <marker id="ar2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                        <polygon points="0 0,7 2.5,0 5" fill="#6b6560" />
+                    </marker>
+                </defs>
+
+                <text x="400" y="22" text-anchor="middle" font-family="Source Sans 3" font-size="15" font-weight="700"
+                    fill="#2c2824">Prerequisite Knowledge Map for Deep Learning</text>
+
+                <!-- Level 0: Mathematics foundations -->
+                <rect x="20" y="50" width="145" height="55" rx="6" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+                <text x="92" y="72" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+                    fill="#1a5276">Linear Algebra</text>
+                <text x="92" y="90" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Vectors, matrices, norms</text>
+
+                <rect x="180" y="50" width="145" height="55" rx="6" fill="#e8f0f7" stroke="#1a5276"
+                    stroke-width="1.5" />
+                <text x="252" y="72" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+                    fill="#1a5276">Calculus</text>
+                <text x="252" y="90" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Derivatives, chain rule</text>
+
+                <rect x="340" y="50" width="145" height="55" rx="6" fill="#e8f0f7" stroke="#1a5276"
+                    stroke-width="1.5" />
+                <text x="412" y="72" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+                    fill="#1a5276">Probability &amp; Stats</text>
+                <text x="412" y="90" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Distributions, MLE, Bayes</text>
+
+                <rect x="500" y="50" width="145" height="55" rx="6" fill="#e8f0f7" stroke="#1a5276"
+                    stroke-width="1.5" />
+                <text x="572" y="72" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+                    fill="#1a5276">Programming</text>
+                <text x="572" y="90" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Python, NumPy</text>
+
+                <rect x="660" y="50" width="120" height="55" rx="6" fill="#e8f0f7" stroke="#1a5276"
+                    stroke-width="1.5" />
+                <text x="720" y="72" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+                    fill="#1a5276">CS Basics</text>
+                <text x="720" y="90" text-anchor="middle" font-family="Source Sans 3" font-size="10"
+                    fill="#6b6560">Complexity, memory</text>
+
+                <!-- Arrows down -->
+                <line x1="92" y1="105" x2="200" y2="145" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+                <line x1="252" y1="105" x2="250" y2="145" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+                <line x1="412" y1="105" x2="310" y2="145" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+
+                <!-- Level 1: Part I -->
+                <rect x="150" y="145" width="220" height="55" rx="8" fill="#fdf5e0" stroke="#8b6914" stroke-width="2" />
+                <text x="260" y="167" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#8b6914">Part I: Math Foundations</text>
+                <text x="260" y="188" text-anchor="middle" font-family="Source Sans 3" font-size="11"
+                    fill="#6b6560">Gradient descent, AD, softmax, CE</text>
+
+                <!-- Level 2: Part II -->
+                <line x1="260" y1="200" x2="260" y2="225" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+                <rect x="150" y="225" width="220" height="55" rx="8" fill="#fdf0ea" stroke="#8b2500" stroke-width="2" />
+                <text x="260" y="247" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#8b2500">Part II: MLPs</text>
+                <text x="260" y="268" text-anchor="middle" font-family="Source Sans 3" font-size="11"
+                    fill="#6b6560">Neurons, layers, backprop, activations</text>
+
+                <!-- Branches: Part III and Part IV -->
+                <line x1="210" y1="280" x2="140" y2="310" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+                <line x1="310" y1="280" x2="380" y2="310" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+
+                <rect x="30" y="310" width="210" height="55" rx="8" fill="#fdf0ea" stroke="#8b2500" stroke-width="2" />
+                <text x="135" y="332" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#8b2500">Part III: CNNs</text>
+                <text x="135" y="353" text-anchor="middle" font-family="Source Sans 3" font-size="11"
+                    fill="#6b6560">Convolution, pooling, architectures</text>
+
+                <rect x="280" y="310" width="210" height="55" rx="8" fill="#fdf0ea" stroke="#8b2500" stroke-width="2" />
+                <text x="385" y="332" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#8b2500">Part IV: Training</text>
+                <text x="385" y="353" text-anchor="middle" font-family="Source Sans 3" font-size="11"
+                    fill="#6b6560">Loss, optimizers, regularization, BN</text>
+
+                <!-- Part V and VI -->
+                <line x1="135" y1="365" x2="300" y2="390" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+                <line x1="385" y1="365" x2="360" y2="390" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+
+                <!-- Part V from CS basics too -->
+                <line x1="720" y1="105" x2="560" y2="160" stroke="#6b6560" stroke-width="1" stroke-dasharray="4,3"
+                    marker-end="url(#ar2)" />
+
+                <!-- V and VI together -->
+                <rect x="530" y="310" width="220" height="55" rx="8" fill="#e5f5f2" stroke="#0e6655" stroke-width="2" />
+                <text x="640" y="332" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#0e6655">Part V: Efficiency</text>
+                <text x="640" y="353" text-anchor="middle" font-family="Source Sans 3" font-size="11"
+                    fill="#6b6560">FLOPs, memory, hardware, scaling</text>
+
+                <line x1="640" y1="365" x2="560" y2="390" stroke="#6b6560" stroke-width="1" marker-end="url(#ar2)" />
+
+                <rect x="260" y="380" width="300" height="18" rx="4" fill="#fce8f0" stroke="#8b1a4a" stroke-width="1" />
+                <text x="410" y="394" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+                    fill="#8b1a4a">Part VI: Transformers, RNNs, Frontiers</text>
+
+            </svg>
+            <div class="figure-caption"><strong>Figure 6.1.</strong> Prerequisite map for the six-part series. Linear
+                algebra, calculus, and probability flow into Part I. Parts II through IV build sequentially. Part V
+                draws on CS fundamentals (complexity, memory models). Part VI synthesizes everything.</div>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- REFERENCES                                                    -->
+        <!-- ============================================================ -->
+        <h2 id="sec-refs"><span class="sec-num">§</span> References</h2>
+
+        <div class="ref-section">
+            <h4>Foundational Works</h4>
+            <p>[1] McCulloch, W. S. & Pitts, W. (1943). A Logical Calculus of the Ideas Immanent in Nervous Activity.
+                <em>Bulletin of Mathematical Biophysics</em>, 5(4), 115–133.</p>
+            <p>[2] Hebb, D. O. (1949). <em>The Organization of Behavior</em>. Wiley.</p>
+            <p>[3] Rosenblatt, F. (1958). The Perceptron: A Probabilistic Model for Information Storage and Organization
+                in the Brain. <em>Psychological Review</em>, 65(6), 386–408.</p>
+            <p>[4] Minsky, M. & Papert, S. (1969). <em>Perceptrons</em>. MIT Press.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Backpropagation and Revival</h4>
+            <p>[5] Werbos, P. (1974). <em>Beyond Regression: New Tools for Prediction and Analysis in the Behavioral
+                    Sciences</em>. PhD thesis, Harvard University.</p>
+            <p>[6] Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). Learning Representations by
+                Back-Propagating Errors. <em>Nature</em>, 323, 533–536.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Deep Learning Revolution</h4>
+            <p>[7] Hinton, G. E., Osindero, S., & Teh, Y. (2006). A Fast Learning Algorithm for Deep Belief Nets.
+                <em>Neural Computation</em>, 18(7), 1527–1554.</p>
+            <p>[8] Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). ImageNet Classification with Deep
+                Convolutional Neural Networks. <em>NeurIPS 2012</em>.</p>
+            <p>[9] LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep Learning. <em>Nature</em>, 521, 436–444.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Transformer and Foundation Models</h4>
+            <p>[10] Vaswani, A. et al. (2017). Attention Is All You Need. <em>NeurIPS 2017</em>.</p>
+            <p>[11] Devlin, J. et al. (2019). BERT: Pre-training of Deep Bidirectional Transformers. <em>NAACL
+                    2019</em>.</p>
+            <p>[12] Brown, T. et al. (2020). Language Models are Few-Shot Learners (GPT-3). <em>NeurIPS 2020</em>.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Other</h4>
+            <p>[13] Mitchell, T. (1997). <em>Machine Learning</em>. McGraw-Hill. — The standard definition of ML.</p>
+            <p>[14] Goodfellow, I., Bengio, Y., & Courville, A. (2016). <em>Deep Learning</em>. MIT Press.</p>
+            <p>[15] Shannon, C. E. (1948). A Mathematical Theory of Communication. <em>Bell System Technical
+                    Journal</em>, 27(3), 379–423.</p>
+            <p>[16] Turing, A. (1936). On Computable Numbers. <em>Proc. London Mathematical Society</em>, 42(1),
+                230–265.</p>
+            <p>[17] Hochreiter, S. (1991). Untersuchungen zu dynamischen neuronalen Netzen. Diploma thesis, TU Munich. —
+                First identification of vanishing gradients.</p>
+            <p>[18] Hochreiter, S. & Schmidhuber, J. (1997). Long Short-Term Memory. <em>Neural Computation</em>, 9(8),
+                1735–1780.</p>
+        </div>
+
+        <!-- ==================== SERIES GUIDE ==================== -->
+        <hr>
+        <div style="text-align:center;padding:40px 0;">
+            <p
+                style="font-family:'Source Sans 3',sans-serif;font-weight:700;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">
+                Reading Order</p>
+            <p style="font-size:17px;color:var(--text-muted);">
+                <strong style="color:var(--accent);">Part 0</strong> (this document) →
+                <strong>Part I</strong> (Mathematical Foundations) →
+                <strong>Part II</strong> (MLPs) →
+                <strong>Part III</strong> (CNNs) →
+                <strong>Part IV</strong> (Training) →
+                <strong>Part V</strong> (Efficiency) →
+                <strong>Part VI</strong> (Advanced Topics)
+            </p>
+        </div>
+
+    
+  <!-- Back to Index -->
+  <div style="margin-top: 4rem; padding-top: 2rem; border-top: var(--border-width-thin, 1px) solid var(--footnotes-border-color, #ddd);">
+    <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+  </div>
+
+  <!-- Visitor Counter -->
+  <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00004">
+    <div class="visitor-stats">
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Total visits:</span>
+        <span class="visitor-stat-count" id="overall-visitor-count"></span>
+      </div>
+      <span class="visitor-stat-separator">§</span>
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Page visits:</span>
+        <span class="visitor-stat-count" id="page-visitor-count"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Portfolio nav script -->
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+    let lastScrollTop = 0;
+    const nav = document.querySelector('.top-nav');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollPos > 50) { nav.classList.add('nav-scrolled'); } else { nav.classList.remove('nav-scrolled'); }
+      if (scrollPos > 100) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) { nav.classList.add('nav-hidden'); } else { nav.classList.remove('nav-hidden'); }
+      }
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    });
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../../firebase-config.js"></script>
+  <script src="../../../visitor-counter.js"></script>
+</body>
+
+</html>

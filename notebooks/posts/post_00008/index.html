@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part IV — Training Components — Complete Computational Analysis</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Source+Sans+3:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+  <script>
+    MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']], macros: { R: '\\mathbb{R}', bm: ['\\boldsymbol{#1}', 1], pd: ['\\frac{\\partial #1}{\\partial #2}', 2], T: '^\\top' } }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+  <style>
+    :root {
+      --bg: #faf8f5;
+      --bg-alt: #f0ece6;
+      --bg-code: #1a1b26;
+      --text: #2c2824;
+      --text-muted: #6b6560;
+      --accent: #8b2500;
+      --accent-bg: #fdf0ea;
+      --border: #d4cfc8;
+      --blue: #1a5276;
+      --blue-bg: #e8f0f7;
+      --green: #1e6e3e;
+      --green-bg: #e8f5ec;
+      --purple: #5b2c8e;
+      --purple-bg: #f0e8f7;
+      --gold: #8b6914;
+      --gold-bg: #fdf5e0;
+      --teal: #0e6655;
+      --teal-bg: #e5f5f2;
+      --orange: #b35900;
+      --orange-bg: #fff3e6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 19px;
+      line-height: 1.75;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 30px 120px;
+    }
+
+    .doc-header {
+      text-align: center;
+      padding: 60px 0 50px;
+      border-bottom: 3px double var(--border);
+      margin-bottom: 50px;
+    }
+
+    .doc-header .part-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .doc-header h1 {
+      font-family: 'Crimson Pro', serif;
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .doc-header .subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      font-style: italic;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 27px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 70px;
+      margin-bottom: 8px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    h2 .sec-num {
+      font-weight: 300;
+      opacity: .6;
+      margin-right: 6px;
+    }
+
+    h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+
+    h4 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 16px;
+    }
+
+    .box {
+      padding: 18px 22px;
+      margin: 24px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .box .label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+
+    .def-box {
+      background: var(--blue-bg);
+      border-left: 4px solid var(--blue);
+    }
+
+    .def-box .label {
+      color: var(--blue);
+    }
+
+    .theorem-box {
+      background: var(--purple-bg);
+      border-left: 4px solid var(--purple);
+    }
+
+    .theorem-box .label {
+      color: var(--purple);
+    }
+
+    .compute-box {
+      background: var(--gold-bg);
+      border-left: 4px solid var(--gold);
+    }
+
+    .compute-box .label {
+      color: var(--gold);
+    }
+
+    .example-box {
+      background: var(--green-bg);
+      border-left: 4px solid var(--green);
+    }
+
+    .example-box .label {
+      color: var(--green);
+    }
+
+    .warning-box {
+      background: var(--accent-bg);
+      border-left: 4px solid var(--accent);
+    }
+
+    .warning-box .label {
+      color: var(--accent);
+    }
+
+    .insight-box {
+      background: var(--teal-bg);
+      border-left: 4px solid var(--teal);
+    }
+
+    .insight-box .label {
+      color: var(--teal);
+    }
+
+    .algo-box {
+      background: var(--orange-bg);
+      border-left: 4px solid var(--orange);
+    }
+
+    .algo-box .label {
+      color: var(--orange);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 15.5px;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+
+    th {
+      background: var(--bg-alt);
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--border);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text-muted);
+    }
+
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: 2px solid var(--border);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      background: var(--bg-alt);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .figure {
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    .figure svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .figure-caption {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .figure-caption strong {
+      color: var(--text);
+      font-style: normal;
+    }
+
+    .ref-section {
+      background: var(--bg-alt);
+      padding: 24px 28px;
+      border-radius: 8px;
+      margin: 30px 0;
+    }
+
+    .ref-section h4 {
+      font-family: 'Source Sans 3', sans-serif;
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .ref-section p {
+      font-size: 15px;
+      margin-bottom: 8px;
+      padding-left: 24px;
+      text-indent: -24px;
+      line-height: 1.55;
+    }
+
+    mjx-container[jax="SVG"][display="true"] {
+      margin: 20px 0 !important;
+      overflow-x: auto;
+    }
+
+    .toc {
+      background: var(--bg-alt);
+      padding: 28px 32px;
+      border-radius: 8px;
+      margin-bottom: 50px;
+    }
+
+    .toc h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    .toc ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .toc li {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 16px;
+      padding: 4px 0;
+      color: var(--text-muted);
+    }
+
+    .toc li a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .toc li a:hover {
+      text-decoration: underline;
+    }
+
+    .toc li.sub {
+      padding-left: 24px;
+      font-size: 15px;
+    }
+
+    strong {
+      font-weight: 700;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 50px 0;
+    }
+
+    /* Navigation */
+    .nav-bar {
+      background: var(--bg-alt);
+      padding: 15px 20px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-bar a {
+      text-decoration: none;
+      color: var(--text);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .nav-bar a.active {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 24px;
+    }
+
+    img,
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container {
+      padding: 20px 20px 120px;
+    }
+  </style>
+  <!-- Portfolio CSS -->
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+  <link rel="stylesheet" href="../../../visitor-counter.css" />
+
+<body class="text-justify">
+  <!-- Portfolio Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <!-- DNN Series Navigation -->
+  <nav class="nav-bar">
+    <a href="../../index.html#dnn">Home</a>
+    <a href="../post_00004/index.html">Part 0</a>
+    <a href="../post_00005/index.html">Part I</a>
+    <a href="../post_00006/index.html">Part II</a>
+    <a href="../post_00007/index.html">Part III</a>
+    <a href="../post_00008/index.html" class="active">Part IV</a>
+    <a href="../post_00009/index.html">Part V</a>
+    <a href="../post_00010/index.html">Part VI</a>
+  </nav>
+  
+  <div class="container">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" style="margin-bottom:1.5rem; font-size:0.85em; opacity:0.7;">
+    <a href="../../index.html" style="text-decoration:none; color:var(--body-color);">Notebook</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#cs" style="text-decoration:none; color:var(--body-color);">Computer Science</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#dnn" style="text-decoration:none; color:var(--body-color);">Deep Neural Networks</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <span>Part IV: Training</span>
+  </nav>
+
+
+    <!-- ==================== HEADER ==================== -->
+    <div class="doc-header">
+      <div class="part-label">Part IV of VI</div>
+      <h1>Training Components — Complete Computational Analysis</h1>
+      <div class="subtitle">Loss functions, optimizers, regularization, normalization, and learning rate schedules —
+        every update rule derived, every FLOP counted, every byte of memory tracked</div>
+    </div>
+
+    <!-- ==================== TOC ==================== -->
+    <div class="toc">
+      <h3>Contents</h3>
+      <ul>
+        <li><a href="#sec12">12. Loss Functions</a></li>
+        <li class="sub"><a href="#sec12-1">12.1 Mean Squared Error (MSE)</a></li>
+        <li class="sub"><a href="#sec12-2">12.2 Cross-Entropy Loss</a></li>
+        <li class="sub"><a href="#sec12-3">12.3 Other Loss Functions</a></li>
+        <li><a href="#sec13">13. Optimization Algorithms</a></li>
+        <li class="sub"><a href="#sec13-1">13.1 Stochastic Gradient Descent (SGD)</a></li>
+        <li class="sub"><a href="#sec13-2">13.2 SGD with Momentum</a></li>
+        <li class="sub"><a href="#sec13-3">13.3 Nesterov Accelerated Gradient</a></li>
+        <li class="sub"><a href="#sec13-4">13.4 AdaGrad</a></li>
+        <li class="sub"><a href="#sec13-5">13.5 RMSProp</a></li>
+        <li class="sub"><a href="#sec13-6">13.6 Adam</a></li>
+        <li class="sub"><a href="#sec13-7">13.7 AdamW</a></li>
+        <li class="sub"><a href="#sec13-8">13.8 Optimizer Comparison</a></li>
+        <li><a href="#sec14">14. Regularization Techniques</a></li>
+        <li class="sub"><a href="#sec14-1">14.1 L1 Regularization</a></li>
+        <li class="sub"><a href="#sec14-2">14.2 L2 Regularization / Weight Decay</a></li>
+        <li class="sub"><a href="#sec14-3">14.3 Dropout</a></li>
+        <li class="sub"><a href="#sec14-4">14.4 Data Augmentation</a></li>
+        <li><a href="#sec15">15. Normalization Layers</a></li>
+        <li class="sub"><a href="#sec15-1">15.1 Batch Normalization</a></li>
+        <li class="sub"><a href="#sec15-2">15.2 Layer Normalization</a></li>
+        <li class="sub"><a href="#sec15-3">15.3 Group &amp; Instance Normalization</a></li>
+        <li class="sub"><a href="#sec15-4">15.4 Normalization Comparison</a></li>
+        <li><a href="#sec16">16. Learning Rate Scheduling</a></li>
+        <li class="sub"><a href="#sec16-1">16.1 Step Decay</a></li>
+        <li class="sub"><a href="#sec16-2">16.2 Cosine Annealing</a></li>
+        <li class="sub"><a href="#sec16-3">16.3 Warmup</a></li>
+        <li class="sub"><a href="#sec16-4">16.4 One-Cycle Policy</a></li>
+        <li><a href="#sec-summary">Computational Summary</a></li>
+        <li><a href="#sec-refs">Complete References</a></li>
+      </ul>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 12: LOSS FUNCTIONS                                    -->
+    <!-- ============================================================ -->
+    <h2 id="sec12"><span class="sec-num">§12</span> Loss Functions — Detailed Computation</h2>
+
+    <p>
+      The loss function is the objective being minimized by gradient descent. Its computational cost appears in every
+      training step (forward pass), and its gradient is the starting point of backpropagation. While the loss
+      computation itself is typically cheap compared to the network's forward pass, the <em>properties</em> of the loss
+      function (smoothness, gradient behavior near zero) have profound effects on convergence speed and therefore total
+      training FLOPs.
+    </p>
+
+    <h3 id="sec12-1">12.1 Mean Squared Error (MSE)</h3>
+
+    <div class="def-box box">
+      <div class="label">MSE Loss</div>
+      $$L_{\text{MSE}} = \frac{1}{B}\sum_{i=1}^{B} \frac{1}{d}\sum_{j=1}^{d}(y_{ij} - \hat{y}_{ij})^2$$
+      <p>where $B$ is batch size and $d$ is the output dimension (for regression) or number of classes.</p>
+      <p><strong>Gradient:</strong></p>
+      $$\pd{L}{\hat{y}_{ij}} = \frac{2}{Bd}(\hat{y}_{ij} - y_{ij})$$
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">MSE — Computational Cost</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Operation</th>
+            <th>FLOPs</th>
+          </tr>
+          <tr>
+            <td>Difference: $\hat{y}_{ij} - y_{ij}$</td>
+            <td>$Bd$ subtractions</td>
+          </tr>
+          <tr>
+            <td>Square: $(\cdot)^2$</td>
+            <td>$Bd$ multiplications</td>
+          </tr>
+          <tr>
+            <td>Sum over $d$ and $B$</td>
+            <td>$Bd - 1$ additions</td>
+          </tr>
+          <tr>
+            <td>Division by $Bd$</td>
+            <td>1 division</td>
+          </tr>
+          <tr>
+            <td><strong>Total forward</strong></td>
+            <td>$\approx 3Bd$ FLOPs</td>
+          </tr>
+          <tr>
+            <td><strong>Gradient computation</strong></td>
+            <td>$Bd$ subtractions + $Bd$ multiplications = $2Bd$ FLOPs</td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Connection to MLE:</strong> Minimizing MSE is equivalent to maximizing the log-likelihood under a
+        Gaussian model $P(y|\hat{y}) = \mathcal{N}(\hat{y}, \sigma^2 I)$ with fixed variance. The gradient $\propto
+        (\hat{y} - y)$ pushes predictions toward targets linearly — no saturation, but also no gradient boost for badly
+        wrong predictions.</p>
+    </div>
+
+
+    <h3 id="sec12-2">12.2 Cross-Entropy Loss</h3>
+
+    <div class="def-box box">
+      <div class="label">Binary Cross-Entropy (BCE)</div>
+      $$L_{\text{BCE}} = -\frac{1}{B}\sum_{i=1}^{B}\left[y_i \log(\hat{y}_i) + (1-y_i)\log(1-\hat{y}_i)\right]$$
+      <p>where $\hat{y}_i = \sigma(z_i) \in (0,1)$.</p>
+      <p><strong>Gradient w.r.t. logit $z_i$ (fused with sigmoid):</strong></p>
+      $$\pd{L}{z_i} = \frac{1}{B}(\hat{y}_i - y_i)$$
+    </div>
+
+    <div class="def-box box">
+      <div class="label">Categorical Cross-Entropy</div>
+      $$L_{\text{CE}} = -\frac{1}{B}\sum_{i=1}^{B}\sum_{c=1}^{C} y_{ic}\log(\hat{y}_{ic})$$
+      <p>For one-hot labels (standard case): $L_{\text{CE}} = -\frac{1}{B}\sum_{i=1}^{B}\log(\hat{y}_{i,k_i})$ where
+        $k_i$ is the true class.</p>
+      <p><strong>Gradient w.r.t. logits (fused with softmax):</strong></p>
+      $$\pd{L}{\bm{z}_i} = \frac{1}{B}(\hat{\bm{y}}_i - \bm{y}_i) \in \R^C$$
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">Cross-Entropy — Computational Cost</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Variant</th>
+            <th>Forward FLOPs</th>
+            <th>Gradient FLOPs</th>
+            <th>Notes</th>
+          </tr>
+          <tr>
+            <td>BCE (one-hot)</td>
+            <td>$\approx 4B$ (2 logs, 2 mults, sum)</td>
+            <td>$B$ (subtraction)</td>
+            <td>Fused with sigmoid</td>
+          </tr>
+          <tr>
+            <td>CE, one-hot labels</td>
+            <td>$\approx 2B$ (1 log per sample + sum)</td>
+            <td>$BC$ (subtraction)</td>
+            <td>Fused with softmax</td>
+          </tr>
+          <tr>
+            <td>CE, soft labels</td>
+            <td>$\approx 3BC$ (C logs per sample)</td>
+            <td>$BC$ (subtraction)</td>
+            <td>Label smoothing, distillation</td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Numerical stability:</strong> The fused <code>log_softmax</code> computation avoids computing
+        $\log(\text{softmax})$ separately (which loses precision for extreme logits). Instead:</p>
+      $$\log \text{softmax}(z_c) = z_c - \log\!\left(\sum_j e^{z_j}\right) = z_c - \left(\max(\bm{z}) +
+      \log\!\left(\sum_j e^{z_j - \max(\bm{z})}\right)\right)$$
+      <p>This log-sum-exp trick costs $\approx 3C$ FLOPs per sample (max + shift + sum of exp + log) and is numerically
+        stable.</p>
+    </div>
+
+    <div class="warning-box box">
+      <div class="label">Cross-Entropy vs. MSE for Classification — Gradient Behavior</div>
+      <p>Consider a sample where the true class is $k$ and the predicted probability $\hat{y}_k \approx 0$ (very wrong
+        prediction):</p>
+      <p><strong>CE gradient:</strong> $\pd{L}{z_k} \approx \hat{y}_k - 1 \approx -1$ — strong, constant signal to
+        correct the mistake.</p>
+      <p><strong>MSE gradient:</strong> $\pd{L}{\hat{y}_k} \propto \hat{y}_k - 1 \approx -1$, but this must pass through
+        $\sigma'(z_k)$ which is near zero when $\hat{y}_k$ is near 0 or 1 — the gradient vanishes.</p>
+      <p>Cross-entropy's gradient is stronger when predictions are badly wrong, which leads to faster convergence and
+        therefore <strong>fewer total training FLOPs</strong> to reach a given accuracy. This is why cross-entropy is
+        universally preferred for classification.</p>
+    </div>
+
+
+    <h3 id="sec12-3">12.3 Other Loss Functions</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>Loss</th>
+          <th>Formula</th>
+          <th>Forward FLOPs</th>
+          <th>Use Case</th>
+        </tr>
+        <tr>
+          <td><strong>Hinge</strong></td>
+          <td>$\max(0, 1 - y \cdot \hat{y})$</td>
+          <td>$3B$ (mult, sub, max)</td>
+          <td>SVMs, some classifiers</td>
+        </tr>
+        <tr>
+          <td><strong>Huber</strong></td>
+          <td>$\frac{1}{2}(y-\hat{y})^2$ if $|y-\hat{y}| \leq \delta$, else $\delta|y-\hat{y}|-\frac{1}{2}\delta^2$</td>
+          <td>$\approx 4Bd$</td>
+          <td>Robust regression</td>
+        </tr>
+        <tr>
+          <td><strong>Focal</strong></td>
+          <td>$-\alpha_t(1-\hat{y}_t)^\gamma \log(\hat{y}_t)$</td>
+          <td>$\approx 6BC$</td>
+          <td>Class imbalance (detection)</td>
+        </tr>
+        <tr>
+          <td><strong>KL Divergence</strong></td>
+          <td>$\sum p(x)\log\frac{p(x)}{q(x)}$</td>
+          <td>$\approx 5BC$</td>
+          <td>Knowledge distillation, VAEs</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §12</h4>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 6.2.2: Cost Functions.</p>
+      <p>[2] Lin, T. et al. (2017). Focal Loss for Dense Object Detection. <em>ICCV 2017</em>.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 13: OPTIMIZATION ALGORITHMS                           -->
+    <!-- ============================================================ -->
+    <h2 id="sec13"><span class="sec-num">§13</span> Optimization Algorithms — Step-by-Step Computation</h2>
+
+    <p>
+      The optimizer is responsible for updating the model's parameters using the computed gradients. Each optimizer
+      defines a different update rule with different memory requirements, computational costs, and convergence
+      properties. We analyze each optimizer in terms of: the exact update equations, per-step FLOPs, additional memory
+      beyond the parameters and gradients, and the hyperparameters that control its behavior.
+    </p>
+
+    <p>
+      Throughout this section, $P$ denotes the total parameter count, $\bm{g}_t = \nabla_{\bm{\theta}} L(\bm{\theta}_t)$
+      denotes the gradient at step $t$, and $\eta$ is the learning rate.
+    </p>
+
+
+    <h3 id="sec13-1">13.1 Stochastic Gradient Descent (SGD)</h3>
+
+    <div class="algo-box box">
+      <div class="label">SGD Update Rule</div>
+      $$\bm{\theta}_{t+1} = \bm{\theta}_t - \eta \, \bm{g}_t$$
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra state memory</td>
+            <td><strong>0</strong></td>
+          </tr>
+          <tr>
+            <td>Per-step FLOPs</td>
+            <td>$P$ multiplications (scaling) + $P$ subtractions = <strong>$2P$</strong></td>
+          </tr>
+          <tr>
+            <td>Hyperparameters</td>
+            <td>$\eta$ (learning rate)</td>
+          </tr>
+        </table>
+      </div>
+      <p>SGD is the simplest optimizer with the lowest memory footprint and per-step cost. However, it typically
+        requires many more iterations to converge, so the <strong>total training FLOPs</strong> (per-step cost × number
+        of steps) may be higher than more sophisticated optimizers.</p>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="max-width:780px;">
+        <defs>
+          <marker id="ar" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <polygon points="0 0,7 2.5,0 5" fill="#2c2824" />
+          </marker>
+        </defs>
+        <!-- Memory diagram -->
+        <text x="400" y="20" text-anchor="middle" font-family="Source Sans 3" font-size="15" font-weight="700"
+          fill="#2c2824">Optimizer Memory Footprint Comparison (for P parameters, float32)</text>
+
+        <!-- SGD -->
+        <rect x="30" y="45" width="100" height="40" rx="4" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <text x="80" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1a5276">θ
+          (4P)</text>
+        <text x="80" y="105" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#1a5276">SGD</text>
+        <text x="80" y="120" text-anchor="middle" font-family="Source Sans 3" font-size="12" fill="#6b6560">Total: 4P
+          bytes</text>
+
+        <!-- SGD + Momentum -->
+        <rect x="175" y="45" width="100" height="40" rx="4" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <text x="225" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1a5276">θ
+          (4P)</text>
+        <rect x="175" y="90" width="100" height="40" rx="4" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="1.5" />
+        <text x="225" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#5b2c8e">v
+          (4P)</text>
+        <text x="225" y="152" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#5b2c8e">Momentum</text>
+        <text x="225" y="167" text-anchor="middle" font-family="Source Sans 3" font-size="12" fill="#6b6560">Total: 8P
+          bytes</text>
+
+        <!-- Adam -->
+        <rect x="345" y="45" width="100" height="40" rx="4" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <text x="395" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1a5276">θ
+          (4P)</text>
+        <rect x="345" y="90" width="100" height="40" rx="4" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="1.5" />
+        <text x="395" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#5b2c8e">m
+          (4P)</text>
+        <rect x="345" y="135" width="100" height="40" rx="4" fill="#fdf0ea" stroke="#8b2500" stroke-width="1.5" />
+        <text x="395" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#8b2500">v
+          (4P)</text>
+        <text x="395" y="195" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#8b2500">Adam</text>
+        <text x="395" y="210" text-anchor="middle" font-family="Source Sans 3" font-size="12" fill="#6b6560">Total: 12P
+          bytes</text>
+
+        <!-- With gradients -->
+        <rect x="530" y="40" width="230" height="155" rx="6" fill="#fdf5e0" stroke="#8b6914" stroke-width="1" />
+        <text x="645" y="62" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#8b6914">Full Training Memory</text>
+        <text x="540" y="82" font-family="Source Sans 3" font-size="12" fill="#2c2824">Params (θ): 4P bytes
+          (always)</text>
+        <text x="540" y="100" font-family="Source Sans 3" font-size="12" fill="#2c2824">Gradients (g): 4P bytes
+          (always)</text>
+        <text x="540" y="122" font-family="Source Sans 3" font-size="12" fill="#1a5276">SGD: 8P total</text>
+        <text x="540" y="140" font-family="Source Sans 3" font-size="12" fill="#5b2c8e">SGD+Mom: 12P total (1.5×)</text>
+        <text x="540" y="158" font-family="Source Sans 3" font-size="12" fill="#8b2500">Adam: 16P total (2×)</text>
+        <text x="540" y="182" font-family="Source Sans 3" font-size="11" font-weight="700" fill="#8b6914">For 100M param
+          model (float32):</text>
+        <text x="540" y="196" font-family="Source Sans 3" font-size="11" fill="#8b6914">SGD: 0.8GB | Mom: 1.2GB | Adam:
+          1.6GB</text>
+      </svg>
+      <div class="figure-caption"><strong>Figure 13.1.</strong> Optimizer memory footprint comparison. SGD stores only
+        parameters. Momentum adds one velocity vector ($+4P$ bytes). Adam adds first and second moment vectors ($+8P$
+        bytes). Including gradients, Adam uses 2× the memory of SGD. For a 100M parameter model in float32, the
+        difference is 0.8 GB.</div>
+    </div>
+
+
+    <h3 id="sec13-2">13.2 SGD with Momentum</h3>
+
+    <div class="algo-box box">
+      <div class="label">Momentum Update Rule</div>
+      <p><strong>Step 1 — Update velocity:</strong></p>
+      $$\bm{v}_t = \mu \, \bm{v}_{t-1} + \bm{g}_t$$
+      <p><strong>Step 2 — Update parameters:</strong></p>
+      $$\bm{\theta}_{t+1} = \bm{\theta}_t - \eta \, \bm{v}_t$$
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra state memory</td>
+            <td>$\bm{v} \in \R^P$ → <strong>$4P$ bytes (float32)</strong></td>
+          </tr>
+          <tr>
+            <td>Per-step FLOPs</td>
+            <td>$P$ (scale $v$) + $P$ (add $g$) + $P$ (scale $v$) + $P$ (update $\theta$) = <strong>$4P$</strong></td>
+          </tr>
+          <tr>
+            <td>Hyperparameters</td>
+            <td>$\eta$ (learning rate), $\mu$ (momentum, typically 0.9)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <p>
+      Momentum accumulates a moving average of past gradients, which provides two benefits: (1) it accelerates
+      convergence in directions of consistent gradient (like a ball rolling downhill), and (2) it dampens oscillation in
+      directions of high curvature. Theoretically, momentum improves convergence from $O(1/t)$ to $O(1/t^2)$ for convex
+      quadratics, which can translate to $\sqrt{\kappa}$ fewer iterations for condition number $\kappa$ (Polyak, 1964).
+    </p>
+
+
+    <h3 id="sec13-3">13.3 Nesterov Accelerated Gradient (NAG)</h3>
+
+    <div class="algo-box box">
+      <div class="label">Nesterov Update Rule</div>
+      <p><strong>Step 1 — Look-ahead gradient:</strong> Evaluate gradient at $\bm{\theta}_t + \mu \bm{v}_{t-1}$ (the
+        anticipated next position)</p>
+      $$\bm{g}_t = \nabla L(\bm{\theta}_t + \mu \bm{v}_{t-1})$$
+      <p><strong>Step 2 — Update velocity:</strong></p>
+      $$\bm{v}_t = \mu \, \bm{v}_{t-1} + \bm{g}_t$$
+      <p><strong>Step 3 — Update parameters:</strong></p>
+      $$\bm{\theta}_{t+1} = \bm{\theta}_t - \eta \, \bm{v}_t$$
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra state memory</td>
+            <td>Same as momentum: <strong>$4P$ bytes</strong></td>
+          </tr>
+          <tr>
+            <td>Per-step FLOPs</td>
+            <td>Same as momentum: <strong>$4P$</strong> (plus $P$ for the look-ahead position computation)</td>
+          </tr>
+          <tr>
+            <td>Hyperparameters</td>
+            <td>$\eta$, $\mu$ (same as momentum)</td>
+          </tr>
+        </table>
+      </div>
+      <p>NAG has the same memory and nearly the same per-step cost as standard momentum, but often converges faster
+        because the look-ahead gradient provides a form of "correction" — it accounts for where the momentum will carry
+        the parameters, not just where they are now.</p>
+      <p><em>Sutskever, I. et al. (2013), "On the importance of initialization and momentum in deep learning"</em></p>
+    </div>
+
+
+    <h3 id="sec13-4">13.4 AdaGrad</h3>
+
+    <div class="algo-box box">
+      <div class="label">AdaGrad Update Rule</div>
+      <p><strong>Step 1 — Accumulate squared gradients:</strong></p>
+      $$\bm{G}_t = \bm{G}_{t-1} + \bm{g}_t \odot \bm{g}_t$$
+      <p><strong>Step 2 — Update parameters with per-parameter learning rate:</strong></p>
+      $$\bm{\theta}_{t+1} = \bm{\theta}_t - \frac{\eta}{\sqrt{\bm{G}_t + \epsilon}} \odot \bm{g}_t$$
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra state memory</td>
+            <td>$\bm{G} \in \R^P$ → <strong>$4P$ bytes</strong></td>
+          </tr>
+          <tr>
+            <td>Per-step FLOPs</td>
+            <td>$P$ (square) + $P$ (accumulate) + $P$ (sqrt) + $P$ (add $\epsilon$) + $P$ (divide) + $P$ (scale) + $P$
+              (update) = <strong>$\approx 7P$</strong></td>
+          </tr>
+          <tr>
+            <td>Hyperparameters</td>
+            <td>$\eta$ (learning rate), $\epsilon$ (stability, $\sim10^{-8}$)</td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Problem:</strong> $\bm{G}_t$ monotonically increases, so the effective learning rate $\eta/\sqrt{G_t}$
+        monotonically decreases, eventually reaching zero. Training effectively stops. This motivates RMSProp.</p>
+      <p><em>Duchi, J. et al. (2011), "Adaptive Subgradient Methods for Online Learning and Stochastic Optimization",
+          JMLR</em></p>
+    </div>
+
+
+    <h3 id="sec13-5">13.5 RMSProp</h3>
+
+    <div class="algo-box box">
+      <div class="label">RMSProp Update Rule</div>
+      <p><strong>Step 1 — Exponential moving average of squared gradients:</strong></p>
+      $$\bm{v}_t = \beta \, \bm{v}_{t-1} + (1 - \beta) \, \bm{g}_t \odot \bm{g}_t$$
+      <p><strong>Step 2 — Update:</strong></p>
+      $$\bm{\theta}_{t+1} = \bm{\theta}_t - \frac{\eta}{\sqrt{\bm{v}_t + \epsilon}} \odot \bm{g}_t$$
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra state memory</td>
+            <td>$\bm{v} \in \R^P$ → <strong>$4P$ bytes</strong></td>
+          </tr>
+          <tr>
+            <td>Per-step FLOPs</td>
+            <td><strong>$\approx 8P$</strong></td>
+          </tr>
+          <tr>
+            <td>Hyperparameters</td>
+            <td>$\eta$, $\beta$ (decay rate, typically 0.9), $\epsilon$</td>
+          </tr>
+        </table>
+      </div>
+      <p>RMSProp fixes AdaGrad's diminishing learning rate by using a moving average instead of a cumulative sum. The
+        effective learning rate for each parameter is inversely proportional to the RMS of recent gradients — parameters
+        with large gradients get smaller steps, and vice versa.</p>
+      <p><em>Hinton, G. (2012), Coursera Neural Networks lecture 6e (unpublished but universally cited)</em></p>
+    </div>
+
+
+    <h3 id="sec13-6">13.6 Adam (Adaptive Moment Estimation)</h3>
+
+    <p>
+      Adam is the most widely used optimizer in deep learning. It combines the ideas of momentum (tracking the first
+      moment of gradients) and RMSProp (tracking the second moment), with bias correction to handle the initialization
+      at zero.
+    </p>
+
+    <div class="algo-box box">
+      <div class="label">Adam Update Rule — Full Derivation</div>
+      <p><strong>Step 1 — Update first moment estimate (momentum-like):</strong></p>
+      $$\bm{m}_t = \beta_1 \, \bm{m}_{t-1} + (1 - \beta_1) \, \bm{g}_t$$
+      <p><strong>Step 2 — Update second moment estimate (RMSProp-like):</strong></p>
+      $$\bm{v}_t = \beta_2 \, \bm{v}_{t-1} + (1 - \beta_2) \, \bm{g}_t \odot \bm{g}_t$$
+      <p><strong>Step 3 — Bias correction (compensates for zero initialization):</strong></p>
+      $$\hat{\bm{m}}_t = \frac{\bm{m}_t}{1 - \beta_1^t}, \qquad \hat{\bm{v}}_t = \frac{\bm{v}_t}{1 - \beta_2^t}$$
+      <p><strong>Step 4 — Update parameters:</strong></p>
+      $$\bm{\theta}_{t+1} = \bm{\theta}_t - \eta \cdot \frac{\hat{\bm{m}}_t}{\sqrt{\hat{\bm{v}}_t} + \epsilon}$$
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">Adam — Complete Computational Cost</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Sub-operation</th>
+            <th>Computation</th>
+            <th>FLOPs</th>
+          </tr>
+          <tr>
+            <td>Scale $m_{t-1}$</td>
+            <td>$\beta_1 \bm{m}_{t-1}$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Scale gradient</td>
+            <td>$(1-\beta_1)\bm{g}_t$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Add for $\bm{m}_t$</td>
+            <td>$+$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Square gradient</td>
+            <td>$\bm{g}_t \odot \bm{g}_t$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Scale $v_{t-1}$</td>
+            <td>$\beta_2 \bm{v}_{t-1}$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Scale squared gradient</td>
+            <td>$(1-\beta_2)\bm{g}_t^2$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Add for $\bm{v}_t$</td>
+            <td>$+$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Bias correct $\hat{m}$</td>
+            <td>$\bm{m}_t / (1-\beta_1^t)$</td>
+            <td>$P + 1$</td>
+          </tr>
+          <tr>
+            <td>Bias correct $\hat{v}$</td>
+            <td>$\bm{v}_t / (1-\beta_2^t)$</td>
+            <td>$P + 1$</td>
+          </tr>
+          <tr>
+            <td>Square root</td>
+            <td>$\sqrt{\hat{\bm{v}}_t}$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Add epsilon</td>
+            <td>$\sqrt{\hat{\bm{v}}_t} + \epsilon$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Division</td>
+            <td>$\hat{\bm{m}}_t / (\sqrt{\hat{\bm{v}}_t} + \epsilon)$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Scale by LR</td>
+            <td>$\times \eta$</td>
+            <td>$P$</td>
+          </tr>
+          <tr>
+            <td>Update params</td>
+            <td>$\bm{\theta}_t -$</td>
+            <td>$P$</td>
+          </tr>
+          <tr style="background:#fdf5e0;">
+            <td><strong>Total per step</strong></td>
+            <td></td>
+            <td><strong>$\approx 14P$ FLOPs</strong></td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Memory: $2 \times 4P = 8P$ bytes extra</strong> (for $\bm{m}$ and $\bm{v}$). Including parameters and
+        gradients: $\mathbf{16P}$ bytes total.</p>
+      <p><strong>Default hyperparameters:</strong> $\beta_1 = 0.9$, $\beta_2 = 0.999$, $\epsilon = 10^{-8}$, $\eta$
+        (problem-dependent, often $10^{-3}$).</p>
+    </div>
+
+    <div class="insight-box box">
+      <div class="label">Why Bias Correction Matters</div>
+      <p>At step $t=1$: $\bm{m}_1 = (1-\beta_1)\bm{g}_1$. Without correction, this is $(1-0.9)\bm{g}_1 = 0.1\bm{g}_1$ —
+        the first moment estimate is biased toward zero by a factor of 10. The correction divides by $(1-0.9^1) = 0.1$,
+        recovering $\hat{\bm{m}}_1 = \bm{g}_1$.</p>
+      <p>For $\bm{v}$: at $t=1$, $\bm{v}_1 = 0.001 \bm{g}_1^2$. Without correction, the effective learning rate is $\eta
+        / \sqrt{0.001 \bm{g}_1^2} = \eta / (0.0316 |\bm{g}_1|)$ — about 30× too large. Correction divides by $1-0.999^1
+        = 0.001$, giving $\hat{\bm{v}}_1 = \bm{g}_1^2$ — the correct scale.</p>
+      <p>Bias correction costs $2P + 2$ FLOPs (negligible) but prevents catastrophic early updates.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Reference</h4>
+      <p>[3] Kingma, D. P. & Ba, J. (2015). Adam: A Method for Stochastic Optimization. <em>ICLR 2015</em>.</p>
+    </div>
+
+
+    <h3 id="sec13-7">13.7 AdamW (Adam with Decoupled Weight Decay)</h3>
+
+    <div class="algo-box box">
+      <div class="label">AdamW Update Rule</div>
+      <p>The only difference from Adam is in the parameter update step. Instead of adding L2 regularization to the loss
+        (which gets entangled with the adaptive learning rate), weight decay is applied directly:</p>
+      $$\bm{\theta}_{t+1} = \bm{\theta}_t - \eta\left(\frac{\hat{\bm{m}}_t}{\sqrt{\hat{\bm{v}}_t} + \epsilon} + \lambda
+      \bm{\theta}_t\right)$$
+      <p>where $\lambda$ is the weight decay coefficient. The key insight is that in Adam, L2 regularization and weight
+        decay are <em>not</em> equivalent (unlike in SGD), because Adam's adaptive scaling distorts the regularization
+        gradient. Decoupling them restores proper weight decay behavior.</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra FLOPs vs. Adam</td>
+            <td>$+2P$ (scale $\theta$ by $\lambda$, add to update)</td>
+          </tr>
+          <tr>
+            <td>Extra memory vs. Adam</td>
+            <td><strong>0</strong></td>
+          </tr>
+          <tr>
+            <td>Extra hyperparameters</td>
+            <td>$\lambda$ (weight decay, typically $10^{-2}$)</td>
+          </tr>
+        </table>
+      </div>
+      <p><em>Loshchilov, I. & Hutter, F. (2019), "Decoupled Weight Decay Regularization", ICLR 2019</em></p>
+    </div>
+
+
+    <h3 id="sec13-8">13.8 Optimizer Comparison — Master Table</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>Optimizer</th>
+          <th>Extra Memory</th>
+          <th>Per-Step FLOPs</th>
+          <th>Hyperparams</th>
+          <th>Key Property</th>
+        </tr>
+        <tr>
+          <td><strong>SGD</strong></td>
+          <td>0</td>
+          <td>$2P$</td>
+          <td>$\eta$</td>
+          <td>Simplest, lowest memory</td>
+        </tr>
+        <tr>
+          <td><strong>SGD + Momentum</strong></td>
+          <td>$4P$ bytes</td>
+          <td>$4P$</td>
+          <td>$\eta, \mu$</td>
+          <td>Accelerated convergence</td>
+        </tr>
+        <tr>
+          <td><strong>Nesterov</strong></td>
+          <td>$4P$ bytes</td>
+          <td>$5P$</td>
+          <td>$\eta, \mu$</td>
+          <td>Look-ahead correction</td>
+        </tr>
+        <tr>
+          <td><strong>AdaGrad</strong></td>
+          <td>$4P$ bytes</td>
+          <td>$7P$</td>
+          <td>$\eta, \epsilon$</td>
+          <td>Per-param LR; decays to 0</td>
+        </tr>
+        <tr>
+          <td><strong>RMSProp</strong></td>
+          <td>$4P$ bytes</td>
+          <td>$8P$</td>
+          <td>$\eta, \beta, \epsilon$</td>
+          <td>Fixes AdaGrad decay</td>
+        </tr>
+        <tr>
+          <td><strong>Adam</strong></td>
+          <td>$\mathbf{8P}$ bytes</td>
+          <td>$14P$</td>
+          <td>$\eta, \beta_1, \beta_2, \epsilon$</td>
+          <td>Combined momentum + RMSProp</td>
+        </tr>
+        <tr>
+          <td><strong>AdamW</strong></td>
+          <td>$8P$ bytes</td>
+          <td>$16P$</td>
+          <td>$\eta, \beta_1, \beta_2, \epsilon, \lambda$</td>
+          <td>Proper weight decay for Adam</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="example-box box">
+      <div class="label">Numerical Comparison — ResNet-50 (25.6M params)</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Optimizer</th>
+            <th>State Memory</th>
+            <th>Per-Step Optimizer FLOPs</th>
+            <th>% of Backprop FLOPs</th>
+          </tr>
+          <tr>
+            <td>SGD</td>
+            <td>0 MB</td>
+            <td>51.2M</td>
+            <td>0.67%</td>
+          </tr>
+          <tr>
+            <td>Momentum</td>
+            <td>97.7 MB</td>
+            <td>102.4M</td>
+            <td>1.35%</td>
+          </tr>
+          <tr>
+            <td>Adam</td>
+            <td>195.3 MB</td>
+            <td>358.4M</td>
+            <td>4.72%</td>
+          </tr>
+        </table>
+      </div>
+      <p>ResNet-50 backward pass: ~7.6G FLOPs. The optimizer update adds at most 4.7% extra FLOPs — <strong>the
+          optimizer is never the computational bottleneck</strong>. However, the extra memory (195 MB for Adam) can be a
+        constraint for large models on limited GPU memory.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §13</h4>
+      <p>[3] Kingma, D. P. & Ba, J. (2015). Adam: A Method for Stochastic Optimization. <em>ICLR 2015</em>.</p>
+      <p>[4] Loshchilov, I. & Hutter, F. (2019). Decoupled Weight Decay Regularization. <em>ICLR 2019</em>.</p>
+      <p>[5] Sutskever, I. et al. (2013). On the importance of initialization and momentum in deep learning. <em>ICML
+          2013</em>.</p>
+      <p>[6] Duchi, J. et al. (2011). Adaptive Subgradient Methods. <em>JMLR</em>, 12, 2121–2159.</p>
+      <p>[7] Ruder, S. (2016). An overview of gradient descent optimization algorithms. <em>arXiv:1609.04747</em>.</p>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 8: Optimization for Training Deep Models.</p>
+      <p>[8] Polyak, B. T. (1964). Some methods of speeding up the convergence of iteration methods. <em>USSR
+          Computational Mathematics and Mathematical Physics</em>, 4(5), 1–17.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 14: REGULARIZATION                                    -->
+    <!-- ============================================================ -->
+    <h2 id="sec14"><span class="sec-num">§14</span> Regularization Techniques — Computational Cost</h2>
+
+    <p>
+      Regularization prevents overfitting by constraining the model's capacity. From a computational efficiency
+      perspective, the key question is: what is the per-step cost of each regularization technique, and how does it
+      affect the total number of training steps needed?
+    </p>
+
+    <h3 id="sec14-1">14.1 L1 Regularization (Lasso)</h3>
+
+    <div class="def-box box">
+      <div class="label">L1 Regularization</div>
+      $$L_{\text{reg}} = L_{\text{data}} + \lambda \sum_{i=1}^{P} |w_i|$$
+      <p><strong>Gradient contribution:</strong> $\pd{L_{\text{reg}}}{w_i} = \pd{L_{\text{data}}}{w_i} + \lambda \cdot
+        \text{sign}(w_i)$</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra forward FLOPs</td>
+            <td>$P$ (absolute values) + $P$ (sum) = $2P$</td>
+          </tr>
+          <tr>
+            <td>Extra gradient FLOPs</td>
+            <td>$P$ (sign) + $P$ (scale by $\lambda$) + $P$ (add to gradient) = $3P$</td>
+          </tr>
+          <tr>
+            <td>Extra memory</td>
+            <td><strong>0</strong></td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Key property:</strong> L1 promotes <em>sparsity</em> — it drives many weights exactly to zero. Sparse
+        weights can theoretically be exploited for computational savings at inference (via pruning), though in practice
+        this requires hardware/software support for sparse operations.</p>
+    </div>
+
+
+    <h3 id="sec14-2">14.2 L2 Regularization / Weight Decay</h3>
+
+    <div class="def-box box">
+      <div class="label">L2 Regularization</div>
+      $$L_{\text{reg}} = L_{\text{data}} + \frac{\lambda}{2}\sum_{i=1}^{P} w_i^2 = L_{\text{data}} +
+      \frac{\lambda}{2}\|\bm{W}\|_F^2$$
+      <p><strong>Gradient contribution:</strong> $\pd{L_{\text{reg}}}{w_i} = \pd{L_{\text{data}}}{w_i} + \lambda w_i$
+      </p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra gradient FLOPs</td>
+            <td>$P$ (scale $w_i$ by $\lambda$) + $P$ (add to gradient) = $2P$</td>
+          </tr>
+          <tr>
+            <td>Extra memory</td>
+            <td><strong>0</strong> (uses existing parameter values)</td>
+          </tr>
+        </table>
+      </div>
+      <p>In SGD, L2 regularization is equivalent to weight decay: $w_i \leftarrow w_i(1 - \eta\lambda) - \eta
+        \pd{L}{w_i}$. The factor $(1-\eta\lambda)$ simply shrinks each weight by a constant fraction per step. This
+        costs $P$ extra multiplications — negligible.</p>
+    </div>
+
+
+    <h3 id="sec14-3">14.3 Dropout</h3>
+
+    <div class="def-box box">
+      <div class="label">Dropout (Inverted)</div>
+      <p>During <strong>training</strong>, for each activation $a_j$ in a layer with dropout rate $p$ (probability of
+        dropping):</p>
+      $$\text{mask}_j \sim \text{Bernoulli}(1-p)$$
+      $$\tilde{a}_j = \frac{a_j \cdot \text{mask}_j}{1-p}$$
+      <p>During <strong>inference</strong>: no dropout applied, no scaling needed (because of the $1/(1-p)$ factor
+        during training — this is "inverted dropout").</p>
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">Dropout — Complete Computational Cost</div>
+      <p>For a layer with $n$ activations, batch size $B$:</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Operation</th>
+            <th>FLOPs (Training)</th>
+            <th>FLOPs (Inference)</th>
+          </tr>
+          <tr>
+            <td>Generate random mask</td>
+            <td>$Bn$ random number generations</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Threshold to binary</td>
+            <td>$Bn$ comparisons</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Multiply by mask</td>
+            <td>$Bn$ multiplications</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Scale by $1/(1-p)$</td>
+            <td>$Bn$ multiplications</td>
+            <td>0</td>
+          </tr>
+          <tr style="background:#fdf5e0;">
+            <td><strong>Total</strong></td>
+            <td><strong>$\approx 4Bn$ FLOPs + RNG cost</strong></td>
+            <td><strong>0 (free at inference)</strong></td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Extra memory (training):</strong> $Bn$ values for the binary mask — needed for the backward pass to
+        apply the same mask to gradients.</p>
+      <p><strong>Backward pass:</strong> $\pd{L}{\bm{a}} = \pd{L}{\tilde{\bm{a}}} \odot \frac{\text{mask}}{1-p}$ — same
+        element-wise operation, $2Bn$ FLOPs.</p>
+    </div>
+
+    <div class="insight-box box">
+      <div class="label">Dropout Efficiency Analysis</div>
+      <p>Dropout adds $\approx 4Bn$ FLOPs per layer during training. For a hidden layer of size 4096 with $B=32$: $4
+        \times 32 \times 4096 = 524{,}288$ FLOPs. The matrix multiplication for that same layer (assuming 4096→4096): $2
+        \times 32 \times 4096 \times 4096 = 1.07$G FLOPs. Dropout overhead: <strong>0.05%</strong> — completely
+        negligible.</p>
+      <p>The random number generation is typically the bottleneck (cuRAND on GPU), not the arithmetic. But even this is
+        small relative to matmul cost.</p>
+      <p>At inference, dropout costs exactly zero — this makes dropout "free" at deployment time.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Reference</h4>
+      <p>[9] Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., & Salakhutdinov, R. (2014). Dropout: A Simple
+        Way to Prevent Neural Networks from Overfitting. <em>JMLR</em>, 15, 1929–1958.</p>
+    </div>
+
+
+    <h3 id="sec14-4">14.4 Data Augmentation</h3>
+
+    <div class="compute-box box">
+      <div class="label">Data Augmentation — Computational Cost</div>
+      <p>Data augmentation (flipping, rotation, cropping, color jitter, mixup, cutout, etc.) is applied to input data
+        <strong>on the CPU during data loading</strong>, typically in a separate process/thread that runs in parallel
+        with GPU computation.</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Extra GPU FLOPs</td>
+            <td><strong>0</strong> (CPU preprocessing)</td>
+          </tr>
+          <tr>
+            <td>Extra GPU memory</td>
+            <td><strong>0</strong></td>
+          </tr>
+          <tr>
+            <td>Training throughput impact</td>
+            <td>Typically zero if data pipeline is not bottlenecked</td>
+          </tr>
+          <tr>
+            <td>Extra training data</td>
+            <td>Effectively infinite (stochastic transforms)</td>
+          </tr>
+        </table>
+      </div>
+      <p>Data augmentation is unique among regularization techniques: it costs virtually nothing computationally but
+        provides significant regularization benefit. This makes it one of the most FLOP-efficient ways to improve
+        generalization.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §14</h4>
+      <p>[9] Srivastava et al. (2014). Dropout. <em>JMLR</em>.</p>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 7: Regularization for Deep Learning.</p>
+      <p>[10] DeVries, T. & Taylor, G. W. (2017). Improved Regularization of Convolutional Neural Networks with Cutout.
+        <em>arXiv:1708.04552</em>.</p>
+      <p>[11] Zhang, H. et al. (2018). mixup: Beyond Empirical Risk Minimization. <em>ICLR 2018</em>.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 15: NORMALIZATION                                     -->
+    <!-- ============================================================ -->
+    <h2 id="sec15"><span class="sec-num">§15</span> Normalization Layers — Complete Analysis</h2>
+
+    <p>
+      Normalization layers standardize intermediate activations, which stabilizes training, enables larger learning
+      rates, and reduces the number of iterations needed to converge. They add both parameters and per-step FLOPs, but
+      the reduction in training iterations typically more than compensates. Understanding their exact computational cost
+      is critical for efficiency analysis.
+    </p>
+
+    <h3 id="sec15-1">15.1 Batch Normalization (BatchNorm)</h3>
+
+    <div class="def-box box">
+      <div class="label">Batch Normalization — Forward Pass</div>
+      <p>For activations $\bm{x} \in \R^{B \times d}$ (or $\R^{B \times C \times H \times W}$ for CNNs, where statistics
+        are computed per-channel across $B$, $H$, $W$):</p>
+      <p><strong>Step 1 — Batch mean:</strong></p>
+      $$\mu_j = \frac{1}{N}\sum_{i=1}^{N} x_{ij}$$
+      <p>where $N = B$ for FC layers, $N = B \times H \times W$ for conv layers.</p>
+      <p><strong>Step 2 — Batch variance:</strong></p>
+      $$\sigma_j^2 = \frac{1}{N}\sum_{i=1}^{N}(x_{ij} - \mu_j)^2$$
+      <p><strong>Step 3 — Normalize:</strong></p>
+      $$\hat{x}_{ij} = \frac{x_{ij} - \mu_j}{\sqrt{\sigma_j^2 + \epsilon}}$$
+      <p><strong>Step 4 — Scale and shift (learnable):</strong></p>
+      $$y_{ij} = \gamma_j \hat{x}_{ij} + \beta_j$$
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">BatchNorm — Complete Computational Cost</div>
+      <p>Let $d$ = number of features (or channels for CNNs), $N$ = number of elements per feature contributing to the
+        statistic ($B$ for FC, $BHW$ for conv).</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Step</th>
+            <th>Operation</th>
+            <th>FLOPs</th>
+          </tr>
+          <tr>
+            <td>1. Mean</td>
+            <td>Sum $N$ values, divide</td>
+            <td>$Nd + d \approx Nd$</td>
+          </tr>
+          <tr>
+            <td>2. Variance</td>
+            <td>$(x-\mu)^2$: $Nd$ subs + $Nd$ squarings; sum; divide</td>
+            <td>$3Nd$</td>
+          </tr>
+          <tr>
+            <td>3. Normalize</td>
+            <td>$(x-\mu)$: already computed; $\sqrt{\sigma^2+\epsilon}$: $d$ sqrts; divide: $Nd$</td>
+            <td>$Nd + d$</td>
+          </tr>
+          <tr>
+            <td>4. Scale+shift</td>
+            <td>$\gamma \hat{x} + \beta$: $Nd$ mults + $Nd$ adds</td>
+            <td>$2Nd$</td>
+          </tr>
+          <tr style="background:#fdf5e0;">
+            <td><strong>Total forward</strong></td>
+            <td></td>
+            <td><strong>$\approx 7Nd + 2d$</strong></td>
+          </tr>
+          <tr>
+            <td>Running stats update</td>
+            <td>EMA for $\mu$, $\sigma^2$: $2d$ mults + $2d$ adds</td>
+            <td>$4d$</td>
+          </tr>
+        </table>
+      </div>
+
+      <p><strong>For a CNN conv layer:</strong> $N = B \times H \times W$, $d = C$ (channels).</p>
+      <p><strong>Learnable parameters:</strong> $\gamma, \beta \in \R^C$ → <strong>$2C$ parameters</strong></p>
+      <p><strong>Running statistics (inference only):</strong> running mean + running variance → <strong>$2C$
+          values</strong> (not learnable, not parameters)</p>
+
+      <p><strong>Memory for backprop:</strong> Must cache $\hat{\bm{x}}$ (normalized values), $\mu$, $\sigma^2$ → $Nd +
+        2d$ elements.</p>
+    </div>
+
+    <div class="theorem-box box">
+      <div class="label">BatchNorm — Backward Pass (Full Derivation)</div>
+      <p>Given upstream gradient $\pd{L}{y_{ij}}$, we need $\pd{L}{x_{ij}}$, $\pd{L}{\gamma_j}$, and $\pd{L}{\beta_j}$.
+      </p>
+
+      <p><strong>(a) Gradient w.r.t. $\gamma$:</strong></p>
+      $$\pd{L}{\gamma_j} = \sum_{i=1}^{N} \pd{L}{y_{ij}} \cdot \hat{x}_{ij}$$
+      <p>FLOPs: $Nd$ multiplications + $Nd$ additions = $2Nd$</p>
+
+      <p><strong>(b) Gradient w.r.t. $\beta$:</strong></p>
+      $$\pd{L}{\beta_j} = \sum_{i=1}^{N} \pd{L}{y_{ij}}$$
+      <p>FLOPs: $Nd$ additions</p>
+
+      <p><strong>(c) Gradient w.r.t. input $x$ (the complex part):</strong></p>
+      $$\pd{L}{\hat{x}_{ij}} = \pd{L}{y_{ij}} \cdot \gamma_j$$
+
+      $$\pd{L}{\sigma_j^2} = \sum_{i=1}^{N}\pd{L}{\hat{x}_{ij}} \cdot (x_{ij} - \mu_j) \cdot
+      \left(-\frac{1}{2}\right)(\sigma_j^2+\epsilon)^{-3/2}$$
+
+      $$\pd{L}{\mu_j} = \sum_{i=1}^{N}\pd{L}{\hat{x}_{ij}} \cdot \frac{-1}{\sqrt{\sigma_j^2+\epsilon}} +
+      \pd{L}{\sigma_j^2}\cdot\frac{-2}{N}\sum_{i=1}^{N}(x_{ij}-\mu_j)$$
+
+      $$\pd{L}{x_{ij}} = \pd{L}{\hat{x}_{ij}}\cdot\frac{1}{\sqrt{\sigma_j^2+\epsilon}} +
+      \pd{L}{\sigma_j^2}\cdot\frac{2(x_{ij}-\mu_j)}{N} + \pd{L}{\mu_j}\cdot\frac{1}{N}$$
+
+      <p><strong>Total backward FLOPs:</strong> approximately $\mathbf{10Nd + \text{lower order terms}}$</p>
+    </div>
+
+    <div class="example-box box">
+      <div class="label">BatchNorm Cost — Concrete Example</div>
+      <p>Conv layer output: $B=32$, $C=256$, $H=W=56$.</p>
+      <p>$N = 32 \times 56 \times 56 = 100{,}352$. $d = 256$.</p>
+      <p><strong>Forward:</strong> $7 \times 100{,}352 \times 256 \approx 180$M FLOPs</p>
+      <p><strong>Backward:</strong> $\approx 10 \times 100{,}352 \times 256 \approx 257$M FLOPs</p>
+      <p><strong>Compared to the conv layer itself:</strong> If the preceding 3×3 conv (128→256) has ~14.8G FLOPs, then
+        BatchNorm forward adds 180M / 14.8G ≈ <strong>1.2%</strong> overhead. BatchNorm is computationally cheap
+        relative to convolution.</p>
+      <p><strong>Parameters:</strong> $2 \times 256 = 512$ — negligible vs. the conv layer's ~295K params.</p>
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">BatchNorm — Training vs. Inference</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th></th>
+            <th>Training</th>
+            <th>Inference</th>
+          </tr>
+          <tr>
+            <td>Uses</td>
+            <td>Batch statistics ($\mu_B$, $\sigma_B^2$)</td>
+            <td>Running statistics ($\mu_{\text{run}}$, $\sigma_{\text{run}}^2$)</td>
+          </tr>
+          <tr>
+            <td>Compute per element</td>
+            <td>~7 FLOPs (forward)</td>
+            <td>~4 FLOPs (normalize + scale/shift)</td>
+          </tr>
+          <tr>
+            <td>Batch dependence</td>
+            <td>Yes — stats depend on entire batch</td>
+            <td>No — uses fixed running stats</td>
+          </tr>
+          <tr>
+            <td>Can fuse with conv</td>
+            <td>No (stats depend on data)</td>
+            <td><strong>Yes</strong> — BN can be folded into preceding conv weights!</td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>BN Fusion at inference:</strong> Since inference uses fixed $\mu$, $\sigma$, $\gamma$, $\beta$, the
+        entire BN operation is a linear transform: $y = \frac{\gamma}{\sigma}x + (\beta - \frac{\gamma\mu}{\sigma})$.
+        This can be folded into the preceding conv/FC layer's weights and biases, making BN <strong>zero-cost at
+          inference</strong>.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Reference</h4>
+      <p>[12] Ioffe, S. & Szegedy, C. (2015). Batch Normalization: Accelerating Deep Network Training by Reducing
+        Internal Covariate Shift. <em>ICML 2015</em>.</p>
+    </div>
+
+
+    <h3 id="sec15-2">15.2 Layer Normalization</h3>
+
+    <div class="def-box box">
+      <div class="label">Layer Normalization</div>
+      <p>Instead of normalizing across the batch (per feature), LayerNorm normalizes across features (per sample):</p>
+      $$\mu_i = \frac{1}{d}\sum_{j=1}^{d} x_{ij}, \qquad \sigma_i^2 = \frac{1}{d}\sum_{j=1}^{d}(x_{ij} - \mu_i)^2$$
+      $$y_{ij} = \gamma_j \cdot \frac{x_{ij} - \mu_i}{\sqrt{\sigma_i^2 + \epsilon}} + \beta_j$$
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Normalization axis</td>
+            <td>Features (per sample)</td>
+          </tr>
+          <tr>
+            <td>Parameters</td>
+            <td>$2d$ ($\gamma, \beta$)</td>
+          </tr>
+          <tr>
+            <td>Forward FLOPs</td>
+            <td>$\approx 7Bd$ (same order as BatchNorm)</td>
+          </tr>
+          <tr>
+            <td>Batch dependence</td>
+            <td><strong>None</strong> — each sample normalized independently</td>
+          </tr>
+          <tr>
+            <td>Can fuse at inference</td>
+            <td>No (statistics are data-dependent per sample)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <p>
+      LayerNorm is the standard normalization for Transformers and RNNs, where batch statistics are unreliable (variable
+      sequence lengths, small effective batches). Its per-element computational cost is identical to BatchNorm, but it
+      cannot be fused at inference — it always costs ~4 FLOPs per element.
+    </p>
+
+
+    <h3 id="sec15-3">15.3 Group Normalization and Instance Normalization</h3>
+
+    <div class="def-box box">
+      <div class="label">Group Normalization (GN)</div>
+      <p>Divides $C$ channels into $G$ groups and normalizes within each group independently. For each group $g$
+        containing channels $c_{g,1}, \ldots, c_{g,C/G}$:</p>
+      <p>Statistics are computed over the $C/G$ channels and all spatial positions $H \times W$ within each sample. Each
+        statistic is computed over $(C/G) \times H \times W$ elements.</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>$G$</th>
+            <th>Method</th>
+            <th>Normalize Over</th>
+          </tr>
+          <tr>
+            <td>$G = 1$</td>
+            <td>Layer Normalization</td>
+            <td>All $C \times H \times W$ elements</td>
+          </tr>
+          <tr>
+            <td>$1 < G < C$</td>
+            <td>Group Normalization</td>
+            <td>$(C/G) \times H \times W$ elements</td>
+          </tr>
+          <tr>
+            <td>$G = C$</td>
+            <td>Instance Normalization</td>
+            <td>$H \times W$ elements per channel</td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Parameters:</strong> $2C$ (same as BatchNorm). <strong>FLOPs:</strong> Same order as BatchNorm.
+        <strong>Batch dependence:</strong> None.</p>
+      <p><em>Wu, Y. & He, K. (2018), "Group Normalization", ECCV 2018</em></p>
+    </div>
+
+
+    <h3 id="sec15-4">15.4 Normalization Methods — Comparison Table</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>Method</th>
+          <th>Normalize Over</th>
+          <th>Params</th>
+          <th>FLOPs</th>
+          <th>Batch Dep.</th>
+          <th>Fuse@Inf</th>
+          <th>Best For</th>
+        </tr>
+        <tr>
+          <td><strong>BatchNorm</strong></td>
+          <td>$B \times (H \times W)$ per channel</td>
+          <td>$2C$</td>
+          <td>$\sim 7NdC$</td>
+          <td>Yes</td>
+          <td><strong>Yes</strong></td>
+          <td>CNNs (large batch)</td>
+        </tr>
+        <tr>
+          <td><strong>LayerNorm</strong></td>
+          <td>$d$ features per sample</td>
+          <td>$2d$</td>
+          <td>$\sim 7Bd$</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Transformers, RNNs</td>
+        </tr>
+        <tr>
+          <td><strong>GroupNorm</strong></td>
+          <td>$(C/G) \times H \times W$ per sample</td>
+          <td>$2C$</td>
+          <td>$\sim 7BCHW$</td>
+          <td>No</td>
+          <td>No</td>
+          <td>CNNs (small batch)</td>
+        </tr>
+        <tr>
+          <td><strong>InstanceNorm</strong></td>
+          <td>$H \times W$ per channel per sample</td>
+          <td>$2C$</td>
+          <td>$\sim 7BCHW$</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Style transfer</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 800 210" xmlns="http://www.w3.org/2000/svg" style="max-width:780px;">
+        <!-- Title -->
+        <text x="400" y="20" text-anchor="middle" font-family="Source Sans 3" font-size="15" font-weight="700"
+          fill="#2c2824">Normalization Methods — What They Normalize Over</text>
+        <text x="400" y="38" text-anchor="middle" font-family="Source Sans 3" font-size="12" fill="#6b6560">Tensor
+          shape: (B, C, H, W). Blue regions show what is normalized together.</text>
+
+        <!-- Batch Norm -->
+        <text x="105" y="62" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#1a5276">BatchNorm</text>
+        <!-- B×C grid, highlight column -->
+        <g transform="translate(30,70)">
+          <rect x="0" y="0" width="150" height="100" fill="none" stroke="#d4cfc8" stroke-width="1" />
+          <!-- Highlight one column (one channel across batch) -->
+          <rect x="30" y="0" width="30" height="100" fill="#1a5276" opacity="0.25" stroke="#1a5276"
+            stroke-width="1.5" />
+          <!-- Grid lines -->
+          <line x1="30" y1="0" x2="30" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="60" y1="0" x2="60" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="90" y1="0" x2="90" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="120" y1="0" x2="120" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="25" x2="150" y2="25" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="50" x2="150" y2="50" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="75" x2="150" y2="75" stroke="#d4cfc8" stroke-width="0.5" />
+          <text x="-5" y="15" text-anchor="end" font-family="Source Sans 3" font-size="9" fill="#6b6560">B</text>
+          <text x="75" y="115" text-anchor="middle" font-family="Source Sans 3" font-size="9" fill="#6b6560">C
+            (channels)</text>
+        </g>
+
+        <!-- Layer Norm -->
+        <text x="310" y="62" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#5b2c8e">LayerNorm</text>
+        <g transform="translate(235,70)">
+          <rect x="0" y="0" width="150" height="100" fill="none" stroke="#d4cfc8" stroke-width="1" />
+          <!-- Highlight one row (one sample across all features) -->
+          <rect x="0" y="25" width="150" height="25" fill="#5b2c8e" opacity="0.25" stroke="#5b2c8e"
+            stroke-width="1.5" />
+          <line x1="30" y1="0" x2="30" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="60" y1="0" x2="60" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="90" y1="0" x2="90" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="120" y1="0" x2="120" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="25" x2="150" y2="25" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="50" x2="150" y2="50" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="75" x2="150" y2="75" stroke="#d4cfc8" stroke-width="0.5" />
+        </g>
+
+        <!-- Group Norm -->
+        <text x="520" y="62" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#1e6e3e">GroupNorm (G=2)</text>
+        <g transform="translate(445,70)">
+          <rect x="0" y="0" width="150" height="100" fill="none" stroke="#d4cfc8" stroke-width="1" />
+          <!-- Highlight subgroup in one row -->
+          <rect x="0" y="25" width="75" height="25" fill="#1e6e3e" opacity="0.25" stroke="#1e6e3e" stroke-width="1.5" />
+          <line x1="30" y1="0" x2="30" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="60" y1="0" x2="60" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="90" y1="0" x2="90" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="120" y1="0" x2="120" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="25" x2="150" y2="25" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="50" x2="150" y2="50" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="75" x2="150" y2="75" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="75" y1="0" x2="75" y2="100" stroke="#1e6e3e" stroke-width="1" stroke-dasharray="4,3" />
+        </g>
+
+        <!-- Instance Norm -->
+        <text x="720" y="62" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#8b2500">InstanceNorm</text>
+        <g transform="translate(645,70)">
+          <rect x="0" y="0" width="150" height="100" fill="none" stroke="#d4cfc8" stroke-width="1" />
+          <!-- Highlight one cell -->
+          <rect x="30" y="25" width="30" height="25" fill="#8b2500" opacity="0.25" stroke="#8b2500"
+            stroke-width="1.5" />
+          <line x1="30" y1="0" x2="30" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="60" y1="0" x2="60" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="90" y1="0" x2="90" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="120" y1="0" x2="120" y2="100" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="25" x2="150" y2="25" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="50" x2="150" y2="50" stroke="#d4cfc8" stroke-width="0.5" />
+          <line x1="0" y1="75" x2="150" y2="75" stroke="#d4cfc8" stroke-width="0.5" />
+        </g>
+      </svg>
+      <div class="figure-caption"><strong>Figure 15.1.</strong> Visualization of what each normalization method
+        normalizes over, shown as colored regions on a (Batch × Channel) tensor. BatchNorm normalizes a column (one
+        channel across all samples). LayerNorm normalizes a row (all channels for one sample). GroupNorm normalizes a
+        subgroup of channels for one sample. InstanceNorm normalizes one channel for one sample. The spatial dimensions
+        ($H \times W$) are always included in the normalization (not shown).</div>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §15</h4>
+      <p>[12] Ioffe, S. & Szegedy, C. (2015). Batch Normalization. <em>ICML 2015</em>.</p>
+      <p>[13] Ba, J. L., Kiros, J. R., & Hinton, G. E. (2016). Layer Normalization. <em>arXiv:1607.06450</em>.</p>
+      <p>[14] Wu, Y. & He, K. (2018). Group Normalization. <em>ECCV 2018</em>.</p>
+      <p>[15] Santurkar, S. et al. (2018). How Does Batch Normalization Help Optimization? <em>NeurIPS 2018</em>.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 16: LEARNING RATE SCHEDULING                          -->
+    <!-- ============================================================ -->
+    <h2 id="sec16"><span class="sec-num">§16</span> Learning Rate Scheduling</h2>
+
+    <p>
+      The learning rate schedule determines how the learning rate $\eta$ changes over the course of training. While the
+      per-step cost of computing a new learning rate is negligible ($O(1)$ FLOPs), the <em>choice</em> of schedule
+      profoundly affects convergence speed and therefore total training FLOPs. A good schedule can halve the number of
+      training epochs needed.
+    </p>
+
+    <h3 id="sec16-1">16.1 Step Decay</h3>
+
+    <div class="def-box box">
+      <div class="label">Step Decay</div>
+      $$\eta_t = \eta_0 \cdot \gamma^{\lfloor t / S \rfloor}$$
+      <p>where $\gamma \in (0,1)$ is the decay factor (typically 0.1) and $S$ is the step interval (in epochs).
+        Commonly: reduce LR by 10× every 30 epochs.</p>
+      <p><strong>Computational cost:</strong> 1 floor division + 1 power + 1 multiplication = <strong>$O(1)$</strong>
+        per step.</p>
+    </div>
+
+
+    <h3 id="sec16-2">16.2 Cosine Annealing</h3>
+
+    <div class="def-box box">
+      <div class="label">Cosine Annealing</div>
+      $$\eta_t = \eta_{\min} + \frac{1}{2}(\eta_{\max} - \eta_{\min})\left(1 +
+      \cos\!\left(\frac{t}{T}\pi\right)\right)$$
+      <p>where $T$ is the total number of training steps.</p>
+      <p><strong>Computational cost:</strong> 1 cosine + 3 multiplications + 2 additions = <strong>$O(1)$</strong>.</p>
+      <p>Cosine annealing smoothly decreases the learning rate from $\eta_{\max}$ to $\eta_{\min}$, spending more time
+        at moderate learning rates than step decay. Empirically, it often gives slightly better final accuracy.</p>
+      <p><em>Loshchilov, I. & Hutter, F. (2017), "SGDR: Stochastic Gradient Descent with Warm Restarts", ICLR 2017</em>
+      </p>
+    </div>
+
+
+    <h3 id="sec16-3">16.3 Warmup</h3>
+
+    <div class="def-box box">
+      <div class="label">Linear Warmup</div>
+      $$\eta_t = \eta_{\text{target}} \cdot \frac{t}{T_{\text{warmup}}} \qquad \text{for } t \leq T_{\text{warmup}}$$
+      <p>After warmup: transition to the main schedule (cosine, step decay, etc.).</p>
+      <p>Warmup prevents large, destabilizing updates in the early stages of training when: (a) the network is far from
+        any reasonable solution, (b) batch statistics (for BatchNorm) are unreliable, or (c) the Adam second moment
+        estimates are unreliable (bias correction partially addresses this, but warmup helps further).</p>
+      <p><em>Goyal, P. et al. (2017), "Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour"</em></p>
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">Warmup — Efficiency Implication</div>
+      <p>Warmup adds a small number of low-learning-rate steps at the start (typically 5–10 epochs out of 90+). These
+        steps produce small weight updates and may seem "wasted." However, without warmup, large initial LR can cause
+        divergence, requiring the entire training run to be restarted. Warmup is therefore a form of insurance:
+        $\approx$5% extra steps to avoid $\gg$100% wasted steps from divergence.</p>
+    </div>
+
+
+    <h3 id="sec16-4">16.4 One-Cycle Policy</h3>
+
+    <div class="def-box box">
+      <div class="label">One-Cycle Policy (Smith & Topin, 2019)</div>
+      <p>The learning rate follows a cycle:</p>
+      <p><strong>Phase 1 (warmup, ~30% of training):</strong> LR increases linearly from $\eta_{\text{low}}$ to
+        $\eta_{\text{max}}$</p>
+      <p><strong>Phase 2 (annealing, ~70% of training):</strong> LR decreases via cosine from $\eta_{\text{max}}$ to
+        $\eta_{\text{low}}/10$</p>
+      <p>The key finding: using a <strong>much larger $\eta_{\text{max}}$</strong> than typical (found via LR range
+        test) enables "super-convergence" — training to the same accuracy in <strong>5–10× fewer steps</strong> than
+        standard schedules.</p>
+      <p><strong>Computational implication:</strong> If one-cycle reaches target accuracy in 30 epochs instead of 90,
+        the total training FLOPs are reduced by 3×. The per-step cost is identical; only the number of steps differs.
+      </p>
+      <p><em>Smith, L. N. & Topin, N. (2019), "Super-Convergence: Very Fast Training of Neural Networks Using Large
+          Learning Rates"</em></p>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="max-width:780px;">
+        <text x="400" y="18" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+          fill="#2c2824">Learning Rate Schedules — Visual Comparison</text>
+
+        <!-- Axes -->
+        <line x1="60" y1="190" x2="760" y2="190" stroke="#2c2824" stroke-width="1.2" />
+        <line x1="60" y1="190" x2="60" y2="35" stroke="#2c2824" stroke-width="1.2" />
+        <text x="410" y="210" text-anchor="middle" font-family="Source Sans 3" font-size="12" fill="#6b6560">Training
+          Steps</text>
+        <text x="35" y="115" text-anchor="middle" font-family="Source Sans 3" font-size="12" fill="#6b6560"
+          transform="rotate(-90 35 115)">Learning Rate (η)</text>
+
+        <!-- Step Decay (blue) -->
+        <polyline points="60,50 290,50 290,130 523,130 523,170 760,170" fill="none" stroke="#1a5276"
+          stroke-width="2.5" />
+        <text x="180" y="45" font-family="Source Sans 3" font-size="11" fill="#1a5276" font-weight="600">Step
+          Decay</text>
+
+        <!-- Cosine (purple) -->
+        <path d="M 60 50 Q 175 50 290 80 Q 410 120 525 155 Q 640 178 760 185" fill="none" stroke="#5b2c8e"
+          stroke-width="2.5" />
+        <text x="460" y="140" font-family="Source Sans 3" font-size="11" fill="#5b2c8e" font-weight="600">Cosine
+          Annealing</text>
+
+        <!-- One-Cycle (red) -->
+        <path d="M 60 160 L 270 50 Q 410 120 550 160 Q 640 175 760 185" fill="none" stroke="#8b2500"
+          stroke-width="2.5" />
+        <text x="170" y="90" font-family="Source Sans 3" font-size="11" fill="#8b2500"
+          font-weight="600">One-Cycle</text>
+        <text x="130" y="150" font-family="Source Sans 3" font-size="9" fill="#8b2500">warmup</text>
+      </svg>
+      <div class="figure-caption"><strong>Figure 16.1.</strong> Three common learning rate schedules. Step decay reduces
+        LR abruptly at fixed intervals. Cosine annealing provides a smooth decay. One-cycle includes a warmup phase
+        where LR increases, then decays — often enabling convergence in fewer total steps.</div>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §16</h4>
+      <p>[16] Loshchilov, I. & Hutter, F. (2017). SGDR: Stochastic Gradient Descent with Warm Restarts. <em>ICLR
+          2017</em>.</p>
+      <p>[17] Goyal, P. et al. (2017). Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour.
+        <em>arXiv:1706.02677</em>.</p>
+      <p>[18] Smith, L. N. & Topin, N. (2019). Super-Convergence: Very Fast Training of Neural Networks Using Large
+        Learning Rates. <em>AISTATS 2019</em>.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- COMPUTATIONAL SUMMARY                                         -->
+    <!-- ============================================================ -->
+    <h2 id="sec-summary"><span class="sec-num">§</span> Computational Summary — All Training Components</h2>
+
+    <h3>Per-Step Cost of All Training Components ($P$ parameters, batch size $B$, $d$ features per layer)</h3>
+
+    <table>
+      <tr>
+        <th>Component</th>
+        <th>Extra FLOPs per Step</th>
+        <th>Extra Memory (bytes)</th>
+        <th>% of Training Cost</th>
+      </tr>
+      <tr>
+        <td><strong>Forward pass</strong></td>
+        <td>$F$</td>
+        <td>Activations: $O(BL\bar{d})$</td>
+        <td>~33%</td>
+      </tr>
+      <tr>
+        <td><strong>Backward pass</strong></td>
+        <td>$\approx 2F$</td>
+        <td>Gradients: $4P$</td>
+        <td>~66%</td>
+      </tr>
+      <tr>
+        <td>Loss computation</td>
+        <td>$O(BC)$</td>
+        <td>$O(BC)$</td>
+        <td>&lt;0.01%</td>
+      </tr>
+      <tr>
+        <td>Optimizer (SGD)</td>
+        <td>$2P$</td>
+        <td>0</td>
+        <td>&lt;1%</td>
+      </tr>
+      <tr>
+        <td>Optimizer (Adam)</td>
+        <td>$14P$</td>
+        <td>$8P$</td>
+        <td>~2–5%</td>
+      </tr>
+      <tr>
+        <td>L2 regularization</td>
+        <td>$2P$</td>
+        <td>0</td>
+        <td>&lt;0.5%</td>
+      </tr>
+      <tr>
+        <td>Dropout (per layer)</td>
+        <td>$\approx 4Bn$</td>
+        <td>$4Bn$ (mask)</td>
+        <td>&lt;0.1%</td>
+      </tr>
+      <tr>
+        <td>BatchNorm (per layer, fwd)</td>
+        <td>$\approx 7Nd$</td>
+        <td>$4(Nd + 2d)$</td>
+        <td>~1–2%</td>
+      </tr>
+      <tr>
+        <td>BatchNorm (per layer, bwd)</td>
+        <td>$\approx 10Nd$</td>
+        <td>—</td>
+        <td>~2–3%</td>
+      </tr>
+      <tr>
+        <td>LR schedule</td>
+        <td>$O(1)$</td>
+        <td>0</td>
+        <td>$\approx 0$</td>
+      </tr>
+    </table>
+
+    <div class="warning-box box">
+      <div class="label">Key Takeaway for Efficiency Research</div>
+      <p>The forward and backward passes through the network layers (matrix multiplications and convolutions) account
+        for <strong>~95–98% of total training FLOPs</strong>. All other components — optimizer updates, normalization,
+        regularization, loss computation — are collectively less than 5%. Therefore:</p>
+      <p>(1) <strong>Reducing model FLOPs</strong> (efficient architectures, pruning, quantization) is the primary lever
+        for training efficiency.</p>
+      <p>(2) <strong>Reducing the number of training steps</strong> (better optimizers, LR schedules, initialization) is
+        the secondary lever — it multiplies the total by a smaller constant.</p>
+      <p>(3) <strong>Optimizer memory</strong> (not FLOPs) is often the binding constraint — Adam's $8P$ extra bytes can
+        be the difference between fitting a model on a GPU or not.</p>
+    </div>
+
+    <h3>Total Training Memory Formula</h3>
+
+    <div class="compute-box box">
+      <div class="label">Peak Memory During Training (float32)</div>
+      $$\text{Memory}_{\text{peak}} = \underbrace{4P}_{\text{params}} + \underbrace{4P}_{\text{gradients}} +
+      \underbrace{4M_{\text{opt}}P}_{\text{optimizer state}} + \underbrace{4\sum_{l}\text{act}_l(B)}_{\text{cached
+      activations}} + \underbrace{\text{buffers}}_{\text{im2col, workspace}}$$
+      <p>where $M_{\text{opt}} = 0$ (SGD), $1$ (Momentum), $2$ (Adam), and $\text{act}_l(B)$ is the activation tensor
+        size at layer $l$ for batch size $B$.</p>
+      <p><strong>For ResNet-50 (25.6M params), Adam, B=32, 224×224 input:</strong></p>
+      <p>Params: 97.7 MB | Grads: 97.7 MB | Adam state: 195.3 MB | Activations: ~2.5 GB | <strong>Total: ~2.9
+          GB</strong></p>
+      <p>Activations dominate for this configuration — a common pattern in modern CNNs.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- REFERENCES                                                    -->
+    <!-- ============================================================ -->
+    <h2 id="sec-refs"><span class="sec-num">§</span> Complete References</h2>
+
+    <div class="ref-section">
+      <h4>Loss Functions</h4>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 6.2.2 (Cost Functions), Ch. 8 (Optimization).</p>
+      <p>[2] Lin, T. et al. (2017). Focal Loss for Dense Object Detection. <em>ICCV 2017</em>.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Optimizers</h4>
+      <p>[3] Kingma, D. P. & Ba, J. (2015). Adam: A Method for Stochastic Optimization. <em>ICLR 2015</em>.</p>
+      <p>[4] Loshchilov, I. & Hutter, F. (2019). Decoupled Weight Decay Regularization. <em>ICLR 2019</em>.</p>
+      <p>[5] Sutskever, I., Martens, J., Dahl, G., & Hinton, G. (2013). On the importance of initialization and momentum
+        in deep learning. <em>ICML 2013</em>.</p>
+      <p>[6] Duchi, J., Hazan, E., & Singer, Y. (2011). Adaptive Subgradient Methods for Online Learning and Stochastic
+        Optimization. <em>JMLR</em>, 12, 2121–2159.</p>
+      <p>[7] Ruder, S. (2016). An overview of gradient descent optimization algorithms. <em>arXiv:1609.04747</em>.</p>
+      <p>[8] Polyak, B. T. (1964). Some methods of speeding up the convergence of iteration methods. <em>USSR Comp.
+          Math. and Math. Physics</em>, 4(5), 1–17.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Regularization</h4>
+      <p>[9] Srivastava, N. et al. (2014). Dropout: A Simple Way to Prevent Neural Networks from Overfitting.
+        <em>JMLR</em>, 15, 1929–1958.</p>
+      <p>[10] DeVries, T. & Taylor, G. W. (2017). Improved Regularization with Cutout. <em>arXiv:1708.04552</em>.</p>
+      <p>[11] Zhang, H. et al. (2018). mixup: Beyond Empirical Risk Minimization. <em>ICLR 2018</em>.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Normalization</h4>
+      <p>[12] Ioffe, S. & Szegedy, C. (2015). Batch Normalization: Accelerating Deep Network Training. <em>ICML
+          2015</em>.</p>
+      <p>[13] Ba, J. L., Kiros, J. R., & Hinton, G. E. (2016). Layer Normalization. <em>arXiv:1607.06450</em>.</p>
+      <p>[14] Wu, Y. & He, K. (2018). Group Normalization. <em>ECCV 2018</em>.</p>
+      <p>[15] Santurkar, S. et al. (2018). How Does Batch Normalization Help Optimization? <em>NeurIPS 2018</em>.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Learning Rate Schedules</h4>
+      <p>[16] Loshchilov, I. & Hutter, F. (2017). SGDR: Stochastic Gradient Descent with Warm Restarts. <em>ICLR
+          2017</em>.</p>
+      <p>[17] Goyal, P. et al. (2017). Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour.
+        <em>arXiv:1706.02677</em>.</p>
+      <p>[18] Smith, L. N. & Topin, N. (2019). Super-Convergence. <em>AISTATS 2019</em>.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Surveys</h4>
+      <p>[19] Sze, V. et al. (2017). Efficient Processing of Deep Neural Networks: A Tutorial and Survey. <em>Proc.
+          IEEE</em>, 105(12), 2295–2329.</p>
+    </div>
+
+  
+  <!-- Back to Index -->
+  <div style="margin-top: 4rem; padding-top: 2rem; border-top: var(--border-width-thin, 1px) solid var(--footnotes-border-color, #ddd);">
+    <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+  </div>
+
+  <!-- Visitor Counter -->
+  <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00008">
+    <div class="visitor-stats">
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Total visits:</span>
+        <span class="visitor-stat-count" id="overall-visitor-count"></span>
+      </div>
+      <span class="visitor-stat-separator">§</span>
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Page visits:</span>
+        <span class="visitor-stat-count" id="page-visitor-count"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Portfolio nav script -->
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+    let lastScrollTop = 0;
+    const nav = document.querySelector('.top-nav');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollPos > 50) { nav.classList.add('nav-scrolled'); } else { nav.classList.remove('nav-scrolled'); }
+      if (scrollPos > 100) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) { nav.classList.add('nav-hidden'); } else { nav.classList.remove('nav-hidden'); }
+      }
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    });
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../../firebase-config.js"></script>
+  <script src="../../../visitor-counter.js"></script>
+</body>
+
+</html>

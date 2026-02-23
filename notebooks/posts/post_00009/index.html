@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part V — Computational Efficiency Analysis</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Source+Sans+3:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']], macros: { R: '\\mathbb{R}', bm: ['\\boldsymbol{#1}', 1], pd: ['\\frac{\\partial #1}{\\partial #2}', 2], T: '^\\top' } }, svg: { fontCache: 'global' } };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+    <style>
+        :root {
+            --bg: #faf8f5;
+            --bg-alt: #f0ece6;
+            --bg-code: #1a1b26;
+            --text: #2c2824;
+            --text-muted: #6b6560;
+            --accent: #8b2500;
+            --accent-bg: #fdf0ea;
+            --border: #d4cfc8;
+            --blue: #1a5276;
+            --blue-bg: #e8f0f7;
+            --green: #1e6e3e;
+            --green-bg: #e8f5ec;
+            --purple: #5b2c8e;
+            --purple-bg: #f0e8f7;
+            --gold: #8b6914;
+            --gold-bg: #fdf5e0;
+            --teal: #0e6655;
+            --teal-bg: #e5f5f2;
+            --orange: #b35900;
+            --orange-bg: #fff3e6;
+            --slate: #3d4f5f;
+            --slate-bg: #e8ecf0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 19px;
+            line-height: 1.75;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px 120px;
+        }
+
+        .doc-header {
+            text-align: center;
+            padding: 60px 0 50px;
+            border-bottom: 3px double var(--border);
+            margin-bottom: 50px;
+        }
+
+        .doc-header .part-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .doc-header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .doc-header .subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            font-style: italic;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 27px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 70px;
+            margin-bottom: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        h2 .sec-num {
+            font-weight: 300;
+            opacity: .6;
+            margin-right: 6px;
+        }
+
+        h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        .box {
+            padding: 18px 22px;
+            margin: 24px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .box .label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+
+        .def-box {
+            background: var(--blue-bg);
+            border-left: 4px solid var(--blue);
+        }
+
+        .def-box .label {
+            color: var(--blue);
+        }
+
+        .theorem-box {
+            background: var(--purple-bg);
+            border-left: 4px solid var(--purple);
+        }
+
+        .theorem-box .label {
+            color: var(--purple);
+        }
+
+        .compute-box {
+            background: var(--gold-bg);
+            border-left: 4px solid var(--gold);
+        }
+
+        .compute-box .label {
+            color: var(--gold);
+        }
+
+        .example-box {
+            background: var(--green-bg);
+            border-left: 4px solid var(--green);
+        }
+
+        .example-box .label {
+            color: var(--green);
+        }
+
+        .warning-box {
+            background: var(--accent-bg);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box .label {
+            color: var(--accent);
+        }
+
+        .insight-box {
+            background: var(--teal-bg);
+            border-left: 4px solid var(--teal);
+        }
+
+        .insight-box .label {
+            color: var(--teal);
+        }
+
+        .hw-box {
+            background: var(--slate-bg);
+            border-left: 4px solid var(--slate);
+        }
+
+        .hw-box .label {
+            color: var(--slate);
+        }
+
+        .algo-box {
+            background: var(--orange-bg);
+            border-left: 4px solid var(--orange);
+        }
+
+        .algo-box .label {
+            color: var(--orange);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 15.5px;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        th {
+            background: var(--bg-alt);
+            font-weight: 700;
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: var(--text-muted);
+        }
+
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: 2px solid var(--border);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            background: var(--bg-alt);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #c0caf5;
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .figure {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .figure svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .figure-caption {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .figure-caption strong {
+            color: var(--text);
+            font-style: normal;
+        }
+
+        .ref-section {
+            background: var(--bg-alt);
+            padding: 24px 28px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .ref-section h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ref-section p {
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-left: 24px;
+            text-indent: -24px;
+            line-height: 1.55;
+        }
+
+        mjx-container[jax="SVG"][display="true"] {
+            margin: 20px 0 !important;
+            overflow-x: auto;
+        }
+
+        .toc {
+            background: var(--bg-alt);
+            padding: 28px 32px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+        }
+
+        .toc h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            margin-top: 0;
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 16px;
+            padding: 4px 0;
+            color: var(--text-muted);
+        }
+
+        .toc li a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .toc li a:hover {
+            text-decoration: underline;
+        }
+
+        .toc li.sub {
+            padding-left: 24px;
+            font-size: 15px;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 50px 0;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: var(--bg-alt);
+            padding: 15px 20px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-bar a {
+            text-decoration: none;
+            color: var(--text);
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-bar a.active {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        img,
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            padding: 20px 20px 120px;
+        }
+    </style>
+  <!-- Portfolio CSS -->
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+  <link rel="stylesheet" href="../../../visitor-counter.css" />
+
+<body class="text-justify">
+  <!-- Portfolio Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <!-- DNN Series Navigation -->
+  <nav class="nav-bar">
+    <a href="../../index.html#dnn">Home</a>
+    <a href="../post_00004/index.html">Part 0</a>
+    <a href="../post_00005/index.html">Part I</a>
+    <a href="../post_00006/index.html">Part II</a>
+    <a href="../post_00007/index.html">Part III</a>
+    <a href="../post_00008/index.html">Part IV</a>
+    <a href="../post_00009/index.html" class="active">Part V</a>
+    <a href="../post_00010/index.html">Part VI</a>
+  </nav>
+    
+    <div class="container">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" style="margin-bottom:1.5rem; font-size:0.85em; opacity:0.7;">
+    <a href="../../index.html" style="text-decoration:none; color:var(--body-color);">Notebook</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#cs" style="text-decoration:none; color:var(--body-color);">Computer Science</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#dnn" style="text-decoration:none; color:var(--body-color);">Deep Neural Networks</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <span>Part V: Efficiency</span>
+  </nav>
+
+
+        <!-- ==================== HEADER ==================== -->
+        <div class="doc-header">
+            <div class="part-label">Part V of VI</div>
+            <h1>Computational Efficiency Analysis</h1>
+            <div class="subtitle">FLOP counting methodology, memory budgets, hardware-aware computation, the roofline
+                model, inference optimization, mixed precision, gradient checkpointing, and scaling laws — the complete
+                toolkit for analyzing and optimizing neural network efficiency</div>
+        </div>
+
+        <!-- ==================== TOC ==================== -->
+        <div class="toc">
+            <h3>Contents</h3>
+            <ul>
+                <li><a href="#sec17">17. FLOP Counting Methodology</a></li>
+                <li class="sub"><a href="#sec17-1">17.1 FLOPs vs. MACs vs. FLOP/s</a></li>
+                <li class="sub"><a href="#sec17-2">17.2 Counting FLOPs for Complete Networks</a></li>
+                <li class="sub"><a href="#sec17-3">17.3 The 3× Rule: Forward, Backward, and Training</a></li>
+                <li class="sub"><a href="#sec17-4">17.4 Total Training FLOPs Formula</a></li>
+                <li><a href="#sec18">18. Memory Analysis</a></li>
+                <li class="sub"><a href="#sec18-1">18.1 The Four Components of Training Memory</a></li>
+                <li class="sub"><a href="#sec18-2">18.2 Activation Memory — The Dominant Cost</a></li>
+                <li class="sub"><a href="#sec18-3">18.3 Gradient Checkpointing (Rematerialization)</a></li>
+                <li class="sub"><a href="#sec18-4">18.4 Mixed Precision Training</a></li>
+                <li class="sub"><a href="#sec18-5">18.5 Gradient Accumulation</a></li>
+                <li><a href="#sec19">19. Hardware-Aware Computation</a></li>
+                <li class="sub"><a href="#sec19-1">19.1 The Roofline Model</a></li>
+                <li class="sub"><a href="#sec19-2">19.2 Compute-Bound vs. Memory-Bound Operations</a></li>
+                <li class="sub"><a href="#sec19-3">19.3 GPU Hardware and Tensor Cores</a></li>
+                <li class="sub"><a href="#sec19-4">19.4 Data Types and Throughput</a></li>
+                <li class="sub"><a href="#sec19-5">19.5 Batch Size and Hardware Utilization</a></li>
+                <li><a href="#sec20">20. Inference Optimization</a></li>
+                <li class="sub"><a href="#sec20-1">20.1 Operator Fusion</a></li>
+                <li class="sub"><a href="#sec20-2">20.2 Quantization</a></li>
+                <li class="sub"><a href="#sec20-3">20.3 Pruning</a></li>
+                <li class="sub"><a href="#sec20-4">20.4 Knowledge Distillation</a></li>
+                <li><a href="#sec21">21. Scaling Laws</a></li>
+                <li class="sub"><a href="#sec21-1">21.1 How FLOPs Scale with Model Dimensions</a></li>
+                <li class="sub"><a href="#sec21-2">21.2 Neural Scaling Laws</a></li>
+                <li><a href="#sec-summary">Master Efficiency Reference</a></li>
+                <li><a href="#sec-refs">Complete References</a></li>
+            </ul>
+        </div>
+
+
+        <!-- ============================================================ -->
+        <!-- SECTION 17: FLOP COUNTING                                     -->
+        <!-- ============================================================ -->
+        <h2 id="sec17"><span class="sec-num">§17</span> FLOP Counting Methodology</h2>
+
+        <h3 id="sec17-1">17.1 FLOPs vs. MACs vs. FLOP/s — Disambiguation</h3>
+
+        <div class="def-box box">
+            <div class="label">Key Definitions</div>
+            <p><strong>FLOP</strong> (Floating-Point Operation): A single arithmetic operation on floating-point numbers
+                — one addition, one multiplication, one comparison, etc.</p>
+            <p><strong>MAC</strong> (Multiply-Accumulate): One multiplication followed by one addition: $a \leftarrow a
+                + b \times c$. This counts as <strong>2 FLOPs</strong>.</p>
+            <p><strong>FLOPs</strong> (plural): The total count of floating-point operations in a computation.
+                (Confusingly, some papers use "FLOPs" to mean MACs.)</p>
+            <p><strong>FLOP/s</strong> (FLOPs per second): A measure of hardware throughput, not a count. Measured in
+                GFLOP/s (giga) or TFLOP/s (tera).</p>
+        </div>
+
+        <div class="warning-box box">
+            <div class="label">Critical Disambiguation</div>
+            <p>There is widespread inconsistency in the literature. When a paper reports "X GFLOPs" for a model, it may
+                mean either $X$ billion FLOPs <strong>or</strong> $X$ billion MACs (= $2X$ billion FLOPs). Always check
+                the definition used. In this document, we consistently use <strong>FLOPs = total floating-point
+                    operations</strong>, where one MAC = 2 FLOPs. This is the convention used by Sze et al. (2017) and
+                most hardware specifications.</p>
+            <p>For matrix multiplication of $(m \times n) \times (n \times p)$:</p>
+            <p><strong>Our convention:</strong> $2mnp$ FLOPs (each of the $mp$ outputs requires $n$ MACs = $2n$ FLOPs)
+            </p>
+            <p><strong>Some papers:</strong> $mnp$ "multiply-adds" or "MACs"</p>
+        </div>
+
+
+        <h3 id="sec17-2">17.2 Counting FLOPs for Complete Networks</h3>
+
+        <div class="compute-box box">
+            <div class="label">Master FLOP Formulas (Forward Pass, Per Sample)</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Layer Type</th>
+                        <th>FLOPs</th>
+                        <th>Dominant Term</th>
+                    </tr>
+                    <tr>
+                        <td>Fully Connected ($n_{\text{in}} \to n_{\text{out}}$)</td>
+                        <td>$2 n_{\text{in}} n_{\text{out}}$</td>
+                        <td>MatMul</td>
+                    </tr>
+                    <tr>
+                        <td>Conv2D ($C_i \to C_o$, $k \times k$)</td>
+                        <td>$2 C_o H_o W_o C_i k^2$</td>
+                        <td>MatMul (via im2col)</td>
+                    </tr>
+                    <tr>
+                        <td>Depthwise Conv ($C$, $k \times k$)</td>
+                        <td>$2 C H_o W_o k^2$</td>
+                        <td>Per-channel conv</td>
+                    </tr>
+                    <tr>
+                        <td>1×1 Conv ($C_i \to C_o$)</td>
+                        <td>$2 C_o H W C_i$</td>
+                        <td>MatMul</td>
+                    </tr>
+                    <tr>
+                        <td>DW Separable ($C_i \to C_o$, $k \times k$)</td>
+                        <td>$2 H_o W_o C_i(k^2 + C_o)$</td>
+                        <td>Pointwise dominates</td>
+                    </tr>
+                    <tr>
+                        <td>BatchNorm ($C$ channels, spatial $H \times W$)</td>
+                        <td>$\approx 7 C H W$</td>
+                        <td>Element-wise</td>
+                    </tr>
+                    <tr>
+                        <td>ReLU ($n$ elements)</td>
+                        <td>$n$</td>
+                        <td>Comparison</td>
+                    </tr>
+                    <tr>
+                        <td>Softmax ($C$ classes)</td>
+                        <td>$\approx 5C$</td>
+                        <td>Exp + division</td>
+                    </tr>
+                    <tr>
+                        <td>Residual Addition ($n$ elements)</td>
+                        <td>$n$</td>
+                        <td>Element-wise add</td>
+                    </tr>
+                    <tr>
+                        <td>Max Pool ($k \times k$)</td>
+                        <td>$(k^2-1) C H_o W_o$</td>
+                        <td>Comparisons</td>
+                    </tr>
+                    <tr>
+                        <td>Global Average Pool ($C$ channels)</td>
+                        <td>$CHW$</td>
+                        <td>Additions</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="insight-box box">
+            <div class="label">Where Do the FLOPs Go?</div>
+            <p>For typical CNNs, the distribution of FLOPs across operation types is approximately:</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Operation Type</th>
+                        <th>% of Forward FLOPs</th>
+                        <th>Examples</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Matrix Multiplication (Conv + FC)</strong></td>
+                        <td><strong>90–99%</strong></td>
+                        <td>Conv layers, FC layers</td>
+                    </tr>
+                    <tr>
+                        <td>Normalization (BN/LN)</td>
+                        <td>1–5%</td>
+                        <td>BatchNorm, LayerNorm</td>
+                    </tr>
+                    <tr>
+                        <td>Activation Functions</td>
+                        <td>0.1–1%</td>
+                        <td>ReLU, GELU</td>
+                    </tr>
+                    <tr>
+                        <td>Pooling</td>
+                        <td>0.1–0.5%</td>
+                        <td>MaxPool, GAP</td>
+                    </tr>
+                    <tr>
+                        <td>Residual Connections</td>
+                        <td>0.01–0.1%</td>
+                        <td>Skip addition</td>
+                    </tr>
+                    <tr>
+                        <td>Softmax + Loss</td>
+                        <td>&lt;0.01%</td>
+                        <td>Output layer</td>
+                    </tr>
+                </table>
+            </div>
+            <p>This extreme concentration means that <strong>optimizing matrix multiplication is virtually synonymous
+                    with optimizing neural network computation</strong>.</p>
+        </div>
+
+
+        <h3 id="sec17-3">17.3 The 3× Rule: Forward, Backward, and Training</h3>
+
+        <div class="theorem-box box">
+            <div class="label">The Fundamental Training Cost Identity</div>
+            <p>For any neural network layer performing a linear operation $\bm{Y} = \bm{X}\bm{W}\T$:</p>
+            <p><strong>Forward:</strong> 1 matmul → $2mn_{\text{in}}n_{\text{out}}$ FLOPs</p>
+            <p><strong>Backward (weight gradient):</strong> $\pd{L}{\bm{W}} = \bm{\delta}\T\bm{X}$ → 1 matmul → same
+                order FLOPs</p>
+            <p><strong>Backward (input gradient):</strong> $\pd{L}{\bm{X}} = \bm{\delta}\bm{W}$ → 1 matmul → same order
+                FLOPs</p>
+            $$\boxed{\text{FLOPs}_{\text{backward}} \approx 2 \times \text{FLOPs}_{\text{forward}}}$$
+            $$\boxed{\text{FLOPs}_{\text{training step}} \approx 3 \times \text{FLOPs}_{\text{forward}}}$$
+            <p>This holds for every linear layer (FC, Conv, Attention) and therefore for the entire network.</p>
+        </div>
+
+
+        <h3 id="sec17-4">17.4 Total Training FLOPs Formula</h3>
+
+        <div class="compute-box box">
+            <div class="label">Total Training Computation</div>
+            $$\text{FLOPs}_{\text{total training}} = 3 \times F_{\text{forward}} \times N_{\text{samples}} \times E$$
+            <p>where $F_{\text{forward}}$ = forward FLOPs per sample, $N_{\text{samples}}$ = dataset size, $E$ = number
+                of epochs.</p>
+            <p>Equivalently, using total tokens/samples seen:</p>
+            $$\text{FLOPs}_{\text{total}} = 3 \times F_{\text{forward}} \times D$$
+            <p>where $D = N_{\text{samples}} \times E$ = total samples processed during training.</p>
+        </div>
+
+        <div class="example-box box">
+            <div class="label">Worked Example — ResNet-50 on ImageNet</div>
+            <p><strong>Forward FLOPs per image:</strong> 3.8G (≈ 1.9G MACs)</p>
+            <p><strong>Dataset:</strong> 1.28M images</p>
+            <p><strong>Epochs:</strong> 90 (standard)</p>
+            $$\text{FLOPs}_{\text{total}} = 3 \times 3.8 \times 10^9 \times 1.28 \times 10^6 \times 90$$
+            $$= 3 \times 3.8 \times 1.28 \times 90 \times 10^{15} = 1.32 \times 10^{18} \text{ FLOPs}$$
+            $$\approx 1.32 \text{ EFLOPs (exaFLOPs)}$$
+
+            <p><strong>Training time estimate:</strong> On NVIDIA V100 (125 TFLOP/s FP16, ~50% utilization):</p>
+            $$t = \frac{1.32 \times 10^{18}}{125 \times 10^{12} \times 0.5} \approx 21{,}100 \text{ seconds} \approx 5.9
+            \text{ hours}$$
+            <p>(In practice, ~6–8 hours on 8× V100 with data parallelism, consistent with this estimate.)</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §17</h4>
+            <p>[1] Sze, V. et al. (2017). Efficient Processing of Deep Neural Networks. <em>Proc. IEEE</em>, 105(12),
+                2295–2329.</p>
+            <p>[2] Canziani, A., Paszke, A., & Culurciello, E. (2017). An Analysis of Deep Neural Network Models for
+                Practical Applications. <em>arXiv:1605.07678</em>.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 18: MEMORY ANALYSIS                                   -->
+        <!-- ============================================================ -->
+        <h2 id="sec18"><span class="sec-num">§18</span> Memory Analysis</h2>
+
+        <p>
+            Memory is frequently the binding constraint in neural network training — not FLOPs. A model that fits on a
+            GPU can be trained; one that doesn't fit cannot, regardless of how many FLOPs the GPU can execute.
+            Understanding memory composition in detail is therefore critical for practical efficiency research.
+        </p>
+
+        <h3 id="sec18-1">18.1 The Four Components of Training Memory</h3>
+
+        <div class="def-box box">
+            <div class="label">Training Memory Decomposition</div>
+            $$\text{Memory}_{\text{training}} = M_{\text{params}} + M_{\text{gradients}} + M_{\text{optimizer}} +
+            M_{\text{activations}} + M_{\text{temp}}$$
+
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Size (float32)</th>
+                        <th>Depends On</th>
+                        <th>Scales With</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Parameters</strong> $\bm{\theta}$</td>
+                        <td>$4P$ bytes</td>
+                        <td>Architecture only</td>
+                        <td>Model size</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gradients</strong> $\nabla\bm{\theta}$</td>
+                        <td>$4P$ bytes</td>
+                        <td>Architecture only</td>
+                        <td>Model size</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Optimizer state</strong></td>
+                        <td>$4M_{\text{opt}}P$ bytes</td>
+                        <td>Architecture + optimizer choice</td>
+                        <td>Model size</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activations</strong> (cached for backprop)</td>
+                        <td>$4 \times \sum_l |A_l|$ bytes</td>
+                        <td>Architecture + batch size</td>
+                        <td>Model size × batch</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temporary buffers</strong></td>
+                        <td>Variable</td>
+                        <td>Implementation</td>
+                        <td>Largest single operation</td>
+                    </tr>
+                </table>
+            </div>
+            <p>$M_{\text{opt}}$: 0 (SGD), 1 (Momentum), 2 (Adam)</p>
+        </div>
+
+        <div class="figure">
+            <svg viewBox="0 0 800 330" xmlns="http://www.w3.org/2000/svg" style="max-width:780px;">
+                <text x="400" y="22" text-anchor="middle" font-family="Source Sans 3" font-size="15" font-weight="700"
+                    fill="#2c2824">Training Memory Breakdown — ResNet-50 (25.6M params, Adam, B=32)</text>
+
+                <!-- Stacked bar -->
+                <rect x="100" y="50" width="600" height="50" rx="6" fill="#e8f0f7" stroke="#1a5276"
+                    stroke-width="1.5" />
+                <text x="400" y="80" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#1a5276">Parameters: 97.7 MB (3.3%)</text>
+
+                <rect x="100" y="105" width="600" height="50" rx="6" fill="#f0e8f7" stroke="#5b2c8e"
+                    stroke-width="1.5" />
+                <text x="400" y="135" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#5b2c8e">Gradients: 97.7 MB (3.3%)</text>
+
+                <rect x="100" y="160" width="600" height="50" rx="6" fill="#fdf0ea" stroke="#8b2500"
+                    stroke-width="1.5" />
+                <text x="400" y="190" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#8b2500">Adam State (m + v): 195.3 MB (6.7%)</text>
+
+                <rect x="100" y="215" width="600" height="80" rx="6" fill="#fdf5e0" stroke="#8b6914" stroke-width="2" />
+                <text x="400" y="250" text-anchor="middle" font-family="Source Sans 3" font-size="16" font-weight="700"
+                    fill="#8b6914">Cached Activations: ~2.5 GB (85.5%)</text>
+                <text x="400" y="272" text-anchor="middle" font-family="Source Sans 3" font-size="12"
+                    fill="#8b6914">Every intermediate tensor from every layer × batch size</text>
+
+                <rect x="100" y="300" width="600" height="20" rx="4" fill="#e5f5f2" stroke="#0e6655" stroke-width="1" />
+                <text x="400" y="315" text-anchor="middle" font-family="Source Sans 3" font-size="11"
+                    fill="#0e6655">Temp buffers: ~50 MB (1.7%)</text>
+
+                <!-- Total -->
+                <text x="730" y="185" font-family="Source Sans 3" font-size="15" font-weight="700"
+                    fill="#2c2824">Total:</text>
+                <text x="730" y="205" font-family="Source Sans 3" font-size="15" font-weight="700" fill="#8b2500">~2.9
+                    GB</text>
+            </svg>
+            <div class="figure-caption"><strong>Figure 18.1.</strong> Training memory breakdown for ResNet-50 with Adam
+                optimizer and batch size 32. Cached activations dominate at 85.5% of total memory — this is the primary
+                target for memory optimization techniques like gradient checkpointing and mixed precision.</div>
+        </div>
+
+
+        <h3 id="sec18-2">18.2 Activation Memory — The Dominant Cost</h3>
+
+        <p>
+            Activations must be stored during the forward pass and kept in memory until the corresponding backward pass
+            layer processes them. For a network with $L$ layers, the activation at layer $l$ is freed only after layer
+            $l$'s backward pass completes. The peak activation memory is therefore approximately the sum of <em>all</em>
+            layer activations.
+        </p>
+
+        <div class="compute-box box">
+            <div class="label">Activation Memory by Layer Type</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Layer</th>
+                        <th>What Must Be Cached</th>
+                        <th>Size (elements per sample)</th>
+                    </tr>
+                    <tr>
+                        <td>Conv ($C_o$, $H_o \times W_o$)</td>
+                        <td>Input tensor (for weight grad)</td>
+                        <td>$C_i \times H_i \times W_i$</td>
+                    </tr>
+                    <tr>
+                        <td>ReLU</td>
+                        <td>Binary mask (1 bit per element)</td>
+                        <td>$C \times H \times W / 8$ bytes (packed)</td>
+                    </tr>
+                    <tr>
+                        <td>BatchNorm</td>
+                        <td>Normalized values, $\mu$, $\sigma^2$</td>
+                        <td>$C \times H \times W + 2C$</td>
+                    </tr>
+                    <tr>
+                        <td>FC ($n_{\text{out}}$)</td>
+                        <td>Input vector</td>
+                        <td>$n_{\text{in}}$</td>
+                    </tr>
+                    <tr>
+                        <td>Dropout</td>
+                        <td>Binary mask</td>
+                        <td>$n / 8$ bytes (packed)</td>
+                    </tr>
+                    <tr>
+                        <td>Max Pool</td>
+                        <td>Argmax indices</td>
+                        <td>$C \times H_o \times W_o$ (int)</td>
+                    </tr>
+                    <tr>
+                        <td>Residual Add</td>
+                        <td>Both inputs (skip + main branch)</td>
+                        <td>$2 \times C \times H \times W$</td>
+                    </tr>
+                </table>
+            </div>
+            <p>For a deep network, these accumulate: ResNet-50 with B=32 stores ~640M float32 values ≈ 2.5 GB for
+                activations alone.</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">Activation Memory Scaling</div>
+            $$M_{\text{act}} \propto B \times \sum_{l=1}^{L} n_l$$
+            <p>where $n_l$ is the activation tensor size at layer $l$. Key observations:</p>
+            <p><strong>Scales linearly with batch size $B$:</strong> halving $B$ halves activation memory.</p>
+            <p><strong>Scales linearly with depth $L$:</strong> for fixed-width networks, doubling depth doubles
+                activation memory.</p>
+            <p><strong>Scales quadratically with resolution:</strong> doubling input resolution (e.g., 224→448)
+                quadruples $H \times W$ at every layer → 4× activation memory. This is why high-resolution training is
+                so memory-hungry.</p>
+        </div>
+
+
+        <h3 id="sec18-3">18.3 Gradient Checkpointing (Rematerialization)</h3>
+
+        <p>
+            Gradient checkpointing is the most important memory optimization technique for training. It trades
+            computation for memory by discarding some activations during the forward pass and recomputing them during
+            the backward pass.
+        </p>
+
+        <div class="theorem-box box">
+            <div class="label">Gradient Checkpointing — Theory</div>
+            <p>For a network with $L$ layers, divide it into $K$ segments of $L/K$ layers each. During the forward pass,
+                store only the activations at segment boundaries (checkpoints). During the backward pass, when
+                processing segment $k$, recompute that segment's forward pass from the nearest checkpoint.</p>
+
+            <p><strong>Optimal checkpoint strategy ($\sqrt{L}$ checkpoints):</strong></p>
+            $$K = \sqrt{L}$$
+            $$\text{Memory}_{\text{act}} = O(\sqrt{L}) \text{ instead of } O(L)$$
+            $$\text{Extra FLOPs} = +33\% \text{ (one extra forward pass per segment, amortized)}$$
+            <p>More precisely, the extra computation equals one additional forward pass through the entire network,
+                meaning:</p>
+            $$\text{FLOPs}_{\text{training}} = \underbrace{F}_{\text{fwd}} + \underbrace{F}_{\text{recompute}} +
+            \underbrace{2F}_{\text{bwd}} = 4F \text{ instead of } 3F$$
+            $$\text{Overhead} = \frac{4F - 3F}{3F} = 33\%$$
+        </div>
+
+        <div class="figure">
+            <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="max-width:780px;">
+                <defs>
+                    <marker id="ar" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                        <polygon points="0 0,7 2.5,0 5" fill="#2c2824" />
+                    </marker>
+                    <marker id="arr" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                        <polygon points="0 0,7 2.5,0 5" fill="#8b2500" />
+                    </marker>
+                </defs>
+                <text x="400" y="20" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#2c2824">Gradient Checkpointing — Memory Savings</text>
+
+                <!-- Standard (all stored) -->
+                <text x="100" y="50" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#1a5276">Standard (store all)</text>
+                <g transform="translate(30,60)">
+                    <rect x="0" y="0" width="50" height="30" rx="3" fill="#e8f0f7" stroke="#1a5276"
+                        stroke-width="1.5" />
+                    <rect x="55" y="0" width="50" height="30" rx="3" fill="#e8f0f7" stroke="#1a5276"
+                        stroke-width="1.5" />
+                    <rect x="110" y="0" width="50" height="30" rx="3" fill="#e8f0f7" stroke="#1a5276"
+                        stroke-width="1.5" />
+                    <rect x="165" y="0" width="50" height="30" rx="3" fill="#e8f0f7" stroke="#1a5276"
+                        stroke-width="1.5" />
+                    <rect x="220" y="0" width="50" height="30" rx="3" fill="#e8f0f7" stroke="#1a5276"
+                        stroke-width="1.5" />
+                    <rect x="275" y="0" width="50" height="30" rx="3" fill="#e8f0f7" stroke="#1a5276"
+                        stroke-width="1.5" />
+                    <rect x="330" y="0" width="50" height="30" rx="3" fill="#e8f0f7" stroke="#1a5276"
+                        stroke-width="1.5" />
+                    <rect x="385" y="0" width="50" height="30" rx="3" fill="#e8f0f7" stroke="#1a5276"
+                        stroke-width="1.5" />
+                    <text x="435" y="48" font-family="Source Sans 3" font-size="12" fill="#1a5276">Memory: O(L) = 8
+                        blocks</text>
+                </g>
+
+                <!-- Checkpointed (only √L stored) -->
+                <text x="100" y="130" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#1e6e3e">Checkpointed (√L segments)</text>
+                <g transform="translate(30,140)">
+                    <!-- Stored (checkpoints) - green -->
+                    <rect x="0" y="0" width="50" height="30" rx="3" fill="#e8f5ec" stroke="#1e6e3e" stroke-width="2" />
+                    <text x="25" y="20" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                        fill="#1e6e3e">ckpt</text>
+                    <!-- Not stored - gray -->
+                    <rect x="55" y="0" width="50" height="30" rx="3" fill="#f5f5f5" stroke="#ccc" stroke-width="1"
+                        stroke-dasharray="4,2" />
+                    <rect x="110" y="0" width="50" height="30" rx="3" fill="#f5f5f5" stroke="#ccc" stroke-width="1"
+                        stroke-dasharray="4,2" />
+                    <!-- Checkpoint -->
+                    <rect x="165" y="0" width="50" height="30" rx="3" fill="#e8f5ec" stroke="#1e6e3e"
+                        stroke-width="2" />
+                    <text x="190" y="20" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                        fill="#1e6e3e">ckpt</text>
+                    <!-- Not stored -->
+                    <rect x="220" y="0" width="50" height="30" rx="3" fill="#f5f5f5" stroke="#ccc" stroke-width="1"
+                        stroke-dasharray="4,2" />
+                    <rect x="275" y="0" width="50" height="30" rx="3" fill="#f5f5f5" stroke="#ccc" stroke-width="1"
+                        stroke-dasharray="4,2" />
+                    <!-- Checkpoint -->
+                    <rect x="330" y="0" width="50" height="30" rx="3" fill="#e8f5ec" stroke="#1e6e3e"
+                        stroke-width="2" />
+                    <text x="355" y="20" text-anchor="middle" font-family="JetBrains Mono" font-size="9"
+                        fill="#1e6e3e">ckpt</text>
+                    <rect x="385" y="0" width="50" height="30" rx="3" fill="#f5f5f5" stroke="#ccc" stroke-width="1"
+                        stroke-dasharray="4,2" />
+                    <text x="435" y="48" font-family="Source Sans 3" font-size="12" fill="#1e6e3e">Memory: O(√L) = 3
+                        stored + recompute zone</text>
+                </g>
+
+                <!-- Comparison box -->
+                <rect x="80" y="220" width="640" height="65" rx="6" fill="#fdf5e0" stroke="#8b6914" stroke-width="1" />
+                <text x="400" y="244" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+                    fill="#8b6914">Trade-off Summary</text>
+                <text x="400" y="268" text-anchor="middle" font-family="Source Sans 3" font-size="13"
+                    fill="#2c2824">Memory: O(L) → O(√L) reduction | Extra compute: +33% | For L=100: memory ÷10 for just
+                    +33% FLOPs</text>
+            </svg>
+            <div class="figure-caption"><strong>Figure 18.2.</strong> Gradient checkpointing. Standard training stores
+                all $L$ layer activations. Checkpointed training stores only $\sqrt{L}$ checkpoint activations and
+                recomputes the rest during the backward pass. For a 100-layer network, this reduces activation memory by
+                10× at a cost of 33% more FLOPs — an extremely favorable trade-off when memory is the bottleneck.</div>
+        </div>
+
+        <div class="example-box box">
+            <div class="label">Gradient Checkpointing — ResNet-50 Numbers</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Standard</th>
+                        <th>Checkpointed (4 segments)</th>
+                    </tr>
+                    <tr>
+                        <td>Activation memory</td>
+                        <td>~2.5 GB</td>
+                        <td>~0.6 GB</td>
+                    </tr>
+                    <tr>
+                        <td>Training FLOPs per step</td>
+                        <td>$3F$ (standard)</td>
+                        <td>$4F$ (+33%)</td>
+                    </tr>
+                    <tr>
+                        <td>Max batch size (16 GB GPU)</td>
+                        <td>B ≈ 160</td>
+                        <td>B ≈ 640</td>
+                    </tr>
+                    <tr>
+                        <td>Effective throughput</td>
+                        <td>Baseline</td>
+                        <td>+300% batch size, -25% per-step speed</td>
+                    </tr>
+                </table>
+            </div>
+            <p>The larger batch size enabled by checkpointing can actually <em>increase</em> throughput despite the
+                extra computation, because larger batches utilize GPU hardware more efficiently.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Reference</h4>
+            <p>[3] Chen, T. et al. (2016). Training Deep Nets with Sublinear Memory Cost. <em>arXiv:1604.06174</em>.</p>
+        </div>
+
+
+        <h3 id="sec18-4">18.4 Mixed Precision Training</h3>
+
+        <div class="def-box box">
+            <div class="label">Mixed Precision Training</div>
+            <p>Store activations and compute forward/backward passes in <strong>FP16</strong> (16-bit floating point, 2
+                bytes per value) while maintaining a <strong>FP32 master copy</strong> of weights for the optimizer
+                update. This approach:</p>
+            <p>(1) Halves activation memory (2 bytes instead of 4 per element)</p>
+            <p>(2) Doubles arithmetic throughput on tensor cores (2× FP16 FLOP/s vs FP32)</p>
+            <p>(3) Halves memory bandwidth usage (move half as many bytes)</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">Mixed Precision — Memory Savings</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>FP32</th>
+                        <th>Mixed Precision</th>
+                        <th>Savings</th>
+                    </tr>
+                    <tr>
+                        <td>Parameters (master copy)</td>
+                        <td>$4P$</td>
+                        <td>$4P$ (keep FP32)</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Parameters (FP16 copy for fwd/bwd)</td>
+                        <td>—</td>
+                        <td>$2P$ (extra)</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>Gradients</td>
+                        <td>$4P$</td>
+                        <td>$2P$ (FP16)</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Adam $m$</td>
+                        <td>$4P$</td>
+                        <td>$4P$ (FP32)</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Adam $v$</td>
+                        <td>$4P$</td>
+                        <td>$4P$ (FP32)</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Activations</td>
+                        <td>$4 \sum|A_l|$</td>
+                        <td>$2 \sum|A_l|$ (FP16)</td>
+                        <td><strong>50%</strong></td>
+                    </tr>
+                </table>
+            </div>
+            <p>The main saving is in activations (which dominate). For ResNet-50: activation memory drops from ~2.5 GB
+                to ~1.25 GB.</p>
+            <p><strong>Total parameter memory (Adam, mixed precision):</strong> $4P + 2P + 2P + 4P + 4P = 16P$ bytes —
+                same as FP32 Adam (the FP16 weight copy offsets the gradient savings).</p>
+        </div>
+
+        <div class="hw-box box">
+            <div class="label">Loss Scaling — Essential for FP16 Stability</div>
+            <p>FP16 has a limited dynamic range: values below $\sim 6 \times 10^{-5}$ underflow to zero. Many gradient
+                values in deep networks fall below this threshold. <strong>Loss scaling</strong> multiplies the loss by
+                a large constant $S$ (e.g., $S = 1024$) before backpropagation, which scales all gradients by $S$,
+                keeping them within FP16 range. Before the optimizer update, gradients are divided by $S$ and converted
+                to FP32.</p>
+            <p><strong>Dynamic loss scaling:</strong> starts with a large $S$ and halves it whenever a NaN/Inf is
+                detected. Cost: $O(P)$ per step for the check — negligible.</p>
+            <p><em>Micikevicius, P. et al. (2018), "Mixed Precision Training", ICLR 2018</em></p>
+        </div>
+
+
+        <h3 id="sec18-5">18.5 Gradient Accumulation</h3>
+
+        <div class="def-box box">
+            <div class="label">Gradient Accumulation</div>
+            <p>Run $K$ forward-backward passes with micro-batch size $B_{\text{micro}}$, accumulating gradients, then
+                perform one optimizer update. The effective batch size is:</p>
+            $$B_{\text{effective}} = K \times B_{\text{micro}}$$
+            <p><strong>Memory:</strong> Only $B_{\text{micro}}$ samples in memory at once → activation memory scales
+                with $B_{\text{micro}}$, not $B_{\text{effective}}$.</p>
+            <p><strong>FLOPs:</strong> Identical to training with $B_{\text{effective}}$ directly (same number of
+                forward/backward operations).</p>
+            <p><strong>Speed:</strong> Slightly slower than true large-batch training due to sequential processing and
+                reduced GPU parallelism, but enables arbitrary effective batch sizes on limited memory.</p>
+        </div>
+
+        <div class="example-box box">
+            <div class="label">Gradient Accumulation — When 32 GB Isn't Enough</div>
+            <p>Suppose you need effective batch size 256 for convergence, but your GPU only fits batch size 16:</p>
+            <p>$K = 256 / 16 = 16$ accumulation steps per optimizer update.</p>
+            <p><strong>Memory used:</strong> Same as B=16 (not B=256).</p>
+            <p><strong>Training FLOPs:</strong> Same as B=256 (same total samples processed).</p>
+            <p><strong>Wall-clock time:</strong> ~16× slower than 16 GPUs doing B=16 each in parallel (data
+                parallelism), but free in terms of hardware cost.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §18</h4>
+            <p>[3] Chen, T. et al. (2016). Training Deep Nets with Sublinear Memory Cost. <em>arXiv:1604.06174</em>.</p>
+            <p>[4] Micikevicius, P. et al. (2018). Mixed Precision Training. <em>ICLR 2018</em>.</p>
+            <p>[1] Sze, V. et al. (2017). Efficient Processing of Deep Neural Networks.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 19: HARDWARE-AWARE COMPUTATION                        -->
+        <!-- ============================================================ -->
+        <h2 id="sec19"><span class="sec-num">§19</span> Hardware-Aware Computation</h2>
+
+        <p>
+            FLOPs alone do not determine execution speed. Two operations with the same FLOP count can differ by 100× in
+            actual runtime depending on how well they map to hardware. This section bridges the gap between theoretical
+            FLOPs and real-world performance.
+        </p>
+
+        <h3 id="sec19-1">19.1 The Roofline Model</h3>
+
+        <div class="def-box box">
+            <div class="label">Arithmetic Intensity</div>
+            <p>The <strong>arithmetic intensity</strong> (AI) of an operation is the ratio of computation to data
+                movement:</p>
+            $$\text{AI} = \frac{\text{FLOPs}}{\text{Bytes accessed from/to memory}}$$
+            <p>Units: FLOPs/byte. This is the fundamental quantity determining whether an operation is compute-bound or
+                memory-bound.</p>
+        </div>
+
+        <div class="theorem-box box">
+            <div class="label">The Roofline Model</div>
+            <p>Achievable performance is bounded by:</p>
+            $$\text{Performance (FLOP/s)} \leq \min\left(\text{Peak compute (FLOP/s)},\;\; \text{AI} \times \text{Memory
+            bandwidth (bytes/s)}\right)$$
+            <p>The "roofline" is the plot of achievable FLOP/s vs. arithmetic intensity. It rises linearly with AI
+                (memory-bound regime) until it hits the peak compute (compute-bound regime). The crossover point is:</p>
+            $$\text{AI}_{\text{ridge}} = \frac{\text{Peak FLOP/s}}{\text{Memory bandwidth}}$$
+            <p>Operations with $\text{AI} < \text{AI}_{\text{ridge}}$ are <strong>memory-bound</strong>; operations with
+                    $\text{AI} > \text{AI}_{\text{ridge}}$ are <strong>compute-bound</strong>.</p>
+        </div>
+
+        <div class="figure">
+            <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" style="max-width:770px;">
+                <text x="400" y="22" text-anchor="middle" font-family="Source Sans 3" font-size="15" font-weight="700"
+                    fill="#2c2824">The Roofline Model (Log-Log Scale)</text>
+
+                <!-- Axes -->
+                <line x1="80" y1="270" x2="740" y2="270" stroke="#2c2824" stroke-width="1.5" />
+                <line x1="80" y1="270" x2="80" y2="45" stroke="#2c2824" stroke-width="1.5" />
+                <text x="410" y="300" text-anchor="middle" font-family="Source Sans 3" font-size="13"
+                    fill="#6b6560">Arithmetic Intensity (FLOPs / Byte) →</text>
+                <text x="30" y="160" text-anchor="middle" font-family="Source Sans 3" font-size="13" fill="#6b6560"
+                    transform="rotate(-90 30 160)">Achievable FLOP/s →</text>
+
+                <!-- AI labels -->
+                <text x="140" y="288" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+                    fill="#6b6560">1</text>
+                <text x="260" y="288" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+                    fill="#6b6560">10</text>
+                <text x="380" y="288" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+                    fill="#6b6560">100</text>
+                <text x="500" y="288" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+                    fill="#6b6560">1000</text>
+
+                <!-- Roofline -->
+                <!-- Memory bandwidth slope (left part) -->
+                <line x1="80" y1="250" x2="380" y2="80" stroke="#1a5276" stroke-width="3" />
+                <!-- Peak compute ceiling (right part) -->
+                <line x1="380" y1="80" x2="740" y2="80" stroke="#8b2500" stroke-width="3" />
+
+                <!-- Ridge point -->
+                <circle cx="380" cy="80" r="5" fill="#2c2824" />
+                <text x="380" y="65" text-anchor="middle" font-family="Source Sans 3" font-size="11" font-weight="700"
+                    fill="#2c2824">Ridge Point (AI_ridge)</text>
+
+                <!-- Labels -->
+                <text x="200" y="140" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#1a5276" transform="rotate(-35 200 140)">Memory-Bound</text>
+                <text x="200" y="158" text-anchor="middle" font-family="Source Sans 3" font-size="11" fill="#1a5276"
+                    transform="rotate(-35 200 158)">(bandwidth-limited)</text>
+                <text x="560" y="72" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#8b2500">Compute-Bound</text>
+                <text x="560" y="90" text-anchor="middle" font-family="Source Sans 3" font-size="11"
+                    fill="#8b2500">(peak FLOP/s-limited)</text>
+
+                <!-- Operation dots -->
+                <!-- Memory-bound ops -->
+                <circle cx="140" cy="218" r="8" fill="#5b2c8e" opacity="0.8" />
+                <text x="145" y="240" font-family="Source Sans 3" font-size="10" fill="#5b2c8e">ReLU</text>
+                <circle cx="180" cy="195" r="8" fill="#5b2c8e" opacity="0.8" />
+                <text x="190" y="212" font-family="Source Sans 3" font-size="10" fill="#5b2c8e">BN</text>
+                <circle cx="230" cy="170" r="8" fill="#5b2c8e" opacity="0.8" />
+                <text x="244" y="180" font-family="Source Sans 3" font-size="10" fill="#5b2c8e">Bias add</text>
+
+                <!-- Compute-bound ops -->
+                <circle cx="480" cy="82" r="10" fill="#1e6e3e" opacity="0.8" />
+                <text x="500" y="105" font-family="Source Sans 3" font-size="11" fill="#1e6e3e" font-weight="600">Large
+                    MatMul</text>
+                <circle cx="420" cy="85" r="8" fill="#1e6e3e" opacity="0.8" />
+                <text x="405" y="105" font-family="Source Sans 3" font-size="10" fill="#1e6e3e">Conv3×3</text>
+                <circle cx="340" cy="100" r="7" fill="#b35900" opacity="0.8" />
+                <text x="310" y="115" font-family="Source Sans 3" font-size="10" fill="#b35900">Small Conv</text>
+            </svg>
+            <div class="figure-caption"><strong>Figure 19.1.</strong> The Roofline Model. Matrix multiplications and
+                large convolutions have high arithmetic intensity and are compute-bound — they fully utilize the GPU's
+                peak FLOP/s. Element-wise operations (ReLU, BatchNorm, bias addition) have low arithmetic intensity and
+                are memory-bound — they are limited by how fast data can be moved, not how fast it can be processed.
+            </div>
+        </div>
+
+
+        <h3 id="sec19-2">19.2 Compute-Bound vs. Memory-Bound Operations</h3>
+
+        <div class="compute-box box">
+            <div class="label">Arithmetic Intensity of Key Operations</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Operation</th>
+                        <th>FLOPs</th>
+                        <th>Bytes Moved</th>
+                        <th>AI (FLOP/byte)</th>
+                        <th>Bound</th>
+                    </tr>
+                    <tr>
+                        <td>MatMul $(M \times K) \times (K \times N)$, large</td>
+                        <td>$2MKN$</td>
+                        <td>$4(MK + KN + MN)$</td>
+                        <td>$\approx \frac{M}{2}$ (for $M=K=N$)</td>
+                        <td><strong>Compute</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Conv 3×3 (256→256, 56×56)</td>
+                        <td>$\sim$1.5G</td>
+                        <td>$\sim$15M bytes</td>
+                        <td>~100</td>
+                        <td><strong>Compute</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ReLU (1M elements)</td>
+                        <td>1M</td>
+                        <td>$4 \times 2 \times 1$M = 8M bytes</td>
+                        <td>0.125</td>
+                        <td><strong>Memory</strong></td>
+                    </tr>
+                    <tr>
+                        <td>BatchNorm (1M elements)</td>
+                        <td>$\sim$7M</td>
+                        <td>$\sim$20M bytes</td>
+                        <td>0.35</td>
+                        <td><strong>Memory</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Bias addition (1M elements)</td>
+                        <td>1M</td>
+                        <td>8M bytes</td>
+                        <td>0.125</td>
+                        <td><strong>Memory</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Softmax (1000 classes)</td>
+                        <td>~5K</td>
+                        <td>~12K bytes</td>
+                        <td>0.42</td>
+                        <td><strong>Memory</strong></td>
+                    </tr>
+                </table>
+            </div>
+            <p>For an NVIDIA A100 GPU: $\text{AI}_{\text{ridge}} = \frac{312 \text{ TFLOP/s}}{2039 \text{ GB/s}} \approx
+                153$ FLOP/byte. Only large matrix multiplications and convolutions exceed this threshold.</p>
+        </div>
+
+        <div class="insight-box box">
+            <div class="label">Why FLOPs ≠ Speed</div>
+            <p>Consider two hypothetical operations, each with 1G FLOPs:</p>
+            <p><strong>Operation A (one large matmul):</strong> AI ≈ 200 FLOP/byte → compute-bound at 312 TFLOP/s → time
+                = 1G / 312T ≈ 3.2 μs</p>
+            <p><strong>Operation B (1000 element-wise ops on 1M elements each):</strong> AI ≈ 0.25 FLOP/byte →
+                memory-bound at 2039 GB/s → time = 4G bytes / 2039 GB/s ≈ 2 ms</p>
+            <p>Same FLOPs, but operation B is <strong>625× slower</strong> because it's bandwidth-limited. This is why
+                <strong>operator fusion</strong> (combining multiple element-wise ops into one kernel to avoid
+                round-trips to memory) is critical for inference optimization.</p>
+        </div>
+
+
+        <h3 id="sec19-3">19.3 GPU Hardware and Tensor Cores</h3>
+
+        <div class="hw-box box">
+            <div class="label">GPU Architecture — Key Numbers</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>GPU</th>
+                        <th>FP32 TFLOP/s</th>
+                        <th>FP16 TFLOP/s</th>
+                        <th>INT8 TOPS</th>
+                        <th>HBM (GB)</th>
+                        <th>BW (GB/s)</th>
+                    </tr>
+                    <tr>
+                        <td>V100 (2017)</td>
+                        <td>15.7</td>
+                        <td>125</td>
+                        <td>—</td>
+                        <td>32</td>
+                        <td>900</td>
+                    </tr>
+                    <tr>
+                        <td>A100 (2020)</td>
+                        <td>19.5</td>
+                        <td>312</td>
+                        <td>624</td>
+                        <td>40/80</td>
+                        <td>2,039</td>
+                    </tr>
+                    <tr>
+                        <td>H100 (2022)</td>
+                        <td>51</td>
+                        <td>990</td>
+                        <td>1,979</td>
+                        <td>80</td>
+                        <td>3,350</td>
+                    </tr>
+                </table>
+            </div>
+            <p><strong>Tensor cores</strong> are specialized hardware units that compute small matrix multiplications
+                (e.g., 4×4×4) in a single cycle. They provide the FP16/BF16 throughput numbers above. Key: tensor cores
+                only accelerate matrix multiplication, not element-wise operations — this is another reason matmul
+                dominates and element-wise ops are the bottleneck.</p>
+            <p><strong>Utilization:</strong> Real workloads typically achieve 30–60% of peak TFLOP/s due to memory
+                transfers, kernel launch overhead, synchronization, and imperfect tiling. Well-optimized large matmuls
+                can reach 70–85%.</p>
+        </div>
+
+
+        <h3 id="sec19-4">19.4 Data Types and Throughput</h3>
+
+        <div class="compute-box box">
+            <div class="label">Numerical Formats in Deep Learning</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Format</th>
+                        <th>Bits</th>
+                        <th>Bytes</th>
+                        <th>Range</th>
+                        <th>Precision</th>
+                        <th>Use</th>
+                        <th>Relative Throughput</th>
+                    </tr>
+                    <tr>
+                        <td><strong>FP32</strong></td>
+                        <td>32</td>
+                        <td>4</td>
+                        <td>$\pm 3.4 \times 10^{38}$</td>
+                        <td>~7 decimal digits</td>
+                        <td>Training (master weights)</td>
+                        <td>1×</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FP16</strong></td>
+                        <td>16</td>
+                        <td>2</td>
+                        <td>$\pm 6.5 \times 10^4$</td>
+                        <td>~3.3 digits</td>
+                        <td>Training (mixed precision)</td>
+                        <td>2× (V100), 16× (A100 TC)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BF16</strong></td>
+                        <td>16</td>
+                        <td>2</td>
+                        <td>$\pm 3.4 \times 10^{38}$</td>
+                        <td>~2.4 digits</td>
+                        <td>Training (robust to overflow)</td>
+                        <td>Same as FP16</td>
+                    </tr>
+                    <tr>
+                        <td><strong>INT8</strong></td>
+                        <td>8</td>
+                        <td>1</td>
+                        <td>$-128$ to $127$</td>
+                        <td>Integer only</td>
+                        <td>Inference quantization</td>
+                        <td>4× (A100)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>INT4</strong></td>
+                        <td>4</td>
+                        <td>0.5</td>
+                        <td>$-8$ to $7$</td>
+                        <td>Very low</td>
+                        <td>Weight quantization</td>
+                        <td>8× (theoretical)</td>
+                    </tr>
+                </table>
+            </div>
+            <p><strong>Key insight:</strong> Moving from FP32 to FP16/BF16 gives: (a) 2× memory savings for activations,
+                (b) 2–16× compute throughput improvement, (c) 2× memory bandwidth improvement. This is why mixed
+                precision is nearly universal for training.</p>
+            <p><strong>BF16 vs. FP16:</strong> BF16 has the same exponent range as FP32 (no overflow risk) but lower
+                precision. FP16 has higher precision but requires loss scaling to handle small gradients. BF16 is
+                preferred on newer hardware (A100+) because it eliminates the need for loss scaling.</p>
+        </div>
+
+
+        <h3 id="sec19-5">19.5 Batch Size and Hardware Utilization</h3>
+
+        <div class="theorem-box box">
+            <div class="label">Batch Size → Utilization Relationship</div>
+            <p>Matrix multiplication of $(\text{B} \times n_{\text{in}}) \times (n_{\text{in}} \times n_{\text{out}})$
+                has arithmetic intensity:</p>
+            $$\text{AI} = \frac{2B \cdot n_{\text{in}} \cdot n_{\text{out}}}{4(B \cdot n_{\text{in}} + n_{\text{in}}
+            \cdot n_{\text{out}} + B \cdot n_{\text{out}})}$$
+            <p>For small $B$: $\text{AI} \approx \frac{B}{2}$ — <strong>directly proportional to batch size</strong>.
+                Doubling $B$ doubles AI, moving the operation further into the compute-bound regime.</p>
+            <p>For large $B$ (where $B \gg n$): $\text{AI} \approx \frac{n}{2}$ — saturates at the layer width.</p>
+        </div>
+
+        <div class="insight-box box">
+            <div class="label">Practical Batch Size Guidelines</div>
+            <p><strong>B too small (e.g., 1–4):</strong> Matrix multiplications become memory-bound. GPU utilization
+                &lt;10%. Most time spent moving data, not computing.</p>
+            <p><strong>B moderate (e.g., 32–256):</strong> Good compute-bound regime for typical layer sizes. GPU
+                utilization 40–70%.</p>
+            <p><strong>B large (e.g., 1024+):</strong> Near-peak utilization, but: (a) may require more epochs to
+                converge (generalization gap), (b) requires linear scaling of learning rate (Goyal et al., 2017), (c)
+                may exceed GPU memory.</p>
+            <p>The optimal batch size balances GPU utilization against convergence behavior. This is fundamentally a
+                <strong>hardware-algorithm co-design</strong> problem.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §19</h4>
+            <p>[5] Williams, S., Waterman, A., & Patterson, D. (2009). Roofline: An Insightful Visual Performance Model
+                for Multicore Architectures. <em>Commun. ACM</em>, 52(4), 65–76.</p>
+            <p>[4] Micikevicius, P. et al. (2018). Mixed Precision Training. <em>ICLR 2018</em>.</p>
+            <p>[6] Jia, Z. et al. (2019). Dissecting the NVIDIA Volta GPU Architecture via Microbenchmarking.
+                <em>arXiv:1804.06826</em>.</p>
+            <p>[7] Goyal, P. et al. (2017). Accurate, Large Minibatch SGD. <em>arXiv:1706.02677</em>.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 20: INFERENCE OPTIMIZATION                            -->
+        <!-- ============================================================ -->
+        <h2 id="sec20"><span class="sec-num">§20</span> Inference Optimization</h2>
+
+        <p>
+            Inference has fundamentally different constraints from training: no backpropagation (so no activation
+            storage), typically smaller batch sizes (often B=1 for real-time applications), and a premium on latency
+            rather than throughput. These constraints call for different optimization strategies.
+        </p>
+
+        <h3 id="sec20-1">20.1 Operator Fusion</h3>
+
+        <div class="def-box box">
+            <div class="label">Operator Fusion</div>
+            <p>Combining multiple sequential operations into a single GPU kernel, eliminating intermediate memory
+                reads/writes. Common fusions:</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Fused Operation</th>
+                        <th>Components</th>
+                        <th>Memory Savings</th>
+                    </tr>
+                    <tr>
+                        <td>Conv-BN-ReLU</td>
+                        <td>Convolution + BatchNorm + ReLU</td>
+                        <td>Eliminates 2 intermediate tensors</td>
+                    </tr>
+                    <tr>
+                        <td>Linear-GELU</td>
+                        <td>FC layer + GELU activation</td>
+                        <td>Eliminates 1 intermediate tensor</td>
+                    </tr>
+                    <tr>
+                        <td>Residual-BN-ReLU-Add</td>
+                        <td>BN + ReLU + skip addition</td>
+                        <td>Eliminates 2 intermediate tensors</td>
+                    </tr>
+                </table>
+            </div>
+            <p><strong>FLOP count:</strong> Unchanged — fusion does not reduce arithmetic, only memory traffic.</p>
+            <p><strong>Speedup:</strong> 1.2–2× for memory-bound operation chains (which includes most non-matmul
+                operations).</p>
+            <p>At inference, BatchNorm can be fully folded into the preceding conv layer (as shown in Part IV §15.1),
+                making BN <strong>completely free</strong>.</p>
+        </div>
+
+
+        <h3 id="sec20-2">20.2 Quantization</h3>
+
+        <div class="def-box box">
+            <div class="label">Post-Training Quantization (PTQ)</div>
+            <p>Convert trained FP32 weights and activations to lower precision (INT8, INT4) for inference:</p>
+            $$q = \text{round}\!\left(\frac{x - z}{s}\right), \qquad x \approx s \cdot q + z$$
+            <p>where $s$ is the scale factor and $z$ is the zero-point.</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">Quantization — Efficiency Impact</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>FP32</th>
+                        <th>FP16</th>
+                        <th>INT8</th>
+                        <th>INT4</th>
+                    </tr>
+                    <tr>
+                        <td>Bytes per value</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>0.5</td>
+                    </tr>
+                    <tr>
+                        <td>Model size (relative)</td>
+                        <td>1×</td>
+                        <td>0.5×</td>
+                        <td>0.25×</td>
+                        <td>0.125×</td>
+                    </tr>
+                    <tr>
+                        <td>Memory bandwidth (relative)</td>
+                        <td>1×</td>
+                        <td>2×</td>
+                        <td>4×</td>
+                        <td>8×</td>
+                    </tr>
+                    <tr>
+                        <td>Compute throughput (vs FP32)</td>
+                        <td>1×</td>
+                        <td>2–16×</td>
+                        <td>4–32×</td>
+                        <td>8–64× (emerging)</td>
+                    </tr>
+                    <tr>
+                        <td>Typical accuracy loss</td>
+                        <td>—</td>
+                        <td>&lt;0.1%</td>
+                        <td>0.1–0.5%</td>
+                        <td>0.5–3%</td>
+                    </tr>
+                </table>
+            </div>
+            <p>INT8 quantization is the current sweet spot: 4× model compression, 4× bandwidth improvement, and &lt;0.5%
+                accuracy loss for most models. Frameworks like TensorRT, ONNX Runtime, and PyTorch all support INT8
+                inference natively.</p>
+        </div>
+
+
+        <h3 id="sec20-3">20.3 Pruning</h3>
+
+        <div class="def-box box">
+            <div class="label">Weight Pruning</div>
+            <p><strong>Unstructured pruning:</strong> Set individual weights to zero. Sparsity of 80–95% is typical.</p>
+            $$\text{FLOPs}_{\text{theoretical}} = (1 - s) \times \text{FLOPs}_{\text{dense}}$$
+            <p>where $s$ is sparsity fraction. But: unstructured sparsity is <strong>hard to accelerate on GPUs</strong>
+                (irregular memory access patterns). Real speedup is often only 1.5–2× even at 90% sparsity, versus the
+                theoretical 10×.</p>
+
+            <p><strong>Structured pruning:</strong> Remove entire channels, filters, or layers. This produces dense,
+                regular tensors that map directly to existing hardware.</p>
+            $$\text{FLOPs}_{\text{structured}} = \text{FLOPs of smaller dense model}$$
+            <p>No special hardware support needed — equivalent to training a smaller model. Speedup is proportional to
+                FLOP reduction.</p>
+        </div>
+
+
+        <h3 id="sec20-4">20.4 Knowledge Distillation</h3>
+
+        <div class="def-box box">
+            <div class="label">Knowledge Distillation</div>
+            <p>Train a small "student" model to mimic the outputs (soft labels) of a large "teacher" model:</p>
+            $$L_{\text{distill}} = \alpha \cdot L_{\text{CE}}(\hat{y}_{\text{student}}, y_{\text{true}}) + (1-\alpha)
+            \cdot T^2 \cdot D_{\text{KL}}\!\left(\text{softmax}\!\left(\frac{z_{\text{student}}}{T}\right) \;\Big\|\;
+            \text{softmax}\!\left(\frac{z_{\text{teacher}}}{T}\right)\right)$$
+            <p>where $T$ is the temperature (typically 3–20) and $\alpha$ balances hard and soft labels.</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Training cost</td>
+                        <td>Cost of running teacher (once) + training student (standard)</td>
+                    </tr>
+                    <tr>
+                        <td>Inference cost</td>
+                        <td><strong>Only the student model</strong> — teacher is discarded</td>
+                    </tr>
+                    <tr>
+                        <td>Typical results</td>
+                        <td>Student achieves 95–99% of teacher accuracy at 3–10× fewer FLOPs</td>
+                    </tr>
+                </table>
+            </div>
+            <p><em>Hinton, G. et al. (2015), "Distilling the Knowledge in a Neural Network"</em></p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §20</h4>
+            <p>[8] Jacob, B. et al. (2018). Quantization and Training of Neural Networks for Efficient
+                Integer-Arithmetic-Only Inference. <em>CVPR 2018</em>.</p>
+            <p>[9] Han, S., Mao, H., & Dally, W. J. (2016). Deep Compression: Compressing Deep Neural Networks with
+                Pruning, Trained Quantization and Huffman Coding. <em>ICLR 2016</em>.</p>
+            <p>[10] Hinton, G., Vinyals, O., & Dean, J. (2015). Distilling the Knowledge in a Neural Network. <em>NIPS
+                    Workshop 2015</em>.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 21: SCALING LAWS                                      -->
+        <!-- ============================================================ -->
+        <h2 id="sec21"><span class="sec-num">§21</span> Scaling Laws</h2>
+
+        <h3 id="sec21-1">21.1 How FLOPs Scale with Model Dimensions</h3>
+
+        <div class="compute-box box">
+            <div class="label">FLOP Scaling for MLPs and CNNs</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Scaling Dimension</th>
+                        <th>Parameter Scaling</th>
+                        <th>FLOP Scaling (per sample)</th>
+                        <th>FLOP Scaling (training)</th>
+                    </tr>
+                    <tr>
+                        <td>Width × $\alpha$ (all layers)</td>
+                        <td>$\propto \alpha^2$</td>
+                        <td>$\propto \alpha^2$</td>
+                        <td>$\propto \alpha^2$</td>
+                    </tr>
+                    <tr>
+                        <td>Depth × $\alpha$ (add layers)</td>
+                        <td>$\propto \alpha$</td>
+                        <td>$\propto \alpha$</td>
+                        <td>$\propto \alpha$</td>
+                    </tr>
+                    <tr>
+                        <td>Resolution × $\alpha$ (input size)</td>
+                        <td>unchanged (CNN)</td>
+                        <td>$\propto \alpha^2$ (spatial dimensions)</td>
+                        <td>$\propto \alpha^2$</td>
+                    </tr>
+                    <tr>
+                        <td>Batch size × $\alpha$</td>
+                        <td>unchanged</td>
+                        <td>unchanged (per sample)</td>
+                        <td>unchanged (same total samples)</td>
+                    </tr>
+                    <tr>
+                        <td>Epochs × $\alpha$</td>
+                        <td>unchanged</td>
+                        <td>unchanged</td>
+                        <td>$\propto \alpha$</td>
+                    </tr>
+                </table>
+            </div>
+            <p><strong>Width is the most expensive dimension to scale</strong> — doubling all layer widths quadruples
+                both parameters and FLOPs. Depth scaling is linear in both. Resolution scaling is quadratic in FLOPs but
+                doesn't add parameters (for CNNs with weight sharing).</p>
+            <p>This is precisely why EfficientNet's compound scaling ($d = \alpha^\phi$, $w = \beta^\phi$, $r =
+                \gamma^\phi$ with $\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2$) is designed to balance these
+                different scaling rates.</p>
+        </div>
+
+
+        <h3 id="sec21-2">21.2 Neural Scaling Laws</h3>
+
+        <div class="theorem-box box">
+            <div class="label">Kaplan et al. (2020) — Scaling Laws for Neural Language Models</div>
+            <p>For Transformer language models, test loss follows power laws in three variables:</p>
+            $$L(N) \propto N^{-\alpha_N}, \qquad L(D) \propto D^{-\alpha_D}, \qquad L(C) \propto C^{-\alpha_C}$$
+            <p>where $N$ = model parameters, $D$ = dataset size (tokens), $C$ = training compute (FLOPs).</p>
+            <p>Empirically: $\alpha_N \approx 0.076$, $\alpha_D \approx 0.095$, $\alpha_C \approx 0.050$.</p>
+            <p><strong>Key findings:</strong></p>
+            <p>(1) Performance improves predictably as a power law in compute — no surprises, no plateaus (within the
+                studied range).</p>
+            <p>(2) Given a fixed compute budget $C$, the optimal allocation is to use a large model trained on a
+                moderate amount of data, rather than a small model trained on a lot of data ("big model, few epochs" is
+                more efficient).</p>
+            <p>(3) The compute-optimal model size scales as $N_{\text{opt}} \propto C^{0.73}$.</p>
+        </div>
+
+        <div class="theorem-box box">
+            <div class="label">Hoffmann et al. (2022) — Chinchilla Scaling Laws</div>
+            <p>Updated the Kaplan findings with the "Chinchilla" result: for compute-optimal training, the model size
+                $N$ and dataset size $D$ should be scaled <strong>equally</strong>:</p>
+            $$N_{\text{opt}} \propto C^{0.5}, \qquad D_{\text{opt}} \propto C^{0.5}$$
+            <p>This means the optimal number of training tokens is approximately $D \approx 20N$ (20 tokens per
+                parameter). Many large language models before Chinchilla were undertrained — they used too few tokens
+                for their size.</p>
+            <p><strong>Practical implication:</strong> Given a compute budget, the Chinchilla law tells you exactly how
+                big your model should be and how much data you need. This converts the model design problem into a pure
+                compute-allocation problem.</p>
+        </div>
+
+        <div class="example-box box">
+            <div class="label">Scaling Law Application — Compute Budget Planning</div>
+            <p>Given a compute budget of $C = 10^{21}$ FLOPs:</p>
+            <p><strong>Chinchilla-optimal:</strong></p>
+            <p>$N \approx \sqrt{C/6} \approx \sqrt{1.67 \times 10^{20}} \approx 12.9$ billion parameters</p>
+            <p>$D \approx 20N \approx 258$ billion tokens</p>
+            <p>$\text{Training FLOPs check: } 6ND = 6 \times 12.9 \times 10^9 \times 258 \times 10^9 \approx 2 \times
+                10^{22}$ FLOPs</p>
+            <p>(The factor of 6 in $C \approx 6ND$ is the approximate FLOP cost per token in a Transformer: 2 for
+                forward pass × 3 for training.)</p>
+        </div>
+
+        <div class="insight-box box">
+            <div class="label">Relevance to CNN Efficiency Research</div>
+            <p>While the Kaplan and Chinchilla scaling laws were derived for Transformers, the fundamental principle
+                applies to CNNs: for a fixed compute budget, there exists an optimal model size and training duration.
+                Scaling laws provide a principled framework for answering "should I train a bigger model for fewer
+                epochs or a smaller model for more epochs?" — a central question in computational efficiency research.
+            </p>
+            <p>For CNNs specifically, the compound scaling principle of EfficientNet ($\alpha \cdot \beta^2 \cdot
+                \gamma^2 \approx 2$) is a scaling law designed for the multi-dimensional CNN design space (depth × width
+                × resolution).</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §21</h4>
+            <p>[11] Kaplan, J. et al. (2020). Scaling Laws for Neural Language Models. <em>arXiv:2001.08361</em>.</p>
+            <p>[12] Hoffmann, J. et al. (2022). Training Compute-Optimal Large Language Models. <em>NeurIPS 2022</em>.
+                (Chinchilla)</p>
+            <p>[13] Tan, M. & Le, Q. V. (2019). EfficientNet: Rethinking Model Scaling. <em>ICML 2019</em>.</p>
+            <p>[14] Rosenfeld, J. S. et al. (2020). A Constructive Prediction of the Generalization Error Across Scales.
+                <em>ICLR 2020</em>.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- MASTER REFERENCE                                              -->
+        <!-- ============================================================ -->
+        <h2 id="sec-summary"><span class="sec-num">§</span> Master Efficiency Reference</h2>
+
+        <h3>Memory Optimization Techniques — Summary</h3>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Technique</th>
+                    <th>Memory Savings</th>
+                    <th>FLOP Overhead</th>
+                    <th>Accuracy Impact</th>
+                    <th>Complexity</th>
+                </tr>
+                <tr>
+                    <td><strong>Mixed Precision (FP16/BF16)</strong></td>
+                    <td>~50% activations</td>
+                    <td>~0% (faster on tensor cores)</td>
+                    <td>&lt;0.1%</td>
+                    <td>Low</td>
+                </tr>
+                <tr>
+                    <td><strong>Gradient Checkpointing</strong></td>
+                    <td>$O(L) \to O(\sqrt{L})$ activations</td>
+                    <td>+33%</td>
+                    <td>0%</td>
+                    <td>Low</td>
+                </tr>
+                <tr>
+                    <td><strong>Gradient Accumulation</strong></td>
+                    <td>$B_{\text{eff}} \to B_{\text{micro}}$ activations</td>
+                    <td>0%</td>
+                    <td>0%</td>
+                    <td>Trivial</td>
+                </tr>
+                <tr>
+                    <td><strong>INT8 Quantization (inference)</strong></td>
+                    <td>75% model + activations</td>
+                    <td>0% (faster on INT8 hw)</td>
+                    <td>0.1–0.5%</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td><strong>Pruning (structured)</strong></td>
+                    <td>Proportional to sparsity</td>
+                    <td>Proportional reduction</td>
+                    <td>0.5–2%</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td><strong>Knowledge Distillation</strong></td>
+                    <td>Student model size</td>
+                    <td>Student model FLOPs</td>
+                    <td>1–5% vs teacher</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td><strong>BN Fusion (inference)</strong></td>
+                    <td>Eliminates BN memory</td>
+                    <td>Eliminates BN FLOPs</td>
+                    <td>0%</td>
+                    <td>Trivial</td>
+                </tr>
+                <tr>
+                    <td><strong>Operator Fusion</strong></td>
+                    <td>Eliminates intermediates</td>
+                    <td>0%</td>
+                    <td>0%</td>
+                    <td>Framework-level</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Quick Reference — Total Training Compute</h3>
+        <div class="compute-box box">
+            <div class="label">The Five Numbers You Need</div>
+            <p>For any neural network training run, compute these five quantities:</p>
+            <p><strong>1. Forward FLOPs per sample $F$:</strong> Sum FLOP formulas for all layers</p>
+            <p><strong>2. Total training FLOPs:</strong> $C = 3 \times F \times N_{\text{samples}} \times E$</p>
+            <p><strong>3. Parameter memory:</strong> $M_P = (4 + 4 + 4M_{\text{opt}}) \times P$ bytes</p>
+            <p><strong>4. Activation memory:</strong> $M_A = \text{bytes\_per\_element} \times B \times \sum_l |A_l|$
+            </p>
+            <p><strong>5. Training time:</strong> $T = C / (\text{Hardware FLOP/s} \times \text{utilization})$</p>
+        </div>
+
+        <hr>
+
+        <h2 id="sec-refs"><span class="sec-num">§</span> Complete References</h2>
+
+        <div class="ref-section">
+            <h4>Core Survey</h4>
+            <p>[1] Sze, V., Chen, Y., Yang, T., & Emer, J. (2017). Efficient Processing of Deep Neural Networks: A
+                Tutorial and Survey. <em>Proc. IEEE</em>, 105(12), 2295–2329.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Model Analysis</h4>
+            <p>[2] Canziani, A. et al. (2017). An Analysis of Deep Neural Network Models for Practical Applications.
+                <em>arXiv:1605.07678</em>.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Memory Optimization</h4>
+            <p>[3] Chen, T. et al. (2016). Training Deep Nets with Sublinear Memory Cost. <em>arXiv:1604.06174</em>.</p>
+            <p>[4] Micikevicius, P. et al. (2018). Mixed Precision Training. <em>ICLR 2018</em>.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Hardware &amp; Performance</h4>
+            <p>[5] Williams, S. et al. (2009). Roofline: An Insightful Visual Performance Model. <em>Commun. ACM</em>,
+                52(4), 65–76.</p>
+            <p>[6] Jia, Z. et al. (2019). Dissecting the NVIDIA Volta GPU Architecture via Microbenchmarking.
+                <em>arXiv:1804.06826</em>.</p>
+            <p>[7] Goyal, P. et al. (2017). Accurate, Large Minibatch SGD. <em>arXiv:1706.02677</em>.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Inference Optimization</h4>
+            <p>[8] Jacob, B. et al. (2018). Quantization and Training of Neural Networks for Efficient
+                Integer-Arithmetic-Only Inference. <em>CVPR 2018</em>.</p>
+            <p>[9] Han, S. et al. (2016). Deep Compression. <em>ICLR 2016</em>.</p>
+            <p>[10] Hinton, G. et al. (2015). Distilling the Knowledge in a Neural Network. <em>NIPS Workshop 2015</em>.
+            </p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Scaling Laws</h4>
+            <p>[11] Kaplan, J. et al. (2020). Scaling Laws for Neural Language Models. <em>arXiv:2001.08361</em>.</p>
+            <p>[12] Hoffmann, J. et al. (2022). Training Compute-Optimal Large Language Models. <em>NeurIPS 2022</em>.
+            </p>
+            <p>[13] Tan, M. & Le, Q. V. (2019). EfficientNet: Rethinking Model Scaling. <em>ICML 2019</em>.</p>
+            <p>[14] Rosenfeld, J. S. et al. (2020). A Constructive Prediction of the Generalization Error Across Scales.
+                <em>ICLR 2020</em>.</p>
+        </div>
+
+    
+  <!-- Back to Index -->
+  <div style="margin-top: 4rem; padding-top: 2rem; border-top: var(--border-width-thin, 1px) solid var(--footnotes-border-color, #ddd);">
+    <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+  </div>
+
+  <!-- Visitor Counter -->
+  <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00009">
+    <div class="visitor-stats">
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Total visits:</span>
+        <span class="visitor-stat-count" id="overall-visitor-count"></span>
+      </div>
+      <span class="visitor-stat-separator">§</span>
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Page visits:</span>
+        <span class="visitor-stat-count" id="page-visitor-count"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Portfolio nav script -->
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+    let lastScrollTop = 0;
+    const nav = document.querySelector('.top-nav');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollPos > 50) { nav.classList.add('nav-scrolled'); } else { nav.classList.remove('nav-scrolled'); }
+      if (scrollPos > 100) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) { nav.classList.add('nav-hidden'); } else { nav.classList.remove('nav-hidden'); }
+      }
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    });
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../../firebase-config.js"></script>
+  <script src="../../../visitor-counter.js"></script>
+</body>
+
+</html>

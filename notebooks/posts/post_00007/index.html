@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part III — Convolutional Neural Networks (CNNs) — Complete Dissection</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Source+Sans+3:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+  <script>
+    MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']], macros: { R: '\\mathbb{R}', bm: ['\\boldsymbol{#1}', 1], pd: ['\\frac{\\partial #1}{\\partial #2}', 2], T: '^\\top' } }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+  <style>
+    :root {
+      --bg: #faf8f5;
+      --bg-alt: #f0ece6;
+      --bg-code: #1a1b26;
+      --text: #2c2824;
+      --text-muted: #6b6560;
+      --accent: #8b2500;
+      --accent-bg: #fdf0ea;
+      --border: #d4cfc8;
+      --blue: #1a5276;
+      --blue-bg: #e8f0f7;
+      --green: #1e6e3e;
+      --green-bg: #e8f5ec;
+      --purple: #5b2c8e;
+      --purple-bg: #f0e8f7;
+      --gold: #8b6914;
+      --gold-bg: #fdf5e0;
+      --teal: #0e6655;
+      --teal-bg: #e5f5f2;
+      --orange: #b35900;
+      --orange-bg: #fff3e6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 19px;
+      line-height: 1.75;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 30px 120px;
+    }
+
+    .doc-header {
+      text-align: center;
+      padding: 60px 0 50px;
+      border-bottom: 3px double var(--border);
+      margin-bottom: 50px;
+    }
+
+    .doc-header .part-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .doc-header h1 {
+      font-family: 'Crimson Pro', serif;
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .doc-header .subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      font-style: italic;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 27px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 70px;
+      margin-bottom: 8px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    h2 .sec-num {
+      font-weight: 300;
+      opacity: .6;
+      margin-right: 6px;
+    }
+
+    h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+
+    h4 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 16px;
+    }
+
+    .box {
+      padding: 18px 22px;
+      margin: 24px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .box .label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+
+    .def-box {
+      background: var(--blue-bg);
+      border-left: 4px solid var(--blue);
+    }
+
+    .def-box .label {
+      color: var(--blue);
+    }
+
+    .theorem-box {
+      background: var(--purple-bg);
+      border-left: 4px solid var(--purple);
+    }
+
+    .theorem-box .label {
+      color: var(--purple);
+    }
+
+    .compute-box {
+      background: var(--gold-bg);
+      border-left: 4px solid var(--gold);
+    }
+
+    .compute-box .label {
+      color: var(--gold);
+    }
+
+    .example-box {
+      background: var(--green-bg);
+      border-left: 4px solid var(--green);
+    }
+
+    .example-box .label {
+      color: var(--green);
+    }
+
+    .warning-box {
+      background: var(--accent-bg);
+      border-left: 4px solid var(--accent);
+    }
+
+    .warning-box .label {
+      color: var(--accent);
+    }
+
+    .insight-box {
+      background: var(--teal-bg);
+      border-left: 4px solid var(--teal);
+    }
+
+    .insight-box .label {
+      color: var(--teal);
+    }
+
+    .arch-box {
+      background: var(--orange-bg);
+      border-left: 4px solid var(--orange);
+    }
+
+    .arch-box .label {
+      color: var(--orange);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 15.5px;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+
+    th {
+      background: var(--bg-alt);
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--border);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text-muted);
+    }
+
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: 2px solid var(--border);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      background: var(--bg-alt);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .figure {
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    .figure svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .figure-caption {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .figure-caption strong {
+      color: var(--text);
+      font-style: normal;
+    }
+
+    .ref-section {
+      background: var(--bg-alt);
+      padding: 24px 28px;
+      border-radius: 8px;
+      margin: 30px 0;
+    }
+
+    .ref-section h4 {
+      font-family: 'Source Sans 3', sans-serif;
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .ref-section p {
+      font-size: 15px;
+      margin-bottom: 8px;
+      padding-left: 24px;
+      text-indent: -24px;
+      line-height: 1.55;
+    }
+
+    mjx-container[jax="SVG"][display="true"] {
+      margin: 20px 0 !important;
+      overflow-x: auto;
+    }
+
+    .toc {
+      background: var(--bg-alt);
+      padding: 28px 32px;
+      border-radius: 8px;
+      margin-bottom: 50px;
+    }
+
+    .toc h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    .toc ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .toc li {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 16px;
+      padding: 4px 0;
+      color: var(--text-muted);
+    }
+
+    .toc li a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .toc li a:hover {
+      text-decoration: underline;
+    }
+
+    .toc li.sub {
+      padding-left: 24px;
+      font-size: 15px;
+    }
+
+    strong {
+      font-weight: 700;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 50px 0;
+    }
+
+    /* Navigation */
+    .nav-bar {
+      background: var(--bg-alt);
+      padding: 15px 20px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-bar a {
+      text-decoration: none;
+      color: var(--text);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .nav-bar a.active {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 24px;
+    }
+
+    img,
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container {
+      padding: 20px 20px 120px;
+    }
+  </style>
+  <!-- Portfolio CSS -->
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+  <link rel="stylesheet" href="../../../visitor-counter.css" />
+
+<body class="text-justify">
+  <!-- Portfolio Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <!-- DNN Series Navigation -->
+  <nav class="nav-bar">
+    <a href="../../index.html#dnn">Home</a>
+    <a href="../post_00004/index.html">Part 0</a>
+    <a href="../post_00005/index.html">Part I</a>
+    <a href="../post_00006/index.html">Part II</a>
+    <a href="../post_00007/index.html" class="active">Part III</a>
+    <a href="../post_00008/index.html">Part IV</a>
+    <a href="../post_00009/index.html">Part V</a>
+    <a href="../post_00010/index.html">Part VI</a>
+  </nav>
+  
+  <div class="container">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" style="margin-bottom:1.5rem; font-size:0.85em; opacity:0.7;">
+    <a href="../../index.html" style="text-decoration:none; color:var(--body-color);">Notebook</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#cs" style="text-decoration:none; color:var(--body-color);">Computer Science</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#dnn" style="text-decoration:none; color:var(--body-color);">Deep Neural Networks</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <span>Part III: CNNs</span>
+  </nav>
+
+
+    <!-- ==================== HEADER ==================== -->
+    <div class="doc-header">
+      <div class="part-label">Part III of VI</div>
+      <h1>Convolutional Neural Networks — Complete Dissection</h1>
+      <div class="subtitle">The convolution operation, every layer type, receptive field theory, landmark architectures,
+        and full computational cost analysis — from first principles to EfficientNet</div>
+    </div>
+
+    <!-- ==================== TOC ==================== -->
+    <div class="toc">
+      <h3>Contents</h3>
+      <ul>
+        <li><a href="#sec8">8. The Convolution Operation</a></li>
+        <li class="sub"><a href="#sec8-1">8.1 Mathematical Definition</a></li>
+        <li class="sub"><a href="#sec8-2">8.2 Three Key Properties: Sparse Connectivity, Weight Sharing,
+            Equivariance</a></li>
+        <li class="sub"><a href="#sec8-3">8.3 Convolution as Matrix Multiplication (im2col)</a></li>
+        <li class="sub"><a href="#sec8-4">8.4 Alternative Convolution Algorithms</a></li>
+        <li><a href="#sec9">9. CNN Layer Types — Detailed Computation</a></li>
+        <li class="sub"><a href="#sec9-1">9.1 Standard Convolutional Layer</a></li>
+        <li class="sub"><a href="#sec9-2">9.2 Padding, Stride, and Dilation</a></li>
+        <li class="sub"><a href="#sec9-3">9.3 Pooling Layers</a></li>
+        <li class="sub"><a href="#sec9-4">9.4 1×1 Convolutions (Pointwise)</a></li>
+        <li class="sub"><a href="#sec9-5">9.5 Depthwise Separable Convolutions</a></li>
+        <li class="sub"><a href="#sec9-6">9.6 Grouped Convolutions</a></li>
+        <li class="sub"><a href="#sec9-7">9.7 Transposed Convolutions</a></li>
+        <li class="sub"><a href="#sec9-8">9.8 CNN Backward Pass</a></li>
+        <li><a href="#sec10">10. Receptive Field Analysis</a></li>
+        <li class="sub"><a href="#sec10-1">10.1 Theoretical Receptive Field</a></li>
+        <li class="sub"><a href="#sec10-2">10.2 Effective Receptive Field</a></li>
+        <li class="sub"><a href="#sec10-3">10.3 Small Kernels vs. Large Kernels</a></li>
+        <li><a href="#sec11">11. Landmark CNN Architectures — Computational Analysis</a></li>
+        <li class="sub"><a href="#sec11-1">11.1 LeNet-5</a></li>
+        <li class="sub"><a href="#sec11-2">11.2 AlexNet</a></li>
+        <li class="sub"><a href="#sec11-3">11.3 VGGNet</a></li>
+        <li class="sub"><a href="#sec11-4">11.4 GoogLeNet / Inception</a></li>
+        <li class="sub"><a href="#sec11-5">11.5 ResNet</a></li>
+        <li class="sub"><a href="#sec11-6">11.6 MobileNet, ShuffleNet, EfficientNet</a></li>
+        <li class="sub"><a href="#sec11-7">11.7 Grand Comparison Table</a></li>
+        <li><a href="#sec-summary">Computational Summary</a></li>
+        <li><a href="#sec-refs">Complete References</a></li>
+      </ul>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 8: THE CONVOLUTION OPERATION                          -->
+    <!-- ============================================================ -->
+    <h2 id="sec8"><span class="sec-num">§8</span> The Convolution Operation</h2>
+
+    <p>
+      The convolution operation is the defining computational primitive of CNNs. It replaces the general matrix
+      multiplication of fully-connected layers with a structured, sparse computation that exploits the spatial structure
+      of visual data. Understanding <em>exactly</em> how convolution works — and how it maps to hardware — is essential
+      for computational efficiency analysis.
+    </p>
+
+    <h3 id="sec8-1">8.1 Mathematical Definition</h3>
+
+    <div class="def-box box">
+      <div class="label">Continuous Convolution</div>
+      $$(f * g)(t) = \int_{-\infty}^{\infty} f(\tau)\, g(t - \tau)\, d\tau$$
+    </div>
+
+    <div class="def-box box">
+      <div class="label">Discrete 2D Cross-Correlation (Used in Deep Learning)</div>
+      <p>Given an input feature map $\bm{I} \in \R^{H_{\text{in}} \times W_{\text{in}}}$ and a kernel $\bm{K} \in
+        \R^{k_h \times k_w}$:</p>
+      $$(\bm{I} * \bm{K})(i, j) = \sum_{m=0}^{k_h - 1} \sum_{n=0}^{k_w - 1} \bm{I}(i + m,\; j + n) \cdot \bm{K}(m, n)$$
+      <p>Technically this is <strong>cross-correlation</strong>, not convolution (true convolution flips the kernel:
+        $\bm{K}(k_h - 1 - m, k_w - 1 - n)$). Deep learning uses cross-correlation but universally calls it
+        "convolution." Since kernels are learned, the flip is irrelevant — the network simply learns the flipped
+        version.</p>
+    </div>
+
+    <div class="def-box box">
+      <div class="label">Multi-Channel Convolution (Full Form)</div>
+      <p>In practice, inputs have $C_{\text{in}}$ channels and we produce $C_{\text{out}}$ output channels. The full
+        convolution for one output pixel at position $(i,j)$ of output channel $c_{\text{out}}$:</p>
+      $$\bm{O}(c_{\text{out}}, i, j) = \sum_{c=0}^{C_{\text{in}}-1} \sum_{m=0}^{k_h-1} \sum_{n=0}^{k_w-1} \bm{I}(c, i
+      \cdot s + m, j \cdot s + n) \cdot \bm{K}(c_{\text{out}}, c, m, n) + b_{c_{\text{out}}}$$
+      <p>where $s$ is the stride and $\bm{K} \in \R^{C_{\text{out}} \times C_{\text{in}} \times k_h \times k_w}$ is the
+        4D kernel tensor.</p>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="max-width:770px;">
+        <!-- Input feature map -->
+        <text x="100" y="18" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+          fill="#1a5276">Input (5×5, 1 channel)</text>
+        <!-- Grid -->
+        <g fill="none" stroke="#1a5276" stroke-width="1">
+          <rect x="25" y="30" width="150" height="150" fill="#e8f0f7" />
+          <line x1="55" y1="30" x2="55" y2="180" />
+          <line x1="85" y1="30" x2="85" y2="180" />
+          <line x1="115" y1="30" x2="115" y2="180" />
+          <line x1="145" y1="30" x2="145" y2="180" />
+          <line x1="25" y1="60" x2="175" y2="60" />
+          <line x1="25" y1="90" x2="175" y2="90" />
+          <line x1="25" y1="120" x2="175" y2="120" />
+          <line x1="25" y1="150" x2="175" y2="150" />
+        </g>
+        <!-- Highlight 3x3 kernel region -->
+        <rect x="25" y="30" width="90" height="90" fill="#1a5276" opacity="0.2" stroke="#1a5276" stroke-width="2" />
+        <!-- Input numbers -->
+        <g font-family="JetBrains Mono" font-size="11" fill="#1a5276" text-anchor="middle">
+          <text x="40" y="50">1</text><text x="70" y="50">0</text><text x="100" y="50">1</text><text x="130"
+            y="50">0</text><text x="160" y="50">1</text>
+          <text x="40" y="80">0</text><text x="70" y="80">1</text><text x="100" y="80">0</text><text x="130"
+            y="80">1</text><text x="160" y="80">0</text>
+          <text x="40" y="110">1</text><text x="70" y="110">1</text><text x="100" y="110">1</text><text x="130"
+            y="110">0</text><text x="160" y="110">0</text>
+          <text x="40" y="140">0</text><text x="70" y="140">0</text><text x="100" y="140">1</text><text x="130"
+            y="140">1</text><text x="160" y="140">0</text>
+          <text x="40" y="170">0</text><text x="70" y="170">1</text><text x="100" y="170">0</text><text x="130"
+            y="170">1</text><text x="160" y="170">1</text>
+        </g>
+
+        <!-- Asterisk -->
+        <text x="210" y="110" text-anchor="middle" font-family="Crimson Pro" font-size="30" fill="#2c2824">*</text>
+
+        <!-- Kernel -->
+        <text x="300" y="18" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+          fill="#5b2c8e">Kernel (3×3)</text>
+        <rect x="240" y="45" width="120" height="120" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="2" />
+        <g fill="none" stroke="#5b2c8e" stroke-width="0.8">
+          <line x1="280" y1="45" x2="280" y2="165" />
+          <line x1="320" y1="45" x2="320" y2="165" />
+          <line x1="240" y1="85" x2="360" y2="85" />
+          <line x1="240" y1="125" x2="360" y2="125" />
+        </g>
+        <g font-family="JetBrains Mono" font-size="13" fill="#5b2c8e" text-anchor="middle">
+          <text x="260" y="72">1</text><text x="300" y="72">0</text><text x="340" y="72">1</text>
+          <text x="260" y="112">0</text><text x="300" y="112">1</text><text x="340" y="112">0</text>
+          <text x="260" y="152">1</text><text x="300" y="152">0</text><text x="340" y="152">1</text>
+        </g>
+
+        <!-- Equals -->
+        <text x="400" y="110" text-anchor="middle" font-family="Crimson Pro" font-size="30" fill="#2c2824">=</text>
+
+        <!-- Output -->
+        <text x="530" y="18" text-anchor="middle" font-family="Source Sans 3" font-size="14" font-weight="700"
+          fill="#1e6e3e">Output (3×3)</text>
+        <rect x="450" y="45" width="160" height="120" fill="#e8f5ec" stroke="#1e6e3e" stroke-width="2" />
+        <g fill="none" stroke="#1e6e3e" stroke-width="0.8">
+          <line x1="503" y1="45" x2="503" y2="165" />
+          <line x1="557" y1="45" x2="557" y2="165" />
+          <line x1="450" y1="85" x2="610" y2="85" />
+          <line x1="450" y1="125" x2="610" y2="125" />
+        </g>
+        <!-- Highlight first output -->
+        <rect x="451" y="46" width="52" height="39" fill="#1e6e3e" opacity="0.15" />
+        <g font-family="JetBrains Mono" font-size="13" fill="#1e6e3e" text-anchor="middle">
+          <text x="477" y="72" font-weight="700">4</text><text x="530" y="72">3</text><text x="583" y="72">2</text>
+          <text x="477" y="112">2</text><text x="530" y="112">4</text><text x="583" y="112">2</text>
+          <text x="477" y="152">2</text><text x="530" y="152">3</text><text x="583" y="152">4</text>
+        </g>
+
+        <!-- Computation callout -->
+        <rect x="460" y="190" width="310" height="90" rx="6" fill="#fdf5e0" stroke="#8b6914" stroke-width="1" />
+        <text x="615" y="212" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+          fill="#8b6914">Computing output[0,0] = 4:</text>
+        <text x="615" y="232" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2c2824">1·1 + 0·0
+          + 1·1 +</text>
+        <text x="615" y="248" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2c2824">0·0 + 1·1
+          + 0·0 +</text>
+        <text x="615" y="264" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2c2824">1·1 + 1·0
+          + 1·1 = 4</text>
+
+        <!-- Cost annotation -->
+        <text x="100" y="210" text-anchor="middle" font-family="Source Sans 3" font-size="12" fill="#8b6914">Per output
+          element:</text>
+        <text x="100" y="228" text-anchor="middle" font-family="Source Sans 3" font-size="12" fill="#8b6914">k²=9 mults
+          + 8 adds</text>
+        <text x="100" y="246" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+          fill="#8b6914">= 2k² - 1 ≈ 2k² FLOPs</text>
+      </svg>
+      <div class="figure-caption"><strong>Figure 8.1.</strong> 2D convolution (cross-correlation) of a 5×5 input with a
+        3×3 kernel, stride=1, no padding. Output is 3×3. Each output element is a dot product of the kernel with a local
+        patch of the input, costing $2k^2$ FLOPs.</div>
+    </div>
+
+
+    <h3 id="sec8-2">8.2 Three Key Properties: Sparse Connectivity, Weight Sharing, Equivariance</h3>
+
+    <p>
+      These three properties explain why CNNs are dramatically more parameter-efficient and computationally efficient
+      than fully-connected networks for spatial data.
+    </p>
+
+    <div class="insight-box box">
+      <div class="label">Property 1 — Sparse Connectivity (Local Receptive Fields)</div>
+      <p>Each output neuron connects to only a $k \times k$ local patch of the input, not the entire input. For an input
+        of size $H \times W$:</p>
+      <p><strong>FC layer connections per output neuron:</strong> $H \times W \times C_{\text{in}}$</p>
+      <p><strong>Conv layer connections per output neuron:</strong> $k^2 \times C_{\text{in}}$</p>
+      <p><strong>Ratio:</strong> $\frac{k^2}{H \times W}$. For a 3×3 kernel on 224×224 input: $\frac{9}{50{,}176} =
+        0.018\%$</p>
+      <p>This alone reduces parameters by a factor of ~5,500 for this example.</p>
+    </div>
+
+    <div class="insight-box box">
+      <div class="label">Property 2 — Weight Sharing</div>
+      <p>The same kernel is applied at every spatial position. One filter has $k^2 \times C_{\text{in}}$ parameters
+        regardless of input resolution.</p>
+      <p><strong>FC layer to produce one output channel from 224×224×3 input:</strong> $224 \times 224 \times 3 =
+        150{,}528$ parameters per output neuron</p>
+      <p><strong>Conv 3×3 filter for same:</strong> $3 \times 3 \times 3 = 27$ parameters per output channel</p>
+      <p>Weight sharing also makes CNNs naturally <strong>resolution-independent</strong> — the same learned filters
+        work on any input size.</p>
+    </div>
+
+    <div class="insight-box box">
+      <div class="label">Property 3 — Translation Equivariance</div>
+      <p>If the input shifts by $(dx, dy)$, the output shifts by the same amount (adjusted for stride). Formally:</p>
+      $$f(\text{shift}(\bm{x})) = \text{shift}(f(\bm{x}))$$
+      <p>This means the network doesn't need to learn separate detectors for a feature at every location — one kernel
+        detects the feature everywhere. This property comes directly from weight sharing and has no additional
+        computational cost.</p>
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">CNN vs. FC — Parameter Efficiency Example</div>
+      <p>Processing a 224×224×3 image to produce 64 feature maps:</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Approach</th>
+            <th>Parameters</th>
+            <th>Ratio</th>
+          </tr>
+          <tr>
+            <td>Fully connected (flatten → 64)</td>
+            <td>$224 \times 224 \times 3 \times 64 = 9{,}633{,}792$</td>
+            <td>1×</td>
+          </tr>
+          <tr>
+            <td>Conv 3×3 (3 → 64 channels)</td>
+            <td>$3 \times 3 \times 3 \times 64 + 64 = 1{,}792$</td>
+            <td><strong>5,375× fewer</strong></td>
+          </tr>
+          <tr>
+            <td>Conv 7×7 (3 → 64 channels)</td>
+            <td>$7 \times 7 \times 3 \times 64 + 64 = 9{,}472$</td>
+            <td>1,017× fewer</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+
+    <h3 id="sec8-3">8.3 Convolution as Matrix Multiplication (im2col)</h3>
+
+    <p>
+      Although convolution is defined as a sliding-window dot product, in practice it is <strong>never computed that way
+        on GPUs</strong>. Instead, the input is rearranged into a matrix using the <strong>im2col</strong>
+      (image-to-column) transformation, converting convolution into a single large matrix multiplication. This is the
+      standard approach used by cuDNN, MKL-DNN, and all major deep learning frameworks.
+    </p>
+
+    <div class="theorem-box box">
+      <div class="label">The im2col Transformation</div>
+      <p>For input $\bm{I} \in \R^{C_{\text{in}} \times H_{\text{in}} \times W_{\text{in}}}$ and kernel size $k \times
+        k$, stride $s$:</p>
+      <p><strong>Step 1 — im2col:</strong> Extract every $k \times k \times C_{\text{in}}$ patch from $\bm{I}$ and
+        flatten each into a column vector. This produces a matrix:</p>
+      $$\bm{I}_{\text{col}} \in \R^{(C_{\text{in}} \cdot k^2) \times (H_{\text{out}} \cdot W_{\text{out}})}$$
+      <p><strong>Step 2 — Reshape kernel:</strong> Reshape $\bm{K} \in \R^{C_{\text{out}} \times C_{\text{in}} \times k
+        \times k}$ into:</p>
+      $$\bm{K}_{\text{row}} \in \R^{C_{\text{out}} \times (C_{\text{in}} \cdot k^2)}$$
+      <p><strong>Step 3 — Matrix multiply:</strong></p>
+      $$\bm{O}_{\text{col}} = \bm{K}_{\text{row}} \cdot \bm{I}_{\text{col}} \in \R^{C_{\text{out}} \times
+      (H_{\text{out}} \cdot W_{\text{out}})}$$
+      <p><strong>Step 4 — Reshape output:</strong> Reshape $\bm{O}_{\text{col}}$ back to $\R^{C_{\text{out}} \times
+        H_{\text{out}} \times W_{\text{out}}}$</p>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg" style="max-width:780px;">
+        <defs>
+          <marker id="ar" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <polygon points="0 0,7 2.5,0 5" fill="#2c2824" />
+          </marker>
+        </defs>
+
+        <!-- Input 3D -->
+        <text x="70" y="18" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+          fill="#1a5276">Input I</text>
+        <text x="70" y="33" text-anchor="middle" font-family="Source Sans 3" font-size="10" fill="#6b6560">(C_in × H ×
+          W)</text>
+        <rect x="20" y="42" width="100" height="80" rx="4" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <!-- depth indication -->
+        <rect x="28" y="36" width="100" height="80" rx="4" fill="none" stroke="#1a5276" stroke-width="0.8"
+          opacity="0.4" />
+        <rect x="36" y="30" width="100" height="80" rx="4" fill="none" stroke="#1a5276" stroke-width="0.5"
+          opacity="0.2" />
+
+        <!-- Arrow: im2col -->
+        <line x1="145" y1="82" x2="195" y2="82" stroke="#2c2824" stroke-width="1.5" marker-end="url(#ar)" />
+        <text x="170" y="72" text-anchor="middle" font-family="Source Sans 3" font-size="10" font-weight="700"
+          fill="#8b6914">im2col</text>
+
+        <!-- I_col matrix -->
+        <text x="280" y="18" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+          fill="#1a5276">I_col</text>
+        <text x="280" y="33" text-anchor="middle" font-family="Source Sans 3" font-size="10" fill="#6b6560">(C_in·k² ×
+          H_out·W_out)</text>
+        <rect x="200" y="42" width="160" height="100" rx="4" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <text x="210" y="57" font-family="Source Sans 3" font-size="9" fill="#1a5276">each column = one patch</text>
+        <!-- vertical lines to suggest columns -->
+        <g stroke="#1a5276" stroke-width="0.4" opacity="0.4">
+          <line x1="220" y1="42" x2="220" y2="142" />
+          <line x1="240" y1="42" x2="240" y2="142" />
+          <line x1="260" y1="42" x2="260" y2="142" />
+          <line x1="280" y1="42" x2="280" y2="142" />
+          <line x1="300" y1="42" x2="300" y2="142" />
+          <line x1="320" y1="42" x2="320" y2="142" />
+          <line x1="340" y1="42" x2="340" y2="142" />
+        </g>
+        <text x="210" y="100" font-family="JetBrains Mono" font-size="9" fill="#1a5276"
+          transform="rotate(-90 210 100)">C_in·k²</text>
+
+        <!-- Kernel matrix -->
+        <text x="280" y="170" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+          fill="#5b2c8e">K_row</text>
+        <text x="280" y="185" text-anchor="middle" font-family="Source Sans 3" font-size="10" fill="#6b6560">(C_out ×
+          C_in·k²)</text>
+        <rect x="200" y="192" width="160" height="55" rx="4" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="1.5" />
+        <text x="210" y="210" font-family="Source Sans 3" font-size="9" fill="#5b2c8e">each row = one filter</text>
+
+        <!-- × -->
+        <text x="390" y="135" text-anchor="middle" font-family="Crimson Pro" font-size="22" fill="#2c2824">×</text>
+
+        <!-- Equals and output -->
+        <text x="420" y="135" text-anchor="middle" font-family="Crimson Pro" font-size="22" fill="#2c2824">=</text>
+
+        <text x="530" y="18" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+          fill="#1e6e3e">O_col → reshape → Output</text>
+        <text x="530" y="33" text-anchor="middle" font-family="Source Sans 3" font-size="10" fill="#6b6560">(C_out ×
+          H_out·W_out)</text>
+        <rect x="445" y="42" width="170" height="55" rx="4" fill="#e8f5ec" stroke="#1e6e3e" stroke-width="1.5" />
+
+        <!-- Cost box -->
+        <rect x="445" y="120" width="320" height="110" rx="6" fill="#fdf5e0" stroke="#8b6914" stroke-width="1" />
+        <text x="605" y="142" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+          fill="#8b6914">im2col Computational Analysis</text>
+        <text x="455" y="162" font-family="Source Sans 3" font-size="12" fill="#2c2824">GEMM FLOPs: 2 · C_out ·
+          (C_in·k²) · (H_out·W_out)</text>
+        <text x="455" y="180" font-family="Source Sans 3" font-size="12" fill="#2c2824">= same as direct convolution
+          FLOPs ✓</text>
+        <text x="455" y="200" font-family="Source Sans 3" font-size="12" fill="#8b2500">im2col memory overhead:
+          C_in·k²·H_out·W_out</text>
+        <text x="455" y="218" font-family="Source Sans 3" font-size="12" fill="#8b2500">= up to k² × original input size
+          (significant!)</text>
+      </svg>
+      <div class="figure-caption"><strong>Figure 8.2.</strong> The im2col transformation converts convolution into a
+        matrix multiplication. Each $k \times k \times C_{\text{in}}$ input patch is unrolled into a column of
+        $\bm{I}_{\text{col}}$. The FLOP count is identical to direct convolution, but the operation can now leverage
+        highly optimized GEMM routines. The trade-off is $O(k^2)$ memory overhead.</div>
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">im2col Memory Overhead</div>
+      <p>Original input memory: $C_{\text{in}} \times H_{\text{in}} \times W_{\text{in}}$ elements</p>
+      <p>im2col matrix memory: $C_{\text{in}} \times k^2 \times H_{\text{out}} \times W_{\text{out}}$ elements</p>
+      <p>For stride-1 convolution ($H_{\text{out}} \approx H_{\text{in}}$), the overhead is a factor of approximately
+        $k^2$. For a 3×3 kernel, im2col uses ~9× more memory than the original input. For 7×7: ~49×. This is the
+        fundamental <strong>memory-for-speed trade-off</strong> in CNN computation.</p>
+    </div>
+
+
+    <h3 id="sec8-4">8.4 Alternative Convolution Algorithms</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>Algorithm</th>
+          <th>FLOPs</th>
+          <th>Extra Memory</th>
+          <th>Best For</th>
+        </tr>
+        <tr>
+          <td><strong>Direct (nested loops)</strong></td>
+          <td>$2 C_{\text{out}} C_{\text{in}} k^2 H_{\text{out}} W_{\text{out}}$</td>
+          <td>None</td>
+          <td>Small layers, memory-limited</td>
+        </tr>
+        <tr>
+          <td><strong>im2col + GEMM</strong></td>
+          <td>Same</td>
+          <td>$O(k^2 \times \text{input})$</td>
+          <td>Most cases (standard approach)</td>
+        </tr>
+        <tr>
+          <td><strong>FFT-based</strong></td>
+          <td>$O(C_{\text{out}} C_{\text{in}} H W \log(HW))$</td>
+          <td>$O(HW)$ per channel</td>
+          <td>Large kernels ($k \geq 7$)</td>
+        </tr>
+        <tr>
+          <td><strong>Winograd</strong></td>
+          <td>Reduces mults by up to 2.25× for 3×3</td>
+          <td>Moderate transform overhead</td>
+          <td>3×3 kernels specifically</td>
+        </tr>
+      </table>
+    </div>
+
+    <p>
+      The Winograd algorithm (Lavin & Gray, 2016) is particularly important for modern CNNs that use almost exclusively
+      3×3 kernels. For $F(2 \times 2, 3 \times 3)$ (computing a 2×2 output tile with a 3×3 kernel), it reduces the
+      multiplications from 36 to 16 per tile — a 2.25× reduction. cuDNN automatically selects the best algorithm for
+      each layer.
+    </p>
+
+    <div class="ref-section">
+      <h4>References for §8</h4>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 9: Convolutional Networks.</p>
+      <p>[2] LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P. (1998). Gradient-Based Learning Applied to Document
+        Recognition. <em>Proc. IEEE</em>, 86(11), 2278–2324.</p>
+      <p>[3] Chellapilla, K., Puri, S., & Simard, P. (2006). High Performance Convolutional Neural Networks for Document
+        Processing. <em>IWFHR 2006</em>. — First use of im2col for CNNs.</p>
+      <p>[4] Mathieu, M., Henaff, M., & LeCun, Y. (2014). Fast Training of Convolutional Networks through FFTs. <em>ICLR
+          2014</em>.</p>
+      <p>[5] Lavin, A. & Gray, S. (2016). Fast Algorithms for Convolutional Neural Networks. <em>CVPR 2016</em>. —
+        Winograd for CNNs.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 9: CNN LAYER TYPES                                    -->
+    <!-- ============================================================ -->
+    <h2 id="sec9"><span class="sec-num">§9</span> CNN Layer Types — Detailed Computation</h2>
+
+    <h3 id="sec9-1">9.1 Standard Convolutional Layer</h3>
+
+    <div class="def-box box">
+      <div class="label">Standard Conv2D — Complete Specification</div>
+      <p><strong>Input:</strong> $\bm{X} \in \R^{B \times C_{\text{in}} \times H_{\text{in}} \times W_{\text{in}}}$</p>
+      <p><strong>Kernel:</strong> $\bm{W} \in \R^{C_{\text{out}} \times C_{\text{in}} \times k_h \times k_w}$</p>
+      <p><strong>Bias:</strong> $\bm{b} \in \R^{C_{\text{out}}}$</p>
+      <p><strong>Hyperparameters:</strong> stride $s$, padding $p$, dilation $d$</p>
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">Output Dimensions</div>
+      $$H_{\text{out}} = \left\lfloor\frac{H_{\text{in}} + 2p - d(k_h - 1) - 1}{s}\right\rfloor + 1$$
+      $$W_{\text{out}} = \left\lfloor\frac{W_{\text{in}} + 2p - d(k_w - 1) - 1}{s}\right\rfloor + 1$$
+      <p>For the common case of $d=1$ and $k_h = k_w = k$:</p>
+      $$H_{\text{out}} = \left\lfloor\frac{H_{\text{in}} + 2p - k}{s}\right\rfloor + 1$$
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">Standard Conv2D — Complete Computational Cost</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Formula</th>
+          </tr>
+          <tr>
+            <td><strong>Parameters</strong></td>
+            <td>$C_{\text{out}} \times C_{\text{in}} \times k_h \times k_w + C_{\text{out}}$</td>
+          </tr>
+          <tr>
+            <td><strong>Parameter memory (float32)</strong></td>
+            <td>$\text{params} \times 4$ bytes</td>
+          </tr>
+          <tr>
+            <td><strong>FLOPs per output element</strong></td>
+            <td>$2 \times C_{\text{in}} \times k_h \times k_w$ (one MAC per kernel element)</td>
+          </tr>
+          <tr>
+            <td><strong>Total output elements</strong></td>
+            <td>$B \times C_{\text{out}} \times H_{\text{out}} \times W_{\text{out}}$</td>
+          </tr>
+          <tr>
+            <td><strong>Total forward FLOPs</strong></td>
+            <td>$\boxed{2 \times B \times C_{\text{out}} \times H_{\text{out}} \times W_{\text{out}} \times
+              C_{\text{in}} \times k_h \times k_w}$</td>
+          </tr>
+          <tr>
+            <td><strong>Output activation memory</strong></td>
+            <td>$B \times C_{\text{out}} \times H_{\text{out}} \times W_{\text{out}} \times 4$ bytes</td>
+          </tr>
+          <tr>
+            <td><strong>Input cache for backprop</strong></td>
+            <td>$B \times C_{\text{in}} \times H_{\text{in}} \times W_{\text{in}} \times 4$ bytes</td>
+          </tr>
+          <tr>
+            <td><strong>Backward FLOPs</strong></td>
+            <td>$\approx 2 \times$ forward FLOPs</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="example-box box">
+      <div class="label">Worked Example — Conv2D Layer</div>
+      <p>A conv layer: 64 input channels, 128 output channels, 3×3 kernel, stride 1, padding 1, input 56×56, batch 32.
+      </p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Computation</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Output size</td>
+            <td>$\lfloor(56 + 2 - 3)/1\rfloor + 1$</td>
+            <td>56 × 56</td>
+          </tr>
+          <tr>
+            <td>Parameters</td>
+            <td>$128 \times 64 \times 3 \times 3 + 128$</td>
+            <td><strong>73,856</strong></td>
+          </tr>
+          <tr>
+            <td>Param memory</td>
+            <td>$73{,}856 \times 4$</td>
+            <td>295 KB</td>
+          </tr>
+          <tr>
+            <td>FLOPs (forward)</td>
+            <td>$2 \times 32 \times 128 \times 56 \times 56 \times 64 \times 9$</td>
+            <td><strong>14.8 GFLOPs</strong></td>
+          </tr>
+          <tr>
+            <td>Output memory</td>
+            <td>$32 \times 128 \times 56 \times 56 \times 4$</td>
+            <td>51.4 MB</td>
+          </tr>
+          <tr>
+            <td>Input cache</td>
+            <td>$32 \times 64 \times 56 \times 56 \times 4$</td>
+            <td>25.7 MB</td>
+          </tr>
+        </table>
+      </div>
+      <p>Note: 73K parameters produce 14.8 billion FLOPs — a ratio of 200,000 FLOPs per parameter. This extreme ratio
+        (compared to ~2 FLOPs per parameter for FC layers) is due to weight sharing: each kernel weight contributes to
+        $H_{\text{out}} \times W_{\text{out}} = 3{,}136$ output positions.</p>
+    </div>
+
+
+    <h3 id="sec9-2">9.2 Padding, Stride, and Dilation</h3>
+
+    <h4>Padding</h4>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Value of $p$</th>
+          <th>Effect on Output Size</th>
+          <th>Use Case</th>
+        </tr>
+        <tr>
+          <td><strong>Valid (no padding)</strong></td>
+          <td>$p = 0$</td>
+          <td>Output shrinks by $k-1$ in each dimension</td>
+          <td>When output size reduction is acceptable</td>
+        </tr>
+        <tr>
+          <td><strong>Same padding</strong></td>
+          <td>$p = \lfloor k/2 \rfloor$</td>
+          <td>$H_{\text{out}} = H_{\text{in}}$ (for $s=1$)</td>
+          <td>Most common — preserves spatial dimensions</td>
+        </tr>
+        <tr>
+          <td><strong>Full padding</strong></td>
+          <td>$p = k - 1$</td>
+          <td>Output grows</td>
+          <td>Transposed convolution</td>
+        </tr>
+      </table>
+    </div>
+    <p>Zero-padding has essentially zero computational cost — it is implemented via memory indexing rather than actually
+      writing zeros.</p>
+
+    <h4>Stride</h4>
+    <p>Stride $s > 1$ reduces the output spatial dimension by a factor of $s$ in each dimension, reducing the total
+      FLOPs by a factor of $s^2$:</p>
+    $$\frac{\text{FLOPs}(s>1)}{\text{FLOPs}(s=1)} \approx \frac{1}{s^2}$$
+    <p>Stride-2 convolution is often used as an alternative to pooling for downsampling (Springenberg et al., 2015),
+      with the advantage that it learns the downsampling rather than using a fixed rule.</p>
+
+    <h4>Dilation (Atrous Convolution)</h4>
+    <p>Dilation $d$ inserts $d-1$ zeros between kernel elements, creating an effective kernel size of $k_{\text{eff}} =
+      k + (k-1)(d-1)$ without adding any parameters. For a 3×3 kernel with $d=2$, the effective receptive field is 5×5
+      using only 9 parameters (vs. 25 for an actual 5×5 kernel).</p>
+
+    <div class="compute-box box">
+      <div class="label">Dilation — Computational Impact</div>
+      <p><strong>Parameters:</strong> unchanged — $C_{\text{out}} \times C_{\text{in}} \times k^2$</p>
+      <p><strong>FLOPs per output element:</strong> unchanged — $2 \times C_{\text{in}} \times k^2$ (same number of
+        multiplications)</p>
+      <p><strong>Effective receptive field:</strong> $k_{\text{eff}} = k + (k-1)(d-1)$</p>
+      <p>Dilation is computationally "free" in terms of FLOPs — it expands the receptive field without increasing
+        computation.</p>
+    </div>
+
+
+    <h3 id="sec9-3">9.3 Pooling Layers</h3>
+
+    <div class="def-box box">
+      <div class="label">Pooling — Zero Learnable Parameters</div>
+      <p>Pooling layers have <strong>no learnable parameters</strong>. They reduce spatial dimensions by applying a
+        fixed function over local windows.</p>
+    </div>
+
+    <h4>Max Pooling</h4>
+    <div class="compute-box box">
+      <div class="label">Max Pool Computation</div>
+      $$\text{MaxPool}(i, j) = \max_{m,n \in [0, k)} \bm{X}(i \cdot s + m, j \cdot s + n)$$
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Formula</th>
+          </tr>
+          <tr>
+            <td>Parameters</td>
+            <td><strong>0</strong></td>
+          </tr>
+          <tr>
+            <td>FLOPs (forward)</td>
+            <td>$(k^2 - 1)$ comparisons per output element × $B \times C \times H_{\text{out}} \times W_{\text{out}}$
+            </td>
+          </tr>
+          <tr>
+            <td>Backward</td>
+            <td>Gradient routed only to the max element; need to <strong>store index</strong> of max for each window
+            </td>
+          </tr>
+          <tr>
+            <td>Index memory</td>
+            <td>$B \times C \times H_{\text{out}} \times W_{\text{out}}$ integers (typically 4 bytes each)</td>
+          </tr>
+        </table>
+      </div>
+      <p>For the standard 2×2 max pool with stride 2: 3 comparisons per output element. With $s = 2$, the output has
+        $1/4$ the spatial elements, so pooling reduces subsequent layer FLOPs by 4×.</p>
+    </div>
+
+    <h4>Average Pooling</h4>
+    <div class="compute-box box">
+      <div class="label">Average Pool Computation</div>
+      $$\text{AvgPool}(i, j) = \frac{1}{k^2}\sum_{m,n \in [0, k)} \bm{X}(i \cdot s + m, j \cdot s + n)$$
+      <p>FLOPs: $(k^2 - 1)$ additions + 1 division per output element. Backward: gradient distributed equally ($1/k^2$)
+        to all input elements in the window — no index storage needed.</p>
+    </div>
+
+    <h4>Global Average Pooling (GAP)</h4>
+    <div class="compute-box box">
+      <div class="label">GAP — Replaces Fully-Connected Layers</div>
+      <p>Averages each channel over the entire spatial extent:</p>
+      $$\text{GAP}(c) = \frac{1}{H \times W}\sum_{i=0}^{H-1}\sum_{j=0}^{W-1}\bm{X}(c, i, j)$$
+      <p><strong>Output:</strong> $B \times C \times 1 \times 1$ — one value per channel per sample</p>
+      <p><strong>FLOPs:</strong> $B \times C \times (HW - 1)$ additions ≈ $B \times C \times HW$</p>
+      <p><strong>Key insight:</strong> GAP eliminates the need for large FC layers at the end of the network, saving
+        enormous parameter counts. For example, replacing VGG-16's FC layers with GAP saves ~123M parameters.</p>
+      <p><em>Lin et al. (2014), "Network in Network"</em></p>
+    </div>
+
+
+    <h3 id="sec9-4">9.4 1×1 Convolutions (Pointwise Convolutions)</h3>
+
+    <div class="def-box box">
+      <div class="label">1×1 Convolution</div>
+      <p>A convolution with $k = 1$. Kernel: $\bm{W} \in \R^{C_{\text{out}} \times C_{\text{in}} \times 1 \times 1}$.
+        This applies a fully-connected layer <strong>independently at each spatial position</strong> — it mixes channels
+        without any spatial interaction.</p>
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">1×1 Conv — Computational Cost</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>Formula</th>
+          </tr>
+          <tr>
+            <td>Parameters</td>
+            <td>$C_{\text{out}} \times C_{\text{in}} + C_{\text{out}}$</td>
+          </tr>
+          <tr>
+            <td>FLOPs</td>
+            <td>$2 \times B \times C_{\text{out}} \times H \times W \times C_{\text{in}}$</td>
+          </tr>
+          <tr>
+            <td>Output size</td>
+            <td>$B \times C_{\text{out}} \times H \times W$ (spatial dims unchanged)</td>
+          </tr>
+        </table>
+      </div>
+      <p>1×1 convolutions are used for <strong>channel dimension reduction</strong> before expensive 3×3 or 5×5
+        convolutions. This is the key idea behind the Inception module and ResNet bottleneck blocks.</p>
+    </div>
+
+    <div class="example-box box">
+      <div class="label">1×1 Conv as Dimensionality Reduction</div>
+      <p>Reducing from 256 to 64 channels before a 3×3 conv, feature map 56×56:</p>
+      <p><strong>Without 1×1:</strong> 3×3 conv from 256→256: $2 \times 256 \times 56 \times 56 \times 256 \times 9 =
+        2.93$G FLOPs</p>
+      <p><strong>With 1×1 bottleneck:</strong></p>
+      <p>1×1 conv 256→64: $2 \times 64 \times 56 \times 56 \times 256 = 102.8$M FLOPs</p>
+      <p>3×3 conv 64→64: $2 \times 64 \times 56 \times 56 \times 64 \times 9 = 231.2$M FLOPs</p>
+      <p>1×1 conv 64→256: $2 \times 256 \times 56 \times 56 \times 64 = 102.8$M FLOPs</p>
+      <p><strong>Total with bottleneck: 436.8M FLOPs — a 6.7× reduction!</strong></p>
+    </div>
+
+
+    <h3 id="sec9-5">9.5 Depthwise Separable Convolutions</h3>
+
+    <p>
+      This is one of the most important efficiency innovations in CNN design. It factorizes a standard convolution into
+      two steps: a <strong>depthwise</strong> convolution (spatial filtering per channel) and a
+      <strong>pointwise</strong> convolution (channel mixing via 1×1 conv).
+    </p>
+
+    <div class="def-box box">
+      <div class="label">Depthwise Separable Convolution</div>
+      <p><strong>Step 1 — Depthwise Conv:</strong> Apply one $k \times k$ filter <em>per input channel</em>
+        independently. Each channel is convolved separately.</p>
+      <p>Kernel: $\bm{W}_{\text{dw}} \in \R^{C_{\text{in}} \times 1 \times k \times k}$ — one filter per channel, not
+        $C_{\text{out}}$ filters across all channels.</p>
+      <p>Output: $B \times C_{\text{in}} \times H_{\text{out}} \times W_{\text{out}}$ (same number of channels as input)
+      </p>
+
+      <p><strong>Step 2 — Pointwise Conv (1×1):</strong> Mix channels to produce $C_{\text{out}}$ output channels.</p>
+      <p>Kernel: $\bm{W}_{\text{pw}} \in \R^{C_{\text{out}} \times C_{\text{in}} \times 1 \times 1}$</p>
+    </div>
+
+    <div class="compute-box box">
+      <div class="label">Depthwise Separable — Full Cost Analysis</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th></th>
+            <th>Standard Conv</th>
+            <th>Depthwise</th>
+            <th>Pointwise</th>
+            <th>Separable Total</th>
+          </tr>
+          <tr>
+            <td><strong>Parameters</strong></td>
+            <td>$C_o C_i k^2$</td>
+            <td>$C_i k^2$</td>
+            <td>$C_o C_i$</td>
+            <td>$C_i k^2 + C_o C_i$</td>
+          </tr>
+          <tr>
+            <td><strong>FLOPs</strong></td>
+            <td>$2 C_o H_o W_o C_i k^2$</td>
+            <td>$2 C_i H_o W_o k^2$</td>
+            <td>$2 C_o H_o W_o C_i$</td>
+            <td>$2 H_o W_o C_i(k^2 + C_o)$</td>
+          </tr>
+        </table>
+      </div>
+
+      <p><strong>Reduction ratio (separable ÷ standard):</strong></p>
+      $$\frac{C_i(k^2 + C_o)}{C_o \cdot C_i \cdot k^2} = \frac{1}{C_o} + \frac{1}{k^2}$$
+      <p>For $k = 3$, $C_o = 128$: $\frac{1}{128} + \frac{1}{9} \approx 0.119$ — an <strong>8.4× reduction</strong> in
+        both params and FLOPs.</p>
+      <p>For $k = 3$, $C_o = 256$: $\frac{1}{256} + \frac{1}{9} \approx 0.115$ — an <strong>8.7× reduction</strong>.</p>
+    </div>
+
+    <div class="example-box box">
+      <div class="label">Numerical Comparison — 128→128 channels, 3×3, 56×56</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th></th>
+            <th>Standard</th>
+            <th>Depthwise Separable</th>
+            <th>Ratio</th>
+          </tr>
+          <tr>
+            <td>Parameters</td>
+            <td>$128 \times 128 \times 9 = 147{,}456$</td>
+            <td>$128 \times 9 + 128 \times 128 = 17{,}536$</td>
+            <td><strong>8.4×</strong> fewer</td>
+          </tr>
+          <tr>
+            <td>FLOPs</td>
+            <td>$2 \times 128 \times 3136 \times 128 \times 9 = 924$M</td>
+            <td>$2 \times 3136 \times 128 \times (9 + 128) = 110$M</td>
+            <td><strong>8.4×</strong> fewer</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §9.5</h4>
+      <p>[6] Howard, A. G. et al. (2017). MobileNets: Efficient Convolutional Neural Networks for Mobile Vision
+        Applications. <em>arXiv:1704.04861</em>.</p>
+      <p>[7] Chollet, F. (2017). Xception: Deep Learning with Depthwise Separable Convolutions. <em>CVPR 2017</em>.</p>
+    </div>
+
+
+    <h3 id="sec9-6">9.6 Grouped Convolutions</h3>
+
+    <div class="def-box box">
+      <div class="label">Grouped Convolution</div>
+      <p>Divide $C_{\text{in}}$ into $G$ groups of $C_{\text{in}}/G$ channels each. Each group is convolved
+        independently to produce $C_{\text{out}}/G$ output channels. Results are concatenated.</p>
+      <p><strong>Parameters:</strong> $\frac{C_{\text{out}} \times C_{\text{in}}}{G} \times k^2$ — reduced by factor $G$
+      </p>
+      <p><strong>FLOPs:</strong> reduced by factor $G$</p>
+      <p><strong>Special cases:</strong> $G = 1$ → standard conv; $G = C_{\text{in}}$ → depthwise conv</p>
+      <p><em>Originally used by Krizhevsky et al. (2012) with $G=2$ to split computation across two GPUs.</em></p>
+    </div>
+
+
+    <h3 id="sec9-7">9.7 Transposed Convolution (Deconvolution)</h3>
+
+    <div class="def-box box">
+      <div class="label">Transposed Convolution</div>
+      <p>Used for <strong>upsampling</strong> (decoder networks, GANs, segmentation). Inserts $s-1$ zeros between input
+        elements, then performs a standard convolution.</p>
+      $$H_{\text{out}} = (H_{\text{in}} - 1) \times s - 2p + k + p_{\text{out}}$$
+      <p><strong>Parameters:</strong> same as standard conv of same kernel size: $C_{\text{out}} \times C_{\text{in}}
+        \times k^2$</p>
+      <p><strong>FLOPs:</strong> similar order to standard conv on the (larger) output size</p>
+      <p><em>Dumoulin & Visin (2016), "A guide to convolution arithmetic for deep learning"</em></p>
+    </div>
+
+
+    <h3 id="sec9-8">9.8 CNN Backward Pass</h3>
+
+    <div class="theorem-box box">
+      <div class="label">Backpropagation Through a Conv Layer</div>
+      <p>Given upstream gradient $\pd{L}{\bm{O}} \in \R^{B \times C_{\text{out}} \times H_{\text{out}} \times
+        W_{\text{out}}}$:</p>
+
+      <p><strong>(a) Gradient w.r.t. kernel weights:</strong></p>
+      $$\pd{L}{\bm{W}} = \text{conv2d}\!\left(\bm{X},\; \pd{L}{\bm{O}}\right)$$
+      <p>Correlation of the input $\bm{X}$ with the upstream gradient. Uses the cached input from the forward pass.</p>
+      <p><strong>FLOPs:</strong> $2 \times B \times C_{\text{out}} \times C_{\text{in}} \times k^2 \times H_{\text{out}}
+        \times W_{\text{out}}$ — <strong>same as forward pass.</strong></p>
+
+      <p><strong>(b) Gradient w.r.t. biases:</strong></p>
+      $$\pd{L}{b_{c}} = \sum_{i,j} \pd{L}{O_{c,i,j}} \quad \text{(sum over spatial dims and batch)}$$
+      <p><strong>FLOPs:</strong> $B \times C_{\text{out}} \times H_{\text{out}} \times W_{\text{out}}$ — negligible.</p>
+
+      <p><strong>(c) Gradient w.r.t. input (for propagation to previous layer):</strong></p>
+      $$\pd{L}{\bm{X}} = \text{full\_conv2d}\!\left(\pd{L}{\bm{O}},\; \text{flip}(\bm{W})\right)$$
+      <p>A "full" convolution (with padding $k-1$) of the upstream gradient with the rotated (180°) kernel. This is
+        mathematically equivalent to the transposed convolution.</p>
+      <p><strong>FLOPs:</strong> $2 \times B \times C_{\text{in}} \times H_{\text{in}} \times W_{\text{in}} \times
+        C_{\text{out}} \times k^2$ — <strong>approximately same as forward.</strong></p>
+
+      <p><strong>Total backward ≈ 2× forward FLOPs</strong>, consistent with the general rule for neural networks.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §9</h4>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 9.1–9.5.</p>
+      <p>[8] Lin, M., Chen, Q., & Yan, S. (2014). Network in Network. <em>ICLR 2014</em>. — 1×1 convolutions and GAP.
+      </p>
+      <p>[9] Springenberg, J. T. et al. (2015). Striving for Simplicity: The All Convolutional Net. <em>ICLR Workshop
+          2015</em>.</p>
+      <p>[10] Yu, F. & Koltun, V. (2016). Multi-Scale Context Aggregation by Dilated Convolutions. <em>ICLR 2016</em>.
+      </p>
+      <p>[11] Dumoulin, V. & Visin, F. (2016). A guide to convolution arithmetic for deep learning.
+        <em>arXiv:1603.07285</em>. — Essential reference for all convolution types.</p>
+      <p>[12] Sze, V. et al. (2017). Efficient Processing of Deep Neural Networks: A Tutorial and Survey. <em>Proc.
+          IEEE</em>, 105(12).</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 10: RECEPTIVE FIELD                                   -->
+    <!-- ============================================================ -->
+    <h2 id="sec10"><span class="sec-num">§10</span> Receptive Field Analysis</h2>
+
+    <h3 id="sec10-1">10.1 Theoretical Receptive Field</h3>
+
+    <div class="def-box box">
+      <div class="label">Receptive Field (RF)</div>
+      <p>The receptive field of a neuron in layer $l$ is the region of the original input that can influence that
+        neuron's value. It grows with depth as each layer aggregates information from a local neighborhood.</p>
+    </div>
+
+    <div class="theorem-box box">
+      <div class="label">Receptive Field Growth Formula</div>
+      <p>For a stack of convolutional layers $l = 1, 2, \ldots, L$, each with kernel size $k_l$ and stride $s_l$:</p>
+      $$\text{RF}_l = \text{RF}_{l-1} + (k_l - 1) \times \prod_{i=1}^{l-1} s_i$$
+      <p>with $\text{RF}_0 = 1$. The product term $j_l = \prod_{i=1}^{l-1} s_i$ is called the <strong>jump</strong> — it
+        represents how many input pixels correspond to one step in layer $l$'s output.</p>
+      <p>For layers with identical $k$ and $s=1$:</p>
+      $$\text{RF}_L = 1 + L(k - 1) = L(k-1) + 1$$
+      <p>For all 3×3 layers with stride 1: $\text{RF}_L = 2L + 1$</p>
+    </div>
+
+    <div class="example-box box">
+      <div class="label">Receptive Field Growth — 3×3 Stack</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Layers</th>
+            <th>RF</th>
+            <th>Parameters (per C→C)</th>
+          </tr>
+          <tr>
+            <td>1 × (3×3)</td>
+            <td>3 × 3</td>
+            <td>$9C^2$</td>
+          </tr>
+          <tr>
+            <td>2 × (3×3)</td>
+            <td>5 × 5</td>
+            <td>$18C^2$</td>
+          </tr>
+          <tr>
+            <td>3 × (3×3)</td>
+            <td>7 × 7</td>
+            <td>$27C^2$</td>
+          </tr>
+          <tr>
+            <td>5 × (3×3)</td>
+            <td>11 × 11</td>
+            <td>$45C^2$</td>
+          </tr>
+        </table>
+      </div>
+      <p>Compare: one 7×7 kernel has RF = 7×7 but uses $49C^2$ parameters, while three 3×3 kernels achieve the same RF
+        with only $27C^2$ parameters — <strong>45% fewer parameters, plus 3 non-linearities instead of 1</strong>. This
+        is the core insight of VGGNet (Simonyan & Zisserman, 2015).</p>
+    </div>
+
+
+    <h3 id="sec10-2">10.2 Effective Receptive Field</h3>
+
+    <p>
+      The <em>theoretical</em> receptive field assumes that every pixel within the RF contributes equally. In practice,
+      Luo et al. (2016) showed that the <strong>effective receptive field</strong> is much smaller — it follows a
+      Gaussian distribution, with the center pixels contributing far more than the periphery. Typically, the effective
+      RF is only about 30–50% of the theoretical RF in each dimension. This has important implications for architecture
+      design: simply making the network deeper doesn't linearly increase the effective RF.
+    </p>
+
+
+    <h3 id="sec10-3">10.3 Small Kernels vs. Large Kernels — The VGGNet Insight</h3>
+
+    <div class="compute-box box">
+      <div class="label">Quantitative Comparison for Same Receptive Field</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Configuration</th>
+            <th>RF</th>
+            <th>Params</th>
+            <th>FLOPs (per position)</th>
+            <th>Non-linearities</th>
+          </tr>
+          <tr>
+            <td>1 × (5×5)</td>
+            <td>5</td>
+            <td>$25C^2$</td>
+            <td>$50C^2$</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>2 × (3×3)</td>
+            <td>5</td>
+            <td>$18C^2$</td>
+            <td>$36C^2$</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>1 × (7×7)</td>
+            <td>7</td>
+            <td>$49C^2$</td>
+            <td>$98C^2$</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>3 × (3×3)</td>
+            <td>7</td>
+            <td>$27C^2$</td>
+            <td>$54C^2$</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>1 × (11×11)</td>
+            <td>11</td>
+            <td>$121C^2$</td>
+            <td>$242C^2$</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>5 × (3×3)</td>
+            <td>11</td>
+            <td>$45C^2$</td>
+            <td>$90C^2$</td>
+            <td>5</td>
+          </tr>
+        </table>
+      </div>
+      <p>In every case, the stack of 3×3 convolutions uses <strong>fewer parameters, fewer FLOPs, and adds more
+          non-linearity</strong>. This is why virtually all modern CNN architectures use 3×3 kernels exclusively.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §10</h4>
+      <p>[13] Simonyan, K. & Zisserman, A. (2015). Very Deep Convolutional Networks for Large-Scale Image Recognition.
+        <em>ICLR 2015</em>. (VGGNet)</p>
+      <p>[14] Luo, W. et al. (2016). Understanding the Effective Receptive Field in Deep Convolutional Neural Networks.
+        <em>NeurIPS 2016</em>.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 11: LANDMARK ARCHITECTURES                            -->
+    <!-- ============================================================ -->
+    <h2 id="sec11"><span class="sec-num">§11</span> Landmark CNN Architectures — Computational Analysis</h2>
+
+    <p>
+      We now trace the evolution of CNN architectures, analyzing each for parameter count, FLOPs, and the key
+      computational innovations they introduced. All FLOP counts are for a single forward pass on one image at the
+      standard input resolution.
+    </p>
+
+
+    <h3 id="sec11-1">11.1 LeNet-5 (LeCun et al., 1998)</h3>
+
+    <div class="arch-box box">
+      <div class="label">LeNet-5 Architecture</div>
+      <p><strong>Input:</strong> 32×32×1 (grayscale)</p>
+      <p><strong>Layers:</strong> Conv(6, 5×5, s=1) → AvgPool(2×2, s=2) → Conv(16, 5×5, s=1) → AvgPool(2×2, s=2) →
+        FC(120) → FC(84) → FC(10)</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Layer</th>
+            <th>Output Size</th>
+            <th>Params</th>
+            <th>FLOPs</th>
+          </tr>
+          <tr>
+            <td>Conv1 (1→6, 5×5)</td>
+            <td>28×28×6</td>
+            <td>156</td>
+            <td>122K</td>
+          </tr>
+          <tr>
+            <td>AvgPool (2×2)</td>
+            <td>14×14×6</td>
+            <td>0</td>
+            <td>3.5K</td>
+          </tr>
+          <tr>
+            <td>Conv2 (6→16, 5×5)</td>
+            <td>10×10×16</td>
+            <td>2,416</td>
+            <td>483K</td>
+          </tr>
+          <tr>
+            <td>AvgPool (2×2)</td>
+            <td>5×5×16</td>
+            <td>0</td>
+            <td>1.2K</td>
+          </tr>
+          <tr>
+            <td>FC1 (400→120)</td>
+            <td>120</td>
+            <td>48,120</td>
+            <td>96K</td>
+          </tr>
+          <tr>
+            <td>FC2 (120→84)</td>
+            <td>84</td>
+            <td>10,164</td>
+            <td>20K</td>
+          </tr>
+          <tr>
+            <td>FC3 (84→10)</td>
+            <td>10</td>
+            <td>850</td>
+            <td>1.7K</td>
+          </tr>
+          <tr style="background:#fff3e6;">
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td><strong>~61K</strong></td>
+            <td><strong>~727K</strong></td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Historical significance:</strong> First successful CNN application (handwritten digit recognition).
+        Established the Conv→Pool→Conv→Pool→FC pattern.</p>
+    </div>
+
+
+    <h3 id="sec11-2">11.2 AlexNet (Krizhevsky et al., 2012)</h3>
+
+    <div class="arch-box box">
+      <div class="label">AlexNet Architecture</div>
+      <p><strong>Input:</strong> 227×227×3</p>
+      <p><strong>Key innovations:</strong> ReLU activation, dropout, GPU training, data augmentation</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Layer</th>
+            <th>Output Size</th>
+            <th>Params</th>
+            <th>FLOPs</th>
+          </tr>
+          <tr>
+            <td>Conv1 (3→96, 11×11, s=4)</td>
+            <td>55×55×96</td>
+            <td>34,944</td>
+            <td>211M</td>
+          </tr>
+          <tr>
+            <td>MaxPool (3×3, s=2)</td>
+            <td>27×27×96</td>
+            <td>0</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Conv2 (96→256, 5×5, p=2)</td>
+            <td>27×27×256</td>
+            <td>614,656</td>
+            <td>896M</td>
+          </tr>
+          <tr>
+            <td>MaxPool (3×3, s=2)</td>
+            <td>13×13×256</td>
+            <td>0</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Conv3 (256→384, 3×3, p=1)</td>
+            <td>13×13×384</td>
+            <td>885,120</td>
+            <td>299M</td>
+          </tr>
+          <tr>
+            <td>Conv4 (384→384, 3×3, p=1)</td>
+            <td>13×13×384</td>
+            <td>1,327,488</td>
+            <td>449M</td>
+          </tr>
+          <tr>
+            <td>Conv5 (384→256, 3×3, p=1)</td>
+            <td>13×13×256</td>
+            <td>884,992</td>
+            <td>299M</td>
+          </tr>
+          <tr>
+            <td>MaxPool (3×3, s=2)</td>
+            <td>6×6×256</td>
+            <td>0</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>FC6 (9216→4096)</td>
+            <td>4096</td>
+            <td>37,752,832</td>
+            <td>75.5M</td>
+          </tr>
+          <tr>
+            <td>FC7 (4096→4096)</td>
+            <td>4096</td>
+            <td>16,781,312</td>
+            <td>33.6M</td>
+          </tr>
+          <tr>
+            <td>FC8 (4096→1000)</td>
+            <td>1000</td>
+            <td>4,097,000</td>
+            <td>8.2M</td>
+          </tr>
+          <tr style="background:#fff3e6;">
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td><strong>~62.4M</strong></td>
+            <td><strong>~2.27G (≈724M MACs)</strong></td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Key observation:</strong> 96% of parameters are in FC layers (FC6 alone: 37.7M), but 95% of FLOPs are
+        in conv layers. This mismatch — FC layers dominating parameters while conv layers dominate compute — is the
+        central tension of classical CNN design.</p>
+    </div>
+
+
+    <h3 id="sec11-3">11.3 VGGNet (Simonyan & Zisserman, 2015)</h3>
+
+    <div class="arch-box box">
+      <div class="label">VGG-16 Architecture</div>
+      <p><strong>Input:</strong> 224×224×3</p>
+      <p><strong>Key innovation:</strong> Exclusively 3×3 convolutions, demonstrating that depth with small kernels
+        outperforms shallow networks with large kernels.</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Block</th>
+            <th>Layers</th>
+            <th>Output Size</th>
+            <th>Params</th>
+            <th>FLOPs</th>
+          </tr>
+          <tr>
+            <td>Block 1</td>
+            <td>2 × Conv(64, 3×3) + MaxPool</td>
+            <td>112×112×64</td>
+            <td>38.7K</td>
+            <td>3.9G</td>
+          </tr>
+          <tr>
+            <td>Block 2</td>
+            <td>2 × Conv(128, 3×3) + MaxPool</td>
+            <td>56×56×128</td>
+            <td>221.4K</td>
+            <td>3.7G</td>
+          </tr>
+          <tr>
+            <td>Block 3</td>
+            <td>3 × Conv(256, 3×3) + MaxPool</td>
+            <td>28×28×256</td>
+            <td>1.48M</td>
+            <td>3.0G</td>
+          </tr>
+          <tr>
+            <td>Block 4</td>
+            <td>3 × Conv(512, 3×3) + MaxPool</td>
+            <td>14×14×512</td>
+            <td>5.90M</td>
+            <td>2.4G</td>
+          </tr>
+          <tr>
+            <td>Block 5</td>
+            <td>3 × Conv(512, 3×3) + MaxPool</td>
+            <td>7×7×512</td>
+            <td>7.08M</td>
+            <td>0.6G</td>
+          </tr>
+          <tr>
+            <td>FC layers</td>
+            <td>FC(25088→4096→4096→1000)</td>
+            <td>1000</td>
+            <td>123.6M</td>
+            <td>0.25G</td>
+          </tr>
+          <tr style="background:#fff3e6;">
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td></td>
+            <td><strong>~138.4M</strong></td>
+            <td><strong>~15.5G (≈7.6G MACs)</strong></td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>Key observation:</strong> FC layers account for 89% of parameters but only 1.6% of FLOPs. VGG showed
+        that going deeper works, but at enormous computational cost.</p>
+    </div>
+
+
+    <h3 id="sec11-4">11.4 GoogLeNet / Inception (Szegedy et al., 2015)</h3>
+
+    <div class="arch-box box">
+      <div class="label">Inception Module — The Key Innovation</div>
+      <p>The Inception module runs multiple convolution branches in parallel (1×1, 3×3, 5×5, and pooling) and
+        concatenates results. Critically, 1×1 convolutions are used <strong>before</strong> the 3×3 and 5×5 convolutions
+        to reduce channel dimensionality.</p>
+
+      <p><strong>Without 1×1 reduction (naïve):</strong> Very high FLOPs from 5×5 convolutions on many channels.</p>
+      <p><strong>With 1×1 reduction:</strong> Reduces channels before expensive operations, dramatically cutting FLOPs.
+      </p>
+
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>GoogLeNet</th>
+            <th>vs. VGG-16</th>
+          </tr>
+          <tr>
+            <td>Parameters</td>
+            <td><strong>~6.8M</strong></td>
+            <td>20× fewer than VGG</td>
+          </tr>
+          <tr>
+            <td>FLOPs</td>
+            <td><strong>~1.5G</strong></td>
+            <td>10× fewer than VGG</td>
+          </tr>
+          <tr>
+            <td>Top-5 accuracy (ILSVRC 2014)</td>
+            <td>6.67% error</td>
+            <td>Similar accuracy with 10–20× less compute</td>
+          </tr>
+        </table>
+      </div>
+      <p><strong>This was the first architecture to demonstrate that clever design can dramatically reduce compute while
+          maintaining accuracy.</strong></p>
+    </div>
+
+
+    <h3 id="sec11-5">11.5 ResNet (He et al., 2016)</h3>
+
+    <div class="arch-box box">
+      <div class="label">The Residual Connection</div>
+      <p>Instead of learning $\bm{y} = F(\bm{x})$ directly, learn the <em>residual</em> $\bm{y} = F(\bm{x}) + \bm{x}$.
+        The skip connection $+\bm{x}$ costs:</p>
+      <p><strong>Extra parameters: 0</strong> (just an addition)</p>
+      <p><strong>Extra FLOPs: 1 addition per element</strong> — negligible</p>
+      <p><strong>Extra memory: 0</strong> (input is already stored)</p>
+      <p>The skip connection provides a direct gradient path that bypasses the nonlinear layers, enabling training of
+        networks with 100+ layers where previously ~20 layers was the practical limit.</p>
+    </div>
+
+    <div class="theorem-box box">
+      <div class="label">ResNet Bottleneck Block — Computational Analysis</div>
+      <p>The bottleneck block uses 1×1 → 3×3 → 1×1 convolutions with channel reduction:</p>
+      <p>Input: $H \times W \times 256$</p>
+      <p>1×1 conv: 256 → 64 channels (reduce)</p>
+      <p>3×3 conv: 64 → 64 channels (spatial processing at reduced dims)</p>
+      <p>1×1 conv: 64 → 256 channels (expand back)</p>
+      <p>Skip connection: add original input</p>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Sub-layer</th>
+            <th>Params</th>
+            <th>FLOPs (at 56×56)</th>
+          </tr>
+          <tr>
+            <td>1×1 (256→64)</td>
+            <td>16,448</td>
+            <td>103M</td>
+          </tr>
+          <tr>
+            <td>3×3 (64→64)</td>
+            <td>36,928</td>
+            <td>231M</td>
+          </tr>
+          <tr>
+            <td>1×1 (64→256)</td>
+            <td>16,640</td>
+            <td>104M</td>
+          </tr>
+          <tr>
+            <td>Skip addition</td>
+            <td>0</td>
+            <td>0.8M</td>
+          </tr>
+          <tr style="background:#f0e8f7;">
+            <td><strong>Bottleneck total</strong></td>
+            <td><strong>70,016</strong></td>
+            <td><strong>439M</strong></td>
+          </tr>
+          <tr>
+            <td><em>Equivalent plain (two 3×3, 256→256)</em></td>
+            <td><em>1,180,160</em></td>
+            <td><em>7.4G</em></td>
+          </tr>
+        </table>
+        <p>The bottleneck block is <strong>16.8× fewer parameters</strong> and <strong>16.9× fewer FLOPs</strong> than
+          the equivalent non-bottleneck design, while achieving better accuracy due to greater depth.</p>
+      </div>
+
+      <div class="compute-box box">
+        <div class="label">ResNet Family — Summary</div>
+        <table>
+          <tr>
+            <th>Model</th>
+            <th>Layers</th>
+            <th>Params</th>
+            <th>FLOPs</th>
+            <th>Top-1 Acc</th>
+          </tr>
+          <tr>
+            <td>ResNet-18</td>
+            <td>18</td>
+            <td>11.7M</td>
+            <td>1.8G</td>
+            <td>69.8%</td>
+          </tr>
+          <tr>
+            <td>ResNet-34</td>
+            <td>34</td>
+            <td>21.8M</td>
+            <td>3.7G</td>
+            <td>73.3%</td>
+          </tr>
+          <tr>
+            <td>ResNet-50</td>
+            <td>50</td>
+            <td>25.6M</td>
+            <td>3.8G</td>
+            <td>76.1%</td>
+          </tr>
+          <tr>
+            <td>ResNet-101</td>
+            <td>101</td>
+            <td>44.5M</td>
+            <td>7.6G</td>
+            <td>77.4%</td>
+          </tr>
+          <tr>
+            <td>ResNet-152</td>
+            <td>152</td>
+            <td>60.2M</td>
+            <td>11.5G</td>
+            <td>78.3%</td>
+          </tr>
+        </table>
+        <p>Note: ResNet-50 (bottleneck) has <em>fewer</em> FLOPs than ResNet-34 (plain) despite being deeper, because
+          bottleneck blocks are more FLOP-efficient.</p>
+      </div>
+
+
+      <h3 id="sec11-6">11.6 Efficient Architectures: MobileNet, ShuffleNet, EfficientNet</h3>
+
+      <h4>MobileNet v1 (Howard et al., 2017)</h4>
+      <div class="arch-box box">
+        <div class="label">MobileNet v1</div>
+        <p>Replaces all standard convolutions with depthwise separable convolutions. Introduces two scaling
+          hyperparameters:</p>
+        <p><strong>Width multiplier $\alpha$:</strong> scales channel count by $\alpha$ at every layer</p>
+        <p><strong>Resolution multiplier $\rho$:</strong> scales input resolution by $\rho$</p>
+        <p><strong>FLOP scaling:</strong> FLOPs $\propto \alpha^2 \rho^2$ — quadratic in both!</p>
+        <table>
+          <tr>
+            <th>Config</th>
+            <th>Params</th>
+            <th>FLOPs</th>
+            <th>Top-1</th>
+          </tr>
+          <tr>
+            <td>MobileNet 1.0 (224)</td>
+            <td>4.2M</td>
+            <td>569M</td>
+            <td>70.6%</td>
+          </tr>
+          <tr>
+            <td>MobileNet 0.75 (224)</td>
+            <td>2.6M</td>
+            <td>325M</td>
+            <td>68.4%</td>
+          </tr>
+          <tr>
+            <td>MobileNet 0.5 (160)</td>
+            <td>1.3M</td>
+            <td>76M</td>
+            <td>60.2%</td>
+          </tr>
+        </table>
+      </div>
+
+      <h4>MobileNet v2 (Sandler et al., 2018)</h4>
+      <div class="arch-box box">
+        <div class="label">MobileNet v2 — Inverted Residual Block</div>
+        <p>Key innovation: <strong>inverted residuals</strong> with <strong>linear bottlenecks</strong>.</p>
+        <p>Standard bottleneck: wide → narrow → wide (reduce, process, expand)</p>
+        <p>Inverted: narrow → wide → narrow (expand, depthwise, project)</p>
+        <p>The expansion factor $t$ (typically 6) expands channels before the depthwise conv, then projects back down.
+          The skip connection connects the <em>narrow</em> representations.</p>
+        <table>
+          <tr>
+            <th>Sub-layer</th>
+            <th>Operation</th>
+          </tr>
+          <tr>
+            <td>1×1 expand</td>
+            <td>$C \to tC$ (pointwise, e.g., 24→144)</td>
+          </tr>
+          <tr>
+            <td>3×3 depthwise</td>
+            <td>$tC \to tC$ (spatial filtering, no channel mixing)</td>
+          </tr>
+          <tr>
+            <td>1×1 project</td>
+            <td>$tC \to C'$ (pointwise, <strong>linear</strong> — no activation!)</td>
+          </tr>
+          <tr>
+            <td>Skip</td>
+            <td>Add input (when $C = C'$ and stride=1)</td>
+          </tr>
+        </table>
+        <p>MobileNetV2 (1.0, 224): <strong>3.4M params, 300M FLOPs, 72.0% top-1</strong></p>
+      </div>
+
+      <h4>EfficientNet (Tan & Le, 2019)</h4>
+      <div class="arch-box box">
+        <div class="label">EfficientNet — Compound Scaling</div>
+        <p>Key insight: depth, width, and resolution should be scaled <strong>together</strong>, not independently. The
+          compound scaling formula:</p>
+        $$\text{depth: } d = \alpha^\phi, \quad \text{width: } w = \beta^\phi, \quad \text{resolution: } r =
+        \gamma^\phi$$
+        $$\text{subject to: } \alpha \cdot \beta^2 \cdot \gamma^2 \approx 2$$
+        <p>The constraint ensures that when $\phi$ increases by 1, total FLOPs roughly double. The base network
+          (EfficientNet-B0) was found via neural architecture search (NAS).</p>
+        <table>
+          <tr>
+            <th>Model</th>
+            <th>Params</th>
+            <th>FLOPs</th>
+            <th>Top-1</th>
+            <th>vs. ResNet-50</th>
+          </tr>
+          <tr>
+            <td>EfficientNet-B0</td>
+            <td>5.3M</td>
+            <td>390M</td>
+            <td>77.1%</td>
+            <td>+1.0% acc, 10× fewer FLOPs</td>
+          </tr>
+          <tr>
+            <td>EfficientNet-B3</td>
+            <td>12M</td>
+            <td>1.8G</td>
+            <td>81.6%</td>
+            <td>+5.5% acc, 2× fewer FLOPs</td>
+          </tr>
+          <tr>
+            <td>EfficientNet-B7</td>
+            <td>66M</td>
+            <td>37G</td>
+            <td>84.3%</td>
+            <td>+6.2% acc, same FLOPs as ResNet-152</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="ref-section">
+        <h4>References for §11</h4>
+        <p>[2] LeCun et al. (1998). Gradient-Based Learning Applied to Document Recognition.</p>
+        <p>[15] Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). ImageNet Classification with Deep Convolutional
+          Neural Networks. <em>NeurIPS 2012</em>. (AlexNet)</p>
+        <p>[13] Simonyan & Zisserman (2015). Very Deep Convolutional Networks. <em>ICLR 2015</em>. (VGGNet)</p>
+        <p>[16] Szegedy, C. et al. (2015). Going Deeper with Convolutions. <em>CVPR 2015</em>. (GoogLeNet/Inception)</p>
+        <p>[17] He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep Residual Learning for Image Recognition. <em>CVPR
+            2016</em>. (ResNet)</p>
+        <p>[6] Howard et al. (2017). MobileNets.</p>
+        <p>[18] Sandler, M. et al. (2018). MobileNetV2: Inverted Residuals and Linear Bottlenecks. <em>CVPR 2018</em>.
+        </p>
+        <p>[19] Zhang, X. et al. (2018). ShuffleNet: An Extremely Efficient Convolutional Neural Network for Mobile
+          Devices. <em>CVPR 2018</em>.</p>
+        <p>[20] Tan, M. & Le, Q. V. (2019). EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks.
+          <em>ICML 2019</em>.</p>
+        <p>[21] Canziani, A., Paszke, A., & Culurciello, E. (2017). An Analysis of Deep Neural Network Models for
+          Practical Applications. <em>arXiv:1605.07678</em>. — Comprehensive comparison.</p>
+      </div>
+
+
+      <h3 id="sec11-7">11.7 Grand Comparison Table</h3>
+
+      <table>
+        <tr>
+          <th>Architecture</th>
+          <th>Year</th>
+          <th>Params</th>
+          <th>FLOPs</th>
+          <th>Top-1 (%)</th>
+          <th>FLOPs/Param</th>
+          <th>Key Innovation</th>
+        </tr>
+        <tr>
+          <td>LeNet-5</td>
+          <td>1998</td>
+          <td>61K</td>
+          <td>0.7M</td>
+          <td>—</td>
+          <td>11.5</td>
+          <td>First CNN</td>
+        </tr>
+        <tr>
+          <td>AlexNet</td>
+          <td>2012</td>
+          <td>62.4M</td>
+          <td>2.27G</td>
+          <td>63.3</td>
+          <td>36.4</td>
+          <td>ReLU, GPU, dropout</td>
+        </tr>
+        <tr>
+          <td>VGG-16</td>
+          <td>2014</td>
+          <td>138.4M</td>
+          <td>15.5G</td>
+          <td>74.4</td>
+          <td>112</td>
+          <td>3×3 only, depth</td>
+        </tr>
+        <tr>
+          <td>GoogLeNet</td>
+          <td>2014</td>
+          <td>6.8M</td>
+          <td>1.5G</td>
+          <td>74.8</td>
+          <td>221</td>
+          <td>Inception, 1×1 reduction</td>
+        </tr>
+        <tr>
+          <td>ResNet-50</td>
+          <td>2015</td>
+          <td>25.6M</td>
+          <td>3.8G</td>
+          <td>76.1</td>
+          <td>148</td>
+          <td>Skip connections, bottleneck</td>
+        </tr>
+        <tr>
+          <td>MobileNetV2</td>
+          <td>2018</td>
+          <td>3.4M</td>
+          <td>300M</td>
+          <td>72.0</td>
+          <td>88</td>
+          <td>Inv. residual, depthwise sep.</td>
+        </tr>
+        <tr>
+          <td>EfficientNet-B0</td>
+          <td>2019</td>
+          <td>5.3M</td>
+          <td>390M</td>
+          <td>77.1</td>
+          <td>74</td>
+          <td>Compound scaling, NAS</td>
+        </tr>
+        <tr>
+          <td>EfficientNet-B7</td>
+          <td>2019</td>
+          <td>66M</td>
+          <td>37G</td>
+          <td>84.3</td>
+          <td>561</td>
+          <td>Compound scaling (max)</td>
+        </tr>
+      </table>
+
+      <div class="insight-box box">
+        <div class="label">Key Trend — Efficiency Frontier</div>
+        <p>The evolution of CNN architectures is fundamentally a story of <strong>extracting more accuracy from fewer
+            FLOPs</strong>. From AlexNet to EfficientNet-B0, the community achieved +14% accuracy improvement while
+          using <strong>6× fewer FLOPs</strong>. The main techniques driving this:</p>
+        <p>(1) 1×1 convolutions for channel reduction (Inception, 2014)</p>
+        <p>(2) Residual connections for depth without degradation (ResNet, 2015)</p>
+        <p>(3) Depthwise separable convolutions for 8–9× FLOP reduction per layer (MobileNet, 2017)</p>
+        <p>(4) Compound scaling for optimal width/depth/resolution balance (EfficientNet, 2019)</p>
+      </div>
+
+      <hr>
+
+      <!-- ============================================================ -->
+      <!-- SUMMARY                                                       -->
+      <!-- ============================================================ -->
+      <h2 id="sec-summary"><span class="sec-num">§</span> Computational Summary — All CNN Layer Types</h2>
+
+      <table>
+        <tr>
+          <th>Layer Type</th>
+          <th>Parameters</th>
+          <th>FLOPs (forward, per sample)</th>
+          <th>Output Size</th>
+        </tr>
+        <tr>
+          <td><strong>Conv2D</strong></td>
+          <td>$C_o C_i k^2 + C_o$</td>
+          <td>$2 C_o H_o W_o C_i k^2$</td>
+          <td>$C_o \times H_o \times W_o$</td>
+        </tr>
+        <tr>
+          <td><strong>Depthwise Conv</strong></td>
+          <td>$C_i k^2 + C_i$</td>
+          <td>$2 C_i H_o W_o k^2$</td>
+          <td>$C_i \times H_o \times W_o$</td>
+        </tr>
+        <tr>
+          <td><strong>Pointwise (1×1)</strong></td>
+          <td>$C_o C_i + C_o$</td>
+          <td>$2 C_o H W C_i$</td>
+          <td>$C_o \times H \times W$</td>
+        </tr>
+        <tr>
+          <td><strong>DW Separable</strong></td>
+          <td>$C_i(k^2 + C_o)$</td>
+          <td>$2 H_o W_o C_i(k^2 + C_o)$</td>
+          <td>$C_o \times H_o \times W_o$</td>
+        </tr>
+        <tr>
+          <td><strong>Grouped Conv (G groups)</strong></td>
+          <td>$C_o C_i k^2 / G$</td>
+          <td>$2 C_o H_o W_o C_i k^2 / G$</td>
+          <td>$C_o \times H_o \times W_o$</td>
+        </tr>
+        <tr>
+          <td><strong>Max Pool</strong></td>
+          <td>0</td>
+          <td>$(k^2-1) C H_o W_o$</td>
+          <td>$C \times H_o \times W_o$</td>
+        </tr>
+        <tr>
+          <td><strong>Avg Pool</strong></td>
+          <td>0</td>
+          <td>$k^2 C H_o W_o$</td>
+          <td>$C \times H_o \times W_o$</td>
+        </tr>
+        <tr>
+          <td><strong>Global Avg Pool</strong></td>
+          <td>0</td>
+          <td>$C \cdot H \cdot W$</td>
+          <td>$C \times 1 \times 1$</td>
+        </tr>
+        <tr>
+          <td><strong>BatchNorm</strong></td>
+          <td>$2C$</td>
+          <td>$\sim 5C \cdot H \cdot W$</td>
+          <td>Same as input</td>
+        </tr>
+        <tr>
+          <td><strong>Skip Connection</strong></td>
+          <td>0</td>
+          <td>$C \cdot H \cdot W$ (element-wise add)</td>
+          <td>Same as input</td>
+        </tr>
+      </table>
+
+      <h3>Memory Formulas</h3>
+      <table>
+        <tr>
+          <th>Component</th>
+          <th>Size (float32 bytes)</th>
+        </tr>
+        <tr>
+          <td>Parameters</td>
+          <td>$4P$</td>
+        </tr>
+        <tr>
+          <td>Gradients</td>
+          <td>$4P$</td>
+        </tr>
+        <tr>
+          <td>Optimizer (Adam)</td>
+          <td>$8P$ (m + v)</td>
+        </tr>
+        <tr>
+          <td>Activation (per layer, training)</td>
+          <td>$4 \times B \times C_o \times H_o \times W_o$</td>
+        </tr>
+        <tr>
+          <td>im2col buffer</td>
+          <td>$4 \times B \times C_i k^2 \times H_o \times W_o$</td>
+        </tr>
+        <tr>
+          <td>Max pool indices</td>
+          <td>$4 \times B \times C \times H_o \times W_o$</td>
+        </tr>
+      </table>
+
+      <hr>
+
+      <!-- ============================================================ -->
+      <!-- REFERENCES                                                    -->
+      <!-- ============================================================ -->
+      <h2 id="sec-refs"><span class="sec-num">§</span> Complete References</h2>
+
+      <div class="ref-section">
+        <h4>Textbooks</h4>
+        <p>[1] Goodfellow, I., Bengio, Y., & Courville, A. (2016). <em>Deep Learning</em>, Ch. 9: Convolutional
+          Networks. MIT Press.</p>
+      </div>
+
+      <div class="ref-section">
+        <h4>Foundational CNN Papers</h4>
+        <p>[2] LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P. (1998). Gradient-Based Learning Applied to Document
+          Recognition. <em>Proc. IEEE</em>, 86(11), 2278–2324.</p>
+        <p>[15] Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). ImageNet Classification with Deep Convolutional
+          Neural Networks. <em>NeurIPS 2012</em>.</p>
+        <p>[13] Simonyan, K. & Zisserman, A. (2015). Very Deep Convolutional Networks for Large-Scale Image Recognition.
+          <em>ICLR 2015</em>.</p>
+        <p>[16] Szegedy, C. et al. (2015). Going Deeper with Convolutions. <em>CVPR 2015</em>.</p>
+        <p>[17] He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep Residual Learning for Image Recognition. <em>CVPR
+            2016</em>.</p>
+      </div>
+
+      <div class="ref-section">
+        <h4>Efficient Architectures</h4>
+        <p>[6] Howard, A. G. et al. (2017). MobileNets: Efficient CNNs for Mobile Vision Applications.
+          <em>arXiv:1704.04861</em>.</p>
+        <p>[7] Chollet, F. (2017). Xception: Deep Learning with Depthwise Separable Convolutions. <em>CVPR 2017</em>.
+        </p>
+        <p>[18] Sandler, M. et al. (2018). MobileNetV2: Inverted Residuals and Linear Bottlenecks. <em>CVPR 2018</em>.
+        </p>
+        <p>[19] Zhang, X. et al. (2018). ShuffleNet. <em>CVPR 2018</em>.</p>
+        <p>[20] Tan, M. & Le, Q. V. (2019). EfficientNet: Rethinking Model Scaling. <em>ICML 2019</em>.</p>
+      </div>
+
+      <div class="ref-section">
+        <h4>Convolution Algorithms &amp; Efficiency</h4>
+        <p>[3] Chellapilla, K. et al. (2006). High Performance CNNs for Document Processing. <em>IWFHR 2006</em>.</p>
+        <p>[4] Mathieu, M. et al. (2014). Fast Training of CNNs through FFTs. <em>ICLR 2014</em>.</p>
+        <p>[5] Lavin, A. & Gray, S. (2016). Fast Algorithms for Convolutional Neural Networks. <em>CVPR 2016</em>.</p>
+        <p>[12] Sze, V. et al. (2017). Efficient Processing of Deep Neural Networks: A Tutorial and Survey. <em>Proc.
+            IEEE</em>, 105(12), 2295–2329.</p>
+        <p>[21] Canziani, A. et al. (2017). An Analysis of Deep Neural Network Models for Practical Applications.
+          <em>arXiv:1605.07678</em>.</p>
+      </div>
+
+      <div class="ref-section">
+        <h4>Other Referenced Works</h4>
+        <p>[8] Lin, M., Chen, Q., & Yan, S. (2014). Network in Network. <em>ICLR 2014</em>.</p>
+        <p>[9] Springenberg, J. T. et al. (2015). Striving for Simplicity: The All Convolutional Net. <em>ICLR Workshop
+            2015</em>.</p>
+        <p>[10] Yu, F. & Koltun, V. (2016). Multi-Scale Context Aggregation by Dilated Convolutions. <em>ICLR 2016</em>.
+        </p>
+        <p>[11] Dumoulin, V. & Visin, F. (2016). A guide to convolution arithmetic for deep learning.
+          <em>arXiv:1603.07285</em>.</p>
+        <p>[14] Luo, W. et al. (2016). Understanding the Effective Receptive Field in Deep CNNs. <em>NeurIPS 2016</em>.
+        </p>
+      </div>
+
+    
+  <!-- Back to Index -->
+  <div style="margin-top: 4rem; padding-top: 2rem; border-top: var(--border-width-thin, 1px) solid var(--footnotes-border-color, #ddd);">
+    <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+  </div>
+
+  <!-- Visitor Counter -->
+  <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00007">
+    <div class="visitor-stats">
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Total visits:</span>
+        <span class="visitor-stat-count" id="overall-visitor-count"></span>
+      </div>
+      <span class="visitor-stat-separator">§</span>
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Page visits:</span>
+        <span class="visitor-stat-count" id="page-visitor-count"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Portfolio nav script -->
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+    let lastScrollTop = 0;
+    const nav = document.querySelector('.top-nav');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollPos > 50) { nav.classList.add('nav-scrolled'); } else { nav.classList.remove('nav-scrolled'); }
+      if (scrollPos > 100) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) { nav.classList.add('nav-hidden'); } else { nav.classList.remove('nav-hidden'); }
+      }
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    });
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../../firebase-config.js"></script>
+  <script src="../../../visitor-counter.js"></script>
+</body>
+
+</html>

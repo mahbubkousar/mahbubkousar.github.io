@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part VI — Advanced Topics and Current Frontiers</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Source+Sans+3:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']], macros: { R: '\\mathbb{R}', bm: ['\\boldsymbol{#1}', 1], pd: ['\\frac{\\partial #1}{\\partial #2}', 2], T: '^\\top', softmax: '\\text{softmax}' } }, svg: { fontCache: 'global' } };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+    <style>
+        :root {
+            --bg: #faf8f5;
+            --bg-alt: #f0ece6;
+            --bg-code: #1a1b26;
+            --text: #2c2824;
+            --text-muted: #6b6560;
+            --accent: #8b2500;
+            --accent-bg: #fdf0ea;
+            --border: #d4cfc8;
+            --blue: #1a5276;
+            --blue-bg: #e8f0f7;
+            --green: #1e6e3e;
+            --green-bg: #e8f5ec;
+            --purple: #5b2c8e;
+            --purple-bg: #f0e8f7;
+            --gold: #8b6914;
+            --gold-bg: #fdf5e0;
+            --teal: #0e6655;
+            --teal-bg: #e5f5f2;
+            --orange: #b35900;
+            --orange-bg: #fff3e6;
+            --slate: #3d4f5f;
+            --slate-bg: #e8ecf0;
+            --rose: #8b1a4a;
+            --rose-bg: #fce8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 19px;
+            line-height: 1.75;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px 120px;
+        }
+
+        .doc-header {
+            text-align: center;
+            padding: 60px 0 50px;
+            border-bottom: 3px double var(--border);
+            margin-bottom: 50px;
+        }
+
+        .doc-header .part-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .doc-header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .doc-header .subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            font-style: italic;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 27px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 70px;
+            margin-bottom: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        h2 .sec-num {
+            font-weight: 300;
+            opacity: .6;
+            margin-right: 6px;
+        }
+
+        h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        .box {
+            padding: 18px 22px;
+            margin: 24px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .box .label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+
+        .def-box {
+            background: var(--blue-bg);
+            border-left: 4px solid var(--blue);
+        }
+
+        .def-box .label {
+            color: var(--blue);
+        }
+
+        .theorem-box {
+            background: var(--purple-bg);
+            border-left: 4px solid var(--purple);
+        }
+
+        .theorem-box .label {
+            color: var(--purple);
+        }
+
+        .compute-box {
+            background: var(--gold-bg);
+            border-left: 4px solid var(--gold);
+        }
+
+        .compute-box .label {
+            color: var(--gold);
+        }
+
+        .example-box {
+            background: var(--green-bg);
+            border-left: 4px solid var(--green);
+        }
+
+        .example-box .label {
+            color: var(--green);
+        }
+
+        .warning-box {
+            background: var(--accent-bg);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box .label {
+            color: var(--accent);
+        }
+
+        .insight-box {
+            background: var(--teal-bg);
+            border-left: 4px solid var(--teal);
+        }
+
+        .insight-box .label {
+            color: var(--teal);
+        }
+
+        .hw-box {
+            background: var(--slate-bg);
+            border-left: 4px solid var(--slate);
+        }
+
+        .hw-box .label {
+            color: var(--slate);
+        }
+
+        .frontier-box {
+            background: var(--rose-bg);
+            border-left: 4px solid var(--rose);
+        }
+
+        .frontier-box .label {
+            color: var(--rose);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 15.5px;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        th {
+            background: var(--bg-alt);
+            font-weight: 700;
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: var(--text-muted);
+        }
+
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: 2px solid var(--border);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            background: var(--bg-alt);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .figure {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .figure svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .figure-caption {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .figure-caption strong {
+            color: var(--text);
+            font-style: normal;
+        }
+
+        .ref-section {
+            background: var(--bg-alt);
+            padding: 24px 28px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .ref-section h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ref-section p {
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-left: 24px;
+            text-indent: -24px;
+            line-height: 1.55;
+        }
+
+        mjx-container[jax="SVG"][display="true"] {
+            margin: 20px 0 !important;
+            overflow-x: auto;
+        }
+
+        .toc {
+            background: var(--bg-alt);
+            padding: 28px 32px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+        }
+
+        .toc h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            margin-top: 0;
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 16px;
+            padding: 4px 0;
+            color: var(--text-muted);
+        }
+
+        .toc li a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .toc li a:hover {
+            text-decoration: underline;
+        }
+
+        .toc li.sub {
+            padding-left: 24px;
+            font-size: 15px;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 50px 0;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: var(--bg-alt);
+            padding: 15px 20px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-bar a {
+            text-decoration: none;
+            color: var(--text);
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-bar a.active {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        img,
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            padding: 20px 20px 120px;
+        }
+    </style>
+  <!-- Portfolio CSS -->
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+  <link rel="stylesheet" href="../../../visitor-counter.css" />
+
+<body class="text-justify">
+  <!-- Portfolio Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <!-- DNN Series Navigation -->
+  <nav class="nav-bar">
+    <a href="../../index.html#dnn">Home</a>
+    <a href="../post_00004/index.html">Part 0</a>
+    <a href="../post_00005/index.html">Part I</a>
+    <a href="../post_00006/index.html">Part II</a>
+    <a href="../post_00007/index.html">Part III</a>
+    <a href="../post_00008/index.html">Part IV</a>
+    <a href="../post_00009/index.html">Part V</a>
+    <a href="../post_00010/index.html" class="active">Part VI</a>
+  </nav>
+    
+    <div class="container">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" style="margin-bottom:1.5rem; font-size:0.85em; opacity:0.7;">
+    <a href="../../index.html" style="text-decoration:none; color:var(--body-color);">Notebook</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#cs" style="text-decoration:none; color:var(--body-color);">Computer Science</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#dnn" style="text-decoration:none; color:var(--body-color);">Deep Neural Networks</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <span>Part VI: Advanced Topics</span>
+  </nav>
+
+
+        <!-- ==================== HEADER ==================== -->
+        <div class="doc-header">
+            <div class="part-label">Part VI of VI</div>
+            <h1>Advanced Topics and Current Frontiers</h1>
+            <div class="subtitle">The Transformer architecture in full computational detail, recurrent networks,
+                theoretical foundations of batch normalization and residual learning, and the frontiers of efficient
+                deep learning</div>
+        </div>
+
+        <!-- ==================== TOC ==================== -->
+        <div class="toc">
+            <h3>Contents</h3>
+            <ul>
+                <li><a href="#sec22">22. The Transformer Architecture</a></li>
+                <li class="sub"><a href="#sec22-1">22.1 Self-Attention — Full Derivation</a></li>
+                <li class="sub"><a href="#sec22-2">22.2 Multi-Head Attention</a></li>
+                <li class="sub"><a href="#sec22-3">22.3 Position-Wise Feed-Forward Network</a></li>
+                <li class="sub"><a href="#sec22-4">22.4 Positional Encoding</a></li>
+                <li class="sub"><a href="#sec22-5">22.5 Complete Transformer Block — Cost Analysis</a></li>
+                <li class="sub"><a href="#sec22-6">22.6 The Quadratic Attention Problem</a></li>
+                <li class="sub"><a href="#sec22-7">22.7 Efficient Attention Variants</a></li>
+                <li class="sub"><a href="#sec22-8">22.8 KV Cache for Autoregressive Inference</a></li>
+                <li><a href="#sec23">23. Recurrent Neural Networks (RNNs) and LSTMs</a></li>
+                <li class="sub"><a href="#sec23-1">23.1 Vanilla RNN</a></li>
+                <li class="sub"><a href="#sec23-2">23.2 LSTM</a></li>
+                <li class="sub"><a href="#sec23-3">23.3 GRU</a></li>
+                <li class="sub"><a href="#sec23-4">23.4 RNN vs. Transformer Cost Comparison</a></li>
+                <li><a href="#sec24">24. Theoretical Foundations</a></li>
+                <li class="sub"><a href="#sec24-1">24.1 Why Batch Normalization Works</a></li>
+                <li class="sub"><a href="#sec24-2">24.2 Why Residual Connections Work</a></li>
+                <li class="sub"><a href="#sec24-3">24.3 The Lottery Ticket Hypothesis</a></li>
+                <li><a href="#sec25">25. Current Frontiers in Efficient Deep Learning</a></li>
+                <li class="sub"><a href="#sec25-1">25.1 Mixture of Experts (MoE)</a></li>
+                <li class="sub"><a href="#sec25-2">25.2 State Space Models</a></li>
+                <li class="sub"><a href="#sec25-3">25.3 Neural Architecture Search (NAS)</a></li>
+                <li class="sub"><a href="#sec25-4">25.4 Sparsity-Aware Hardware</a></li>
+                <li class="sub"><a href="#sec25-5">25.5 The Efficiency Frontier — Where We Stand</a></li>
+                <li><a href="#sec-refs">Complete References</a></li>
+            </ul>
+        </div>
+
+
+        <!-- ============================================================ -->
+        <!-- SECTION 22: TRANSFORMERS                                      -->
+        <!-- ============================================================ -->
+        <h2 id="sec22"><span class="sec-num">§22</span> The Transformer Architecture</h2>
+
+        <p>
+            The Transformer (Vaswani et al., 2017) has become the dominant architecture in NLP and is increasingly
+            displacing CNNs in vision. Its core innovation — self-attention — allows every position in a sequence to
+            attend to every other position, replacing the sequential computation of RNNs with fully parallel
+            computation. We derive every operation from first principles with complete cost analysis.
+        </p>
+
+        <h3 id="sec22-1">22.1 Self-Attention — Full Derivation</h3>
+
+        <div class="def-box box">
+            <div class="label">Scaled Dot-Product Attention</div>
+            <p>Given an input sequence $\bm{X} \in \R^{n \times d}$ where $n$ is the sequence length and $d$ is the
+                embedding dimension:</p>
+
+            <p><strong>Step 1 — Compute queries, keys, and values:</strong></p>
+            $$\bm{Q} = \bm{X}\bm{W}_Q, \quad \bm{K} = \bm{X}\bm{W}_K, \quad \bm{V} = \bm{X}\bm{W}_V$$
+            <p>where $\bm{W}_Q, \bm{W}_K \in \R^{d \times d_k}$ and $\bm{W}_V \in \R^{d \times d_v}$.</p>
+
+            <p><strong>Step 2 — Compute attention scores:</strong></p>
+            $$\bm{S} = \frac{\bm{Q}\bm{K}\T}{\sqrt{d_k}} \in \R^{n \times n}$$
+
+            <p><strong>Step 3 — Apply softmax (row-wise):</strong></p>
+            $$\bm{A} = \softmax(\bm{S}) \in \R^{n \times n}$$
+
+            <p><strong>Step 4 — Weighted sum of values:</strong></p>
+            $$\text{Attention}(\bm{Q}, \bm{K}, \bm{V}) = \bm{A}\bm{V} \in \R^{n \times d_v}$$
+        </div>
+
+        <div class="figure">
+            <svg viewBox="0 0 800 330" xmlns="http://www.w3.org/2000/svg" style="max-width:770px;">
+                <defs>
+                    <marker id="ar" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                        <polygon points="0 0,7 2.5,0 5" fill="#2c2824" />
+                    </marker>
+                </defs>
+
+                <text x="400" y="22" text-anchor="middle" font-family="Source Sans 3" font-size="15" font-weight="700"
+                    fill="#2c2824">Scaled Dot-Product Attention — Data Flow and Cost</text>
+
+                <!-- Input X -->
+                <rect x="30" y="120" width="70" height="55" rx="5" fill="#e8f0f7" stroke="#1a5276" stroke-width="2" />
+                <text x="65" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="12"
+                    fill="#1a5276">X</text>
+                <text x="65" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#1a5276">(n ×
+                    d)</text>
+
+                <!-- Three projection arrows -->
+                <line x1="100" y1="130" x2="155" y2="70" stroke="#2c2824" stroke-width="1.2" marker-end="url(#ar)" />
+                <line x1="100" y1="148" x2="155" y2="148" stroke="#2c2824" stroke-width="1.2" marker-end="url(#ar)" />
+                <line x1="100" y1="165" x2="155" y2="225" stroke="#2c2824" stroke-width="1.2" marker-end="url(#ar)" />
+
+                <!-- Q, K, V boxes -->
+                <rect x="160" y="45" width="65" height="50" rx="5" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="1.5" />
+                <text x="192" y="67" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700"
+                    fill="#5b2c8e">Q</text>
+                <text x="192" y="85" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5b2c8e">(n ×
+                    d_k)</text>
+
+                <rect x="160" y="123" width="65" height="50" rx="5" fill="#f0e8f7" stroke="#5b2c8e"
+                    stroke-width="1.5" />
+                <text x="192" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700"
+                    fill="#5b2c8e">K</text>
+                <text x="192" y="163" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5b2c8e">(n
+                    × d_k)</text>
+
+                <rect x="160" y="200" width="65" height="50" rx="5" fill="#f0e8f7" stroke="#5b2c8e"
+                    stroke-width="1.5" />
+                <text x="192" y="222" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700"
+                    fill="#5b2c8e">V</text>
+                <text x="192" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5b2c8e">(n
+                    × d_v)</text>
+
+                <!-- QK^T matmul -->
+                <line x1="225" y1="70" x2="280" y2="115" stroke="#2c2824" stroke-width="1.2" marker-end="url(#ar)" />
+                <line x1="225" y1="148" x2="280" y2="130" stroke="#2c2824" stroke-width="1.2" marker-end="url(#ar)" />
+
+                <rect x="285" y="100" width="85" height="55" rx="5" fill="#fdf5e0" stroke="#8b6914"
+                    stroke-width="1.5" />
+                <text x="327" y="120" text-anchor="middle" font-family="JetBrains Mono" font-size="11"
+                    fill="#8b6914">QKᵀ/√d_k</text>
+                <text x="327" y="140" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#8b6914">(n
+                    × n)</text>
+
+                <!-- Softmax -->
+                <line x1="370" y1="128" x2="410" y2="128" stroke="#2c2824" stroke-width="1.2" marker-end="url(#ar)" />
+                <rect x="415" y="100" width="75" height="55" rx="5" fill="#fdf0ea" stroke="#8b2500"
+                    stroke-width="1.5" />
+                <text x="452" y="120" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+                    fill="#8b2500">Softmax</text>
+                <text x="452" y="138" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+                    fill="#8b2500">A</text>
+                <text x="452" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#8b2500">(n
+                    × n)</text>
+
+                <!-- AV matmul -->
+                <line x1="490" y1="128" x2="540" y2="160" stroke="#2c2824" stroke-width="1.2" marker-end="url(#ar)" />
+                <line x1="225" y1="225" x2="540" y2="175" stroke="#2c2824" stroke-width="1" stroke-dasharray="5,3"
+                    marker-end="url(#ar)" />
+
+                <rect x="545" y="140" width="75" height="55" rx="5" fill="#e8f5ec" stroke="#1e6e3e" stroke-width="2" />
+                <text x="582" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700"
+                    fill="#1e6e3e">AV</text>
+                <text x="582" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#1e6e3e">(n
+                    × d_v)</text>
+
+                <!-- Output projection -->
+                <line x1="620" y1="168" x2="660" y2="168" stroke="#2c2824" stroke-width="1.2" marker-end="url(#ar)" />
+                <rect x="665" y="140" width="90" height="55" rx="5" fill="#e8f5ec" stroke="#1e6e3e" stroke-width="2" />
+                <text x="710" y="160" text-anchor="middle" font-family="Source Sans 3" font-size="11" font-weight="700"
+                    fill="#1e6e3e">Output</text>
+                <text x="710" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#1e6e3e">(n
+                    × d)</text>
+
+                <!-- Cost annotations -->
+                <rect x="270" y="255" width="480" height="65" rx="6" fill="#fdf5e0" stroke="#8b6914" stroke-width="1" />
+                <text x="510" y="275" text-anchor="middle" font-family="Source Sans 3" font-size="12" font-weight="700"
+                    fill="#8b6914">Per-Head Cost: Q,K,V projections: 3×2nd·d_k | QKᵀ: 2n²d_k | Softmax: ~5n² | AV:
+                    2n²d_v | Output: 2nd·d_v</text>
+                <text x="510" y="305" text-anchor="middle" font-family="Source Sans 3" font-size="13" font-weight="700"
+                    fill="#8b6914">Total attention: O(n²d) FLOPs + O(n²) memory for attention matrix</text>
+            </svg>
+            <div class="figure-caption"><strong>Figure 22.1.</strong> Scaled dot-product attention data flow. The input
+                $\bm{X}$ is projected into queries, keys, and values. The attention matrix $\bm{A}$ is $n \times n$,
+                creating the quadratic cost in sequence length. The attention-weighted values produce the output.</div>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">Self-Attention — Complete FLOP Breakdown (Single Head)</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Step</th>
+                        <th>Operation</th>
+                        <th>Shape</th>
+                        <th>FLOPs</th>
+                    </tr>
+                    <tr>
+                        <td>1a. Q projection</td>
+                        <td>$\bm{X}\bm{W}_Q$</td>
+                        <td>$(n \times d) \times (d \times d_k)$</td>
+                        <td>$2n d \cdot d_k$</td>
+                    </tr>
+                    <tr>
+                        <td>1b. K projection</td>
+                        <td>$\bm{X}\bm{W}_K$</td>
+                        <td>$(n \times d) \times (d \times d_k)$</td>
+                        <td>$2n d \cdot d_k$</td>
+                    </tr>
+                    <tr>
+                        <td>1c. V projection</td>
+                        <td>$\bm{X}\bm{W}_V$</td>
+                        <td>$(n \times d) \times (d \times d_v)$</td>
+                        <td>$2n d \cdot d_v$</td>
+                    </tr>
+                    <tr>
+                        <td>2. Attention scores</td>
+                        <td>$\bm{Q}\bm{K}\T$</td>
+                        <td>$(n \times d_k) \times (d_k \times n)$</td>
+                        <td>$2n^2 d_k$</td>
+                    </tr>
+                    <tr>
+                        <td>2b. Scale by $1/\sqrt{d_k}$</td>
+                        <td>Element-wise</td>
+                        <td>$n \times n$</td>
+                        <td>$n^2$</td>
+                    </tr>
+                    <tr>
+                        <td>3. Softmax</td>
+                        <td>Row-wise softmax</td>
+                        <td>$n \times n$</td>
+                        <td>$\approx 5n^2$</td>
+                    </tr>
+                    <tr>
+                        <td>4. Weighted values</td>
+                        <td>$\bm{A}\bm{V}$</td>
+                        <td>$(n \times n) \times (n \times d_v)$</td>
+                        <td>$2n^2 d_v$</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <h3 id="sec22-2">22.2 Multi-Head Attention (MHA)</h3>
+
+        <div class="def-box box">
+            <div class="label">Multi-Head Attention</div>
+            <p>Split the $d$-dimensional representation into $h$ heads, each with dimension $d_k = d_v = d/h$:</p>
+            $$\text{MHA}(\bm{X}) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)\bm{W}_O$$
+            $$\text{head}_i = \text{Attention}(\bm{X}\bm{W}_{Q_i}, \bm{X}\bm{W}_{K_i}, \bm{X}\bm{W}_{V_i})$$
+            <p>where $\bm{W}_{Q_i}, \bm{W}_{K_i} \in \R^{d \times d_k}$, $\bm{W}_{V_i} \in \R^{d \times d_v}$, $\bm{W}_O
+                \in \R^{d \times d}$.</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">Multi-Head Attention — Complete Cost (for batch size $B$)</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Parameters</th>
+                        <th>FLOPs (per sample)</th>
+                    </tr>
+                    <tr>
+                        <td>Q, K, V projections (all heads combined)</td>
+                        <td>$3d^2$</td>
+                        <td>$3 \times 2nd^2 = 6nd^2$</td>
+                    </tr>
+                    <tr>
+                        <td>Attention scores (all heads)</td>
+                        <td>0</td>
+                        <td>$h \times 2n^2(d/h) = 2n^2 d$</td>
+                    </tr>
+                    <tr>
+                        <td>Softmax (all heads)</td>
+                        <td>0</td>
+                        <td>$h \times 5n^2 = 5hn^2$</td>
+                    </tr>
+                    <tr>
+                        <td>Value weighting (all heads)</td>
+                        <td>0</td>
+                        <td>$h \times 2n^2(d/h) = 2n^2 d$</td>
+                    </tr>
+                    <tr>
+                        <td>Output projection $\bm{W}_O$</td>
+                        <td>$d^2$</td>
+                        <td>$2nd^2$</td>
+                    </tr>
+                    <tr style="background:#fdf5e0;">
+                        <td><strong>Total MHA</strong></td>
+                        <td>$\mathbf{4d^2}$</td>
+                        <td>$\mathbf{8nd^2 + 4n^2 d + 5hn^2}$</td>
+                    </tr>
+                </table>
+            </div>
+            <p>The dominant terms are the linear projections ($8nd^2$) and the attention computation ($4n^2d$). For
+                short sequences ($n \ll d$), the projections dominate. For long sequences ($n \gg d$), the quadratic
+                attention term dominates.</p>
+            <p><strong>Crossover point:</strong> $8nd^2 = 4n^2d$ → $n = 2d$. For $d = 768$ (BERT-base), the crossover is
+                at $n = 1{,}536$ tokens.</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">Attention Memory — The $n^2$ Problem</div>
+            <p>The attention matrix $\bm{A} \in \R^{B \times h \times n \times n}$ must be stored for backpropagation.
+            </p>
+            $$\text{Attention matrix memory} = B \times h \times n^2 \times \text{bytes\_per\_element}$$
+            <p>For GPT-3 scale: $B=1$, $h=96$, $n=2048$, FP16: $1 \times 96 \times 2048^2 \times 2 = 805$ MB — just for
+                one layer's attention matrix. With 96 layers, this is 75 GB for attention matrices alone.</p>
+        </div>
+
+
+        <h3 id="sec22-3">22.3 Position-Wise Feed-Forward Network (FFN)</h3>
+
+        <div class="def-box box">
+            <div class="label">FFN Block</div>
+            $$\text{FFN}(\bm{x}) = \text{GELU}(\bm{x}\bm{W}_1 + \bm{b}_1)\bm{W}_2 + \bm{b}_2$$
+            <p>where $\bm{W}_1 \in \R^{d \times d_{\text{ff}}}$, $\bm{W}_2 \in \R^{d_{\text{ff}} \times d}$, and
+                typically $d_{\text{ff}} = 4d$.</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">FFN — Computational Cost</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Parameters</th>
+                        <th>FLOPs (per sample)</th>
+                    </tr>
+                    <tr>
+                        <td>$\bm{x}\bm{W}_1 + \bm{b}_1$ (expand)</td>
+                        <td>$d \cdot d_{\text{ff}} + d_{\text{ff}}$</td>
+                        <td>$2n \cdot d \cdot d_{\text{ff}}$</td>
+                    </tr>
+                    <tr>
+                        <td>GELU activation</td>
+                        <td>0</td>
+                        <td>$\approx 14 \cdot n \cdot d_{\text{ff}}$</td>
+                    </tr>
+                    <tr>
+                        <td>$\bm{h}\bm{W}_2 + \bm{b}_2$ (project back)</td>
+                        <td>$d_{\text{ff}} \cdot d + d$</td>
+                        <td>$2n \cdot d_{\text{ff}} \cdot d$</td>
+                    </tr>
+                    <tr style="background:#fdf5e0;">
+                        <td><strong>Total FFN</strong></td>
+                        <td>$\mathbf{2d \cdot d_{\text{ff}} + d_{\text{ff}} + d}$</td>
+                        <td>$\approx \mathbf{4nd \cdot d_{\text{ff}}}$</td>
+                    </tr>
+                </table>
+            </div>
+            <p>With $d_{\text{ff}} = 4d$: <strong>Parameters = $8d^2 + 5d \approx 8d^2$</strong>. <strong>FLOPs =
+                    $16nd^2$</strong>.</p>
+            <p>The FFN has <strong>2× the parameters</strong> and <strong>2× the FLOPs</strong> of MHA (at $8d^2$ vs
+                $4d^2$ params, $16nd^2$ vs $8nd^2$ FLOPs for the linear parts). The FFN is typically the larger
+                component of a Transformer block.</p>
+        </div>
+
+
+        <h3 id="sec22-4">22.4 Positional Encoding</h3>
+
+        <div class="def-box box">
+            <div class="label">Sinusoidal Positional Encoding (Original Transformer)</div>
+            $$\text{PE}(pos, 2i) = \sin\!\left(\frac{pos}{10000^{2i/d}}\right), \quad \text{PE}(pos, 2i+1) =
+            \cos\!\left(\frac{pos}{10000^{2i/d}}\right)$$
+            <p><strong>FLOPs:</strong> $nd$ (computed once, cached). <strong>Parameters:</strong> 0 (deterministic).</p>
+            <p><strong>Learned positional embeddings</strong> (BERT, GPT): lookup table of $n_{\max} \times d$
+                parameters. FLOPs: 0 (just index into table). Memory: $n_{\max} \times d$ floats.</p>
+            <p><strong>Rotary Position Embeddings (RoPE)</strong> (Su et al., 2021): applied multiplicatively to Q and K
+                in each attention head. Cost: $\approx 6nd$ FLOPs per layer (small relative to attention).</p>
+        </div>
+
+
+        <h3 id="sec22-5">22.5 Complete Transformer Block — Total Cost</h3>
+
+        <div class="compute-box box">
+            <div class="label">One Transformer Block (Pre-Norm Variant)</div>
+            <p>LayerNorm → MHA → Residual → LayerNorm → FFN → Residual</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Parameters</th>
+                        <th>FLOPs (per sample)</th>
+                    </tr>
+                    <tr>
+                        <td>LayerNorm 1</td>
+                        <td>$2d$</td>
+                        <td>$\approx 7nd$</td>
+                    </tr>
+                    <tr>
+                        <td>Multi-Head Attention</td>
+                        <td>$4d^2$</td>
+                        <td>$8nd^2 + 4n^2d$</td>
+                    </tr>
+                    <tr>
+                        <td>Residual add</td>
+                        <td>0</td>
+                        <td>$nd$</td>
+                    </tr>
+                    <tr>
+                        <td>LayerNorm 2</td>
+                        <td>$2d$</td>
+                        <td>$\approx 7nd$</td>
+                    </tr>
+                    <tr>
+                        <td>FFN (with $d_{\text{ff}} = 4d$)</td>
+                        <td>$8d^2 + 5d$</td>
+                        <td>$\approx 16nd^2$</td>
+                    </tr>
+                    <tr>
+                        <td>Residual add</td>
+                        <td>0</td>
+                        <td>$nd$</td>
+                    </tr>
+                    <tr style="background:#fdf5e0;">
+                        <td><strong>Total per block</strong></td>
+                        <td>$\approx \mathbf{12d^2}$</td>
+                        <td>$\approx \mathbf{24nd^2 + 4n^2d}$</td>
+                    </tr>
+                </table>
+            </div>
+            <p>For an $L$-layer Transformer:</p>
+            $$\text{Total params} \approx 12Ld^2 + V \cdot d \quad \text{(+ embedding layer of size $V \times d$)}$$
+            $$\text{Total FLOPs per sample} \approx L(24nd^2 + 4n^2d)$$
+        </div>
+
+        <div class="example-box box">
+            <div class="label">Worked Example — GPT-2 Scale Models</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Model</th>
+                        <th>$L$</th>
+                        <th>$d$</th>
+                        <th>$h$</th>
+                        <th>$d_{\text{ff}}$</th>
+                        <th>Params</th>
+                        <th>FLOPs/token</th>
+                    </tr>
+                    <tr>
+                        <td>GPT-2 Small</td>
+                        <td>12</td>
+                        <td>768</td>
+                        <td>12</td>
+                        <td>3072</td>
+                        <td>117M</td>
+                        <td>~235M</td>
+                    </tr>
+                    <tr>
+                        <td>GPT-2 Medium</td>
+                        <td>24</td>
+                        <td>1024</td>
+                        <td>16</td>
+                        <td>4096</td>
+                        <td>345M</td>
+                        <td>~690M</td>
+                    </tr>
+                    <tr>
+                        <td>GPT-2 Large</td>
+                        <td>36</td>
+                        <td>1280</td>
+                        <td>20</td>
+                        <td>5120</td>
+                        <td>774M</td>
+                        <td>~1.55G</td>
+                    </tr>
+                    <tr>
+                        <td>GPT-2 XL</td>
+                        <td>48</td>
+                        <td>1600</td>
+                        <td>25</td>
+                        <td>6400</td>
+                        <td>1.56B</td>
+                        <td>~3.1G</td>
+                    </tr>
+                </table>
+            </div>
+            <p>Approximate formula: FLOPs per token $\approx 2P$ (where $P$ = parameter count). This is because for a
+                forward pass through a dense layer with $P$ parameters, there are $\approx 2P$ FLOPs. This "$2P$ per
+                token" rule is widely used for quick estimates of Transformer training costs.</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">Transformer Training Cost — The $6PD$ Formula</div>
+            <p>For training a Transformer with $P$ parameters on $D$ tokens:</p>
+            $$C \approx 6PD \text{ FLOPs}$$
+            <p>This comes from: forward pass ≈ $2P$ FLOPs/token × backward pass multiplier of 3:</p>
+            $$C = 3 \times 2P \times D = 6PD$$
+            <p>For GPT-3 (175B params, 300B tokens): $C \approx 6 \times 175 \times 10^9 \times 300 \times 10^9 = 3.15
+                \times 10^{23}$ FLOPs ≈ 315 zetaFLOPs.</p>
+        </div>
+
+
+        <h3 id="sec22-6">22.6 The Quadratic Attention Problem</h3>
+
+        <div class="warning-box box">
+            <div class="label">The $O(n^2)$ Wall</div>
+            <p>Self-attention's cost has two components: $O(nd^2)$ for projections and $O(n^2d)$ for the attention
+                matrix. The quadratic term creates severe scaling issues:</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Sequence Length $n$</th>
+                        <th>Attention FLOPs ($4n^2d$, $d$=1024)</th>
+                        <th>Attention Memory ($hn^2$, $h$=16, FP16)</th>
+                    </tr>
+                    <tr>
+                        <td>512</td>
+                        <td>1.07G</td>
+                        <td>8 MB</td>
+                    </tr>
+                    <tr>
+                        <td>2,048</td>
+                        <td>17.2G</td>
+                        <td>128 MB</td>
+                    </tr>
+                    <tr>
+                        <td>8,192</td>
+                        <td>275G</td>
+                        <td>2 GB</td>
+                    </tr>
+                    <tr>
+                        <td>32,768</td>
+                        <td>4.4T</td>
+                        <td>32 GB</td>
+                    </tr>
+                    <tr>
+                        <td>131,072</td>
+                        <td>70T</td>
+                        <td>512 GB</td>
+                    </tr>
+                </table>
+            </div>
+            <p>Going from 512 to 131K tokens: <strong>65,536× more attention FLOPs and memory</strong>. This is why
+                long-context modeling is the central computational challenge of modern Transformer research.</p>
+        </div>
+
+
+        <h3 id="sec22-7">22.7 Efficient Attention Variants</h3>
+
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Complexity</th>
+                    <th>Key Idea</th>
+                    <th>Trade-off</th>
+                </tr>
+                <tr>
+                    <td><strong>FlashAttention</strong> (Dao et al., 2022)</td>
+                    <td>$O(n^2d)$ FLOPs, $O(n)$ memory</td>
+                    <td>Tiling to avoid materializing $n \times n$ matrix; fused kernel</td>
+                    <td>Exact (no approximation), 2–4× speedup</td>
+                </tr>
+                <tr>
+                    <td><strong>Multi-Query Attention</strong> (Shazeer, 2019)</td>
+                    <td>$O(n^2d/h)$ for KV</td>
+                    <td>Share K, V across all heads; only Q differs</td>
+                    <td>Minor accuracy loss; major KV cache reduction</td>
+                </tr>
+                <tr>
+                    <td><strong>Grouped-Query Attention</strong> (Ainslie et al., 2023)</td>
+                    <td>Between MHA and MQA</td>
+                    <td>$G$ groups of heads share KV ($1 < G < h$)</td>
+                    <td>Interpolates MHA/MQA quality-efficiency</td>
+                </tr>
+                <tr>
+                    <td><strong>Linear Attention</strong> (Katharopoulos et al., 2020)</td>
+                    <td>$O(nd^2)$</td>
+                    <td>Replace softmax with kernel trick: $\phi(\bm{Q})\phi(\bm{K})\T\bm{V}$</td>
+                    <td>Avoids $n^2$, but quality gap</td>
+                </tr>
+                <tr>
+                    <td><strong>Sparse Attention</strong> (Child et al., 2019)</td>
+                    <td>$O(n\sqrt{n})$</td>
+                    <td>Attend only to fixed sparse patterns</td>
+                    <td>Misses some long-range interactions</td>
+                </tr>
+                <tr>
+                    <td><strong>Sliding Window</strong> (Beltagy et al., 2020)</td>
+                    <td>$O(nw)$, $w$ = window size</td>
+                    <td>Local attention within window $w$</td>
+                    <td>Limited global context</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="insight-box box">
+            <div class="label">FlashAttention — Why It Matters</div>
+            <p>FlashAttention (Dao et al., 2022) does not reduce the FLOP count — it computes exact standard attention.
+                Its innovation is <strong>IO-aware</strong>: it tiles the computation to fit within GPU SRAM (on-chip
+                memory), avoiding writing the full $n \times n$ attention matrix to HBM (slow off-chip memory). Result:
+            </p>
+            <p><strong>Memory:</strong> $O(n^2) \to O(n)$ (never materializes full attention matrix)</p>
+            <p><strong>Speed:</strong> 2–4× faster (fewer HBM reads/writes)</p>
+            <p><strong>Accuracy:</strong> Bit-identical to standard attention</p>
+            <p>FlashAttention is now the default attention implementation in most frameworks.</p>
+        </div>
+
+
+        <h3 id="sec22-8">22.8 KV Cache for Autoregressive Inference</h3>
+
+        <div class="def-box box">
+            <div class="label">KV Cache</div>
+            <p>In autoregressive generation (GPT-style), each new token attends to all previous tokens. Without caching,
+                generating token $t$ requires recomputing all $t$ K and V projections — total cost $O(t^2)$ per token,
+                or $O(n^3)$ for the full sequence.</p>
+            <p>With KV cache: store the K and V matrices from all previous tokens. Generating token $t$ requires only:
+            </p>
+            <p>(1) Computing $\bm{q}_t, \bm{k}_t, \bm{v}_t$ for the new token: $O(d^2)$</p>
+            <p>(2) Appending $\bm{k}_t, \bm{v}_t$ to the cache: $O(d)$</p>
+            <p>(3) Computing attention: $\bm{q}_t\T \bm{K}_{\text{cache}}$: $O(td)$</p>
+            <p><strong>Total per token: $O(d^2 + td)$</strong> instead of $O(td^2 + t^2d)$</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">KV Cache Memory</div>
+            $$\text{KV cache} = 2 \times L \times n \times d \times \text{bytes\_per\_element}$$
+            <p>The factor of 2 is for both K and V. Per layer, per token: $2d$ values.</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Model</th>
+                        <th>$L$</th>
+                        <th>$d$</th>
+                        <th>KV cache per token (FP16)</th>
+                        <th>KV cache for 2K tokens</th>
+                    </tr>
+                    <tr>
+                        <td>GPT-2 Small</td>
+                        <td>12</td>
+                        <td>768</td>
+                        <td>36.9 KB</td>
+                        <td>72 MB</td>
+                    </tr>
+                    <tr>
+                        <td>LLaMA 7B</td>
+                        <td>32</td>
+                        <td>4096</td>
+                        <td>524 KB</td>
+                        <td>1.0 GB</td>
+                    </tr>
+                    <tr>
+                        <td>LLaMA 70B</td>
+                        <td>80</td>
+                        <td>8192</td>
+                        <td>2.6 MB</td>
+                        <td>5.1 GB</td>
+                    </tr>
+                    <tr>
+                        <td>GPT-3 175B</td>
+                        <td>96</td>
+                        <td>12288</td>
+                        <td>4.7 MB</td>
+                        <td>9.2 GB</td>
+                    </tr>
+                </table>
+            </div>
+            <p>For large models serving many users simultaneously, the KV cache can consume more GPU memory than the
+                model weights themselves. This is the primary motivation for Multi-Query Attention and Grouped-Query
+                Attention, which reduce KV cache by $h\times$ and $h/G\times$ respectively.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §22</h4>
+            <p>[1] Vaswani, A. et al. (2017). Attention Is All You Need. <em>NeurIPS 2017</em>.</p>
+            <p>[2] Dao, T. et al. (2022). FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness.
+                <em>NeurIPS 2022</em>.</p>
+            <p>[3] Shazeer, N. (2019). Fast Transformer Decoding: One Write-Head is All You Need.
+                <em>arXiv:1911.02150</em>.</p>
+            <p>[4] Ainslie, J. et al. (2023). GQA: Training Generalized Multi-Query Transformer Models from Multi-Head
+                Checkpoints. <em>EMNLP 2023</em>.</p>
+            <p>[5] Su, J. et al. (2021). RoFormer: Enhanced Transformer with Rotary Position Embedding.
+                <em>arXiv:2104.09864</em>.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 23: RNNs and LSTMs                                    -->
+        <!-- ============================================================ -->
+        <h2 id="sec23"><span class="sec-num">§23</span> Recurrent Neural Networks and LSTMs</h2>
+
+        <h3 id="sec23-1">23.1 Vanilla RNN</h3>
+
+        <div class="def-box box">
+            <div class="label">RNN Cell</div>
+            $$\bm{h}_t = \tanh(\bm{W}_{hh}\bm{h}_{t-1} + \bm{W}_{xh}\bm{x}_t + \bm{b}_h)$$
+            $$\bm{y}_t = \bm{W}_{hy}\bm{h}_t + \bm{b}_y$$
+            <p>where $\bm{h}_t \in \R^d$ is the hidden state, $\bm{x}_t \in \R^m$ is the input, $d$ is the hidden size.
+            </p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">RNN — Cost per Time Step</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Parameters</th>
+                        <th>FLOPs per step</th>
+                    </tr>
+                    <tr>
+                        <td>$\bm{W}_{hh}\bm{h}_{t-1}$</td>
+                        <td>$d^2$</td>
+                        <td>$2d^2$</td>
+                    </tr>
+                    <tr>
+                        <td>$\bm{W}_{xh}\bm{x}_t$</td>
+                        <td>$md$</td>
+                        <td>$2md$</td>
+                    </tr>
+                    <tr>
+                        <td>Addition + tanh</td>
+                        <td>0</td>
+                        <td>$\approx 7d$</td>
+                    </tr>
+                    <tr style="background:#fdf5e0;">
+                        <td><strong>Total (per step, excl. output)</strong></td>
+                        <td>$d^2 + md$</td>
+                        <td>$\approx 2d(d+m)$</td>
+                    </tr>
+                    <tr>
+                        <td>Full sequence ($n$ steps)</td>
+                        <td>$d^2 + md$ (shared!)</td>
+                        <td>$2nd(d+m)$</td>
+                    </tr>
+                </table>
+            </div>
+            <p><strong>Key property:</strong> FLOPs scale as $O(nd^2)$ — <strong>linear in sequence length</strong>,
+                unlike the Transformer's $O(n^2d)$ attention term. However, RNN steps are <strong>sequential</strong> —
+                step $t$ depends on step $t-1$ — preventing parallelization.</p>
+        </div>
+
+
+        <h3 id="sec23-2">23.2 LSTM (Long Short-Term Memory)</h3>
+
+        <div class="def-box box">
+            <div class="label">LSTM Cell — Full Equations</div>
+            <p><strong>Forget gate:</strong> $\bm{f}_t = \sigma(\bm{W}_f[\bm{h}_{t-1}, \bm{x}_t] + \bm{b}_f)$</p>
+            <p><strong>Input gate:</strong> $\bm{i}_t = \sigma(\bm{W}_i[\bm{h}_{t-1}, \bm{x}_t] + \bm{b}_i)$</p>
+            <p><strong>Candidate cell:</strong> $\tilde{\bm{c}}_t = \tanh(\bm{W}_c[\bm{h}_{t-1}, \bm{x}_t] + \bm{b}_c)$
+            </p>
+            <p><strong>Cell update:</strong> $\bm{c}_t = \bm{f}_t \odot \bm{c}_{t-1} + \bm{i}_t \odot \tilde{\bm{c}}_t$
+            </p>
+            <p><strong>Output gate:</strong> $\bm{o}_t = \sigma(\bm{W}_o[\bm{h}_{t-1}, \bm{x}_t] + \bm{b}_o)$</p>
+            <p><strong>Hidden state:</strong> $\bm{h}_t = \bm{o}_t \odot \tanh(\bm{c}_t)$</p>
+        </div>
+
+        <div class="compute-box box">
+            <div class="label">LSTM — Complete Cost per Time Step</div>
+            <p>All four gates share the same structure: matrix multiply $[\bm{h}_{t-1}, \bm{x}_t]$ (size $d+m$) by a
+                weight matrix (size $(d+m) \times d$), plus bias, plus activation. In practice, these are combined into
+                one large matrix multiply:</p>
+            $$[\bm{f}_t; \bm{i}_t; \tilde{\bm{c}}_t; \bm{o}_t] = \bm{W}_{4d} \cdot [\bm{h}_{t-1}; \bm{x}_t] +
+            \bm{b}_{4d}$$
+            <p>where $\bm{W}_{4d} \in \R^{4d \times (d+m)}$.</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Parameters</th>
+                        <th>FLOPs per step</th>
+                    </tr>
+                    <tr>
+                        <td>Combined gate matmul</td>
+                        <td>$4d(d+m) + 4d$</td>
+                        <td>$8d(d+m)$</td>
+                    </tr>
+                    <tr>
+                        <td>3 sigmoids + 1 tanh</td>
+                        <td>0</td>
+                        <td>$\approx 18d$</td>
+                    </tr>
+                    <tr>
+                        <td>Cell update ($f \odot c + i \odot \tilde{c}$)</td>
+                        <td>0</td>
+                        <td>$3d$ (2 elem-wise mults + 1 add)</td>
+                    </tr>
+                    <tr>
+                        <td>Output ($o \odot \tanh(c)$)</td>
+                        <td>0</td>
+                        <td>$\approx 7d$ (tanh + elem-wise mult)</td>
+                    </tr>
+                    <tr style="background:#fdf5e0;">
+                        <td><strong>Total LSTM per step</strong></td>
+                        <td>$\approx 4d(d+m)$</td>
+                        <td>$\approx \mathbf{8d(d+m)}$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ratio vs. vanilla RNN</strong></td>
+                        <td>$4\times$</td>
+                        <td>$4\times$</td>
+                    </tr>
+                </table>
+            </div>
+            <p>An LSTM is exactly <strong>4× the cost</strong> of a vanilla RNN per step, because it computes 4 gates
+                instead of 1 hidden state transformation.</p>
+        </div>
+
+
+        <h3 id="sec23-3">23.3 GRU (Gated Recurrent Unit)</h3>
+
+        <div class="def-box box">
+            <div class="label">GRU Cell</div>
+            <p><strong>Reset gate:</strong> $\bm{r}_t = \sigma(\bm{W}_r[\bm{h}_{t-1}, \bm{x}_t])$</p>
+            <p><strong>Update gate:</strong> $\bm{z}_t = \sigma(\bm{W}_z[\bm{h}_{t-1}, \bm{x}_t])$</p>
+            <p><strong>Candidate:</strong> $\tilde{\bm{h}}_t = \tanh(\bm{W}[\bm{r}_t \odot \bm{h}_{t-1}, \bm{x}_t])$</p>
+            <p><strong>Output:</strong> $\bm{h}_t = (1-\bm{z}_t) \odot \bm{h}_{t-1} + \bm{z}_t \odot \tilde{\bm{h}}_t$
+            </p>
+            <p><strong>Parameters:</strong> $3d(d+m)$ — <strong>$3\times$ vanilla RNN, $\frac{3}{4}\times$ LSTM</strong>
+            </p>
+            <p><strong>FLOPs per step:</strong> $\approx 6d(d+m)$ — <strong>$\frac{3}{4}\times$ LSTM</strong></p>
+        </div>
+
+
+        <h3 id="sec23-4">23.4 RNN vs. Transformer — Cost Comparison</h3>
+
+        <div class="compute-box box">
+            <div class="label">Architecture Comparison for Sequence of Length $n$</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>RNN/LSTM</th>
+                        <th>Transformer</th>
+                    </tr>
+                    <tr>
+                        <td>FLOPs (per layer, sequence)</td>
+                        <td>$O(nd^2)$</td>
+                        <td>$O(n^2d + nd^2)$</td>
+                    </tr>
+                    <tr>
+                        <td>Parallelism (training)</td>
+                        <td><strong>Sequential</strong> ($n$ serial steps)</td>
+                        <td><strong>Fully parallel</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Parallelism (inference)</td>
+                        <td>Sequential</td>
+                        <td>Parallel (but KV cache)</td>
+                    </tr>
+                    <tr>
+                        <td>Long-range dependencies</td>
+                        <td>$O(n)$ steps for signal to propagate</td>
+                        <td>$O(1)$ — direct attention</td>
+                    </tr>
+                    <tr>
+                        <td>Memory (training, per layer)</td>
+                        <td>$O(nd)$ (store hidden states)</td>
+                        <td>$O(n^2 + nd)$ (attention matrix)</td>
+                    </tr>
+                    <tr>
+                        <td>Memory (inference)</td>
+                        <td>$O(d)$ (just current hidden state)</td>
+                        <td>$O(nLd)$ (KV cache)</td>
+                    </tr>
+                    <tr>
+                        <td>Parameter sharing</td>
+                        <td>Same params every step</td>
+                        <td>Same params every position</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="insight-box box">
+            <div class="label">Why Transformers Won</div>
+            <p>Despite RNNs having <strong>lower FLOPs per sequence</strong> (linear vs quadratic in $n$), Transformers
+                dominate because:</p>
+            <p>(1) <strong>Parallelism:</strong> The entire sequence is processed simultaneously during training, fully
+                utilizing GPU parallelism. RNN training requires $n$ sequential steps, leaving most GPU cores idle.</p>
+            <p>(2) <strong>Gradient flow:</strong> Attention provides a direct path for gradients across any distance
+                (like a "skip connection in time"), avoiding the vanishing/exploding gradient problem that plagues RNNs
+                even with LSTM/GRU.</p>
+            <p>(3) <strong>Scaling:</strong> Transformer performance scales predictably with model size and data
+                (scaling laws), while RNN performance saturates earlier.</p>
+            <p>The key trade-off: Transformers trade <strong>more FLOPs</strong> for <strong>better parallelism and
+                    gradient flow</strong>, which on modern GPU hardware results in faster wall-clock training time
+                despite higher FLOP count.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §23</h4>
+            <p>[6] Hochreiter, S. & Schmidhuber, J. (1997). Long Short-Term Memory. <em>Neural Computation</em>, 9(8),
+                1735–1780.</p>
+            <p>[7] Cho, K. et al. (2014). Learning Phrase Representations using RNN Encoder-Decoder for Statistical
+                Machine Translation. <em>EMNLP 2014</em>.</p>
+            <p>[8] Elman, J. L. (1990). Finding Structure in Time. <em>Cognitive Science</em>, 14(2), 179–211.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 24: THEORETICAL FOUNDATIONS                            -->
+        <!-- ============================================================ -->
+        <h2 id="sec24"><span class="sec-num">§24</span> Theoretical Foundations</h2>
+
+        <h3 id="sec24-1">24.1 Why Batch Normalization Works</h3>
+
+        <p>
+            The original BatchNorm paper (Ioffe & Szegedy, 2015) proposed that BN works by reducing "internal covariate
+            shift" — the change in the distribution of layer inputs as previous layers' parameters change. However,
+            Santurkar et al. (2018) showed this explanation is incomplete.
+        </p>
+
+        <div class="theorem-box box">
+            <div class="label">The Smoothness Explanation (Santurkar et al., 2018)</div>
+            <p>BatchNorm makes the loss landscape significantly smoother. Specifically, for a network with BatchNorm:
+            </p>
+            $$\|\nabla L(\bm{\theta}_1) - \nabla L(\bm{\theta}_2)\| \leq \beta \|\bm{\theta}_1 - \bm{\theta}_2\|$$
+            <p>The Lipschitz constant $\beta$ of the gradient (the "smoothness") is much smaller with BN than without.
+                This means:</p>
+            <p>(1) The gradient changes more predictably, so gradient descent steps are more reliable.</p>
+            <p>(2) Larger learning rates can be used without overshooting.</p>
+            <p>(3) Fewer iterations are needed to converge.</p>
+            <p><strong>Computational implication:</strong> BN's per-step cost is ~2% overhead, but it reduces training
+                iterations by 2–5× (enabling 5–10× larger learning rates). The net effect is a <strong>substantial
+                    reduction in total training FLOPs</strong>.</p>
+        </div>
+
+
+        <h3 id="sec24-2">24.2 Why Residual Connections Work</h3>
+
+        <div class="theorem-box box">
+            <div class="label">Gradient Highway Interpretation</div>
+            <p>For a residual block $\bm{y} = F(\bm{x}) + \bm{x}$, the gradient of the loss w.r.t. any early layer $l$
+                can be written as:</p>
+            $$\pd{L}{\bm{x}_l} = \pd{L}{\bm{x}_L} \prod_{k=l}^{L-1}\left(\bm{I} + \pd{F_k}{\bm{x}_k}\right)$$
+            <p>Expanding the product, every term contains $\bm{I}$ (the identity), which provides a <strong>direct
+                    additive path</strong> for gradients from loss to any layer. Even if all the $\pd{F_k}{\bm{x}_k}$
+                terms are small (vanishing), the gradient through the skip connections is exactly $\pd{L}{\bm{x}_L}$ —
+                it does not decay.</p>
+            <p>Without residual connections: $\pd{L}{\bm{x}_l} = \pd{L}{\bm{x}_L}\prod_{k=l}^{L-1}\pd{F_k}{\bm{x}_k}$,
+                which vanishes or explodes exponentially with depth.</p>
+        </div>
+
+        <div class="theorem-box box">
+            <div class="label">Ensemble Interpretation (Veit et al., 2016)</div>
+            <p>An $L$-layer residual network can be viewed as an ensemble of $2^L$ paths of different lengths (each
+                block can be either "on" or bypassed via the skip connection). Veit et al. showed empirically that:</p>
+            <p>(1) Residual networks primarily use paths of moderate length (~$\sqrt{L}$).</p>
+            <p>(2) Deleting individual residual blocks has minimal impact (unlike deleting layers in plain networks).
+            </p>
+            <p>(3) The ensemble interpretation explains the smooth loss landscape and good generalization of ResNets.
+            </p>
+        </div>
+
+
+        <h3 id="sec24-3">24.3 The Lottery Ticket Hypothesis</h3>
+
+        <div class="theorem-box box">
+            <div class="label">The Lottery Ticket Hypothesis (Frankle & Carlin, 2019)</div>
+            <p>A randomly initialized dense network contains a subnetwork ("winning ticket") that, when trained in
+                isolation with the <em>same initialization</em>, matches the full network's accuracy in at most the same
+                number of training iterations.</p>
+            <p><strong>Computational implications:</strong></p>
+            <p>(1) Dense networks are significantly over-parameterized — they contain sparse subnetworks that are
+                sufficient.</p>
+            <p>(2) Finding the winning ticket currently requires training the full network first, then pruning — so it
+                doesn't save training FLOPs (yet).</p>
+            <p>(3) It provides theoretical justification for post-training pruning achieving high compression with
+                minimal accuracy loss.</p>
+            <p>(4) If we could identify winning tickets <em>before training</em>, we could train sparse networks from
+                scratch — reducing training FLOPs proportionally to the sparsity ratio.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §24</h4>
+            <p>[9] Santurkar, S. et al. (2018). How Does Batch Normalization Help Optimization? <em>NeurIPS 2018</em>.
+            </p>
+            <p>[10] Veit, A., Wilber, M. J., & Belongie, S. (2016). Residual Networks Behave Like Ensembles of
+                Relatively Shallow Networks. <em>NeurIPS 2016</em>.</p>
+            <p>[11] Frankle, J. & Carlin, M. (2019). The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural
+                Networks. <em>ICLR 2019</em>.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 25: CURRENT FRONTIERS                                 -->
+        <!-- ============================================================ -->
+        <h2 id="sec25"><span class="sec-num">§25</span> Current Frontiers in Efficient Deep Learning</h2>
+
+        <h3 id="sec25-1">25.1 Mixture of Experts (MoE)</h3>
+
+        <div class="frontier-box box">
+            <div class="label">Mixture of Experts</div>
+            <p>MoE replaces the dense FFN in each Transformer layer with $E$ "expert" FFNs, of which only $K \ll E$ are
+                activated for each token. A learned gating network $G(\bm{x})$ selects which experts to activate.</p>
+            $$\text{MoE}(\bm{x}) = \sum_{i=1}^{K} g_i(\bm{x}) \cdot \text{Expert}_i(\bm{x})$$
+            <p>where $g_i$ are the top-$K$ gate values (from softmax over all $E$ experts).</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Dense Transformer</th>
+                        <th>MoE Transformer</th>
+                    </tr>
+                    <tr>
+                        <td>Total parameters</td>
+                        <td>$P$</td>
+                        <td>$\sim EP/2$ (experts have most params)</td>
+                    </tr>
+                    <tr>
+                        <td>Active parameters per token</td>
+                        <td>$P$</td>
+                        <td>$\sim P \cdot K/E$ (only $K$ experts active)</td>
+                    </tr>
+                    <tr>
+                        <td>FLOPs per token</td>
+                        <td>$2P$</td>
+                        <td>$\sim 2P \cdot K/E + \text{gating cost}$</td>
+                    </tr>
+                    <tr>
+                        <td>Memory (inference)</td>
+                        <td>$\sim P$ (all params in memory)</td>
+                        <td>$\sim EP/2$ (all experts must be loaded)</td>
+                    </tr>
+                </table>
+            </div>
+            <p><strong>Key insight:</strong> MoE allows scaling model <em>capacity</em> (total parameters) without
+                proportionally scaling <em>compute</em> (FLOPs per token). For example, Switch Transformer (Fedus et
+                al., 2022) uses $E=128$ experts with $K=1$, achieving GPT-3-level quality with a fraction of GPT-3's
+                per-token FLOPs.</p>
+            <p><strong>Challenge:</strong> All expert weights must reside in memory, so MoE models require more GPU
+                memory than their FLOP count would suggest. Communication overhead in distributed settings is also
+                significant.</p>
+        </div>
+
+
+        <h3 id="sec25-2">25.2 State Space Models (SSMs)</h3>
+
+        <div class="frontier-box box">
+            <div class="label">State Space Models — Mamba (Gu & Dao, 2023)</div>
+            <p>SSMs are a class of sequence models based on linear recurrences that can be computed as convolutions
+                during training (parallelizable) or as recurrences during inference (constant memory per step). The
+                Mamba architecture adds <strong>selective gating</strong> (input-dependent state transitions), achieving
+                Transformer-competitive performance.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Transformer</th>
+                        <th>Mamba (SSM)</th>
+                    </tr>
+                    <tr>
+                        <td>Training FLOPs/token</td>
+                        <td>$O(n \cdot d^2)$ (dominates) + $O(n^2 d)$</td>
+                        <td>$O(nd^2)$ (no quadratic term)</td>
+                    </tr>
+                    <tr>
+                        <td>Training parallelism</td>
+                        <td>Full</td>
+                        <td>Full (via conv form)</td>
+                    </tr>
+                    <tr>
+                        <td>Inference memory</td>
+                        <td>$O(nLd)$ (KV cache)</td>
+                        <td>$O(Ld)$ (hidden state only)</td>
+                    </tr>
+                    <tr>
+                        <td>Inference FLOPs/token</td>
+                        <td>$O(d^2 + nd)$ per layer</td>
+                        <td>$O(d^2)$ per layer (no sequence dependency)</td>
+                    </tr>
+                    <tr>
+                        <td>Long-range dependencies</td>
+                        <td>Direct ($O(1)$ via attention)</td>
+                        <td>Indirect (compressed in state)</td>
+                    </tr>
+                </table>
+            </div>
+            <p>SSMs offer <strong>linear scaling with sequence length</strong> during both training and inference,
+                making them particularly attractive for very long sequences (100K+ tokens). The trade-off is that
+                long-range information must be compressed into the fixed-size state $\bm{h}_t \in
+                \R^{d_{\text{state}}}$, whereas attention can directly access any past token.</p>
+        </div>
+
+
+        <h3 id="sec25-3">25.3 Neural Architecture Search (NAS)</h3>
+
+        <div class="frontier-box box">
+            <div class="label">NAS for Efficiency</div>
+            <p>NAS automates the design of neural architectures by searching over a design space. For efficiency-focused
+                NAS, the search objective explicitly includes a cost term:</p>
+            $$\text{Objective} = \text{Accuracy} \times \left(\frac{\text{FLOPs}}{T}\right)^{-w}$$
+            <p>where $T$ is the target FLOP budget and $w$ controls the trade-off. Prominent results:</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Architecture</th>
+                        <th>Search Method</th>
+                        <th>Search Cost</th>
+                        <th>Result</th>
+                    </tr>
+                    <tr>
+                        <td>NASNet (Zoph et al., 2018)</td>
+                        <td>RL-based</td>
+                        <td>~450 GPU-days</td>
+                        <td>Better accuracy-FLOP than manual</td>
+                    </tr>
+                    <tr>
+                        <td>EfficientNet-B0 (Tan & Le, 2019)</td>
+                        <td>RL-based</td>
+                        <td>~1 GPU-day (efficient search)</td>
+                        <td>77.1% top-1 at 390M FLOPs</td>
+                    </tr>
+                    <tr>
+                        <td>DARTS (Liu et al., 2019)</td>
+                        <td>Gradient-based (differentiable)</td>
+                        <td>~1 GPU-day</td>
+                        <td>Competitive with RL-based</td>
+                    </tr>
+                </table>
+            </div>
+            <p>NAS has found architectures that dominate manually designed ones on the accuracy-efficiency Pareto
+                frontier. The search cost has decreased from thousands of GPU-days to approximately 1 GPU-day.</p>
+        </div>
+
+
+        <h3 id="sec25-4">25.4 Sparsity-Aware Hardware</h3>
+
+        <div class="hw-box box">
+            <div class="label">Hardware Support for Sparsity</div>
+            <p>The gap between theoretical sparsity benefits and actual speedup is closing as hardware evolves:</p>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Hardware</th>
+                        <th>Sparsity Support</th>
+                        <th>Effective Speedup</th>
+                    </tr>
+                    <tr>
+                        <td>NVIDIA A100 (Ampere)</td>
+                        <td>2:4 structured sparsity (50%)</td>
+                        <td>2× on sparse tensor cores</td>
+                    </tr>
+                    <tr>
+                        <td>NVIDIA H100 (Hopper)</td>
+                        <td>2:4 + improved scheduling</td>
+                        <td>2× + better utilization</td>
+                    </tr>
+                    <tr>
+                        <td>Cerebras CS-2</td>
+                        <td>Unstructured sparsity natively</td>
+                        <td>Near-linear with sparsity</td>
+                    </tr>
+                    <tr>
+                        <td>GraphCore IPU</td>
+                        <td>Block sparsity support</td>
+                        <td>Good for sparse workloads</td>
+                    </tr>
+                </table>
+            </div>
+            <p>The 2:4 sparsity pattern (exactly 2 zeros per 4-element block) is particularly interesting: it provides
+                guaranteed 2× speedup with hardware support, and neural networks can be trained to this pattern with
+                minimal accuracy loss (~0.5%). This represents a clean, practical middle ground between dense
+                computation and the unrealized promise of arbitrary unstructured sparsity.</p>
+        </div>
+
+
+        <h3 id="sec25-5">25.5 The Efficiency Frontier — Where We Stand</h3>
+
+        <div class="insight-box box">
+            <div class="label">Summary of Efficiency Techniques by Impact</div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Technique</th>
+                        <th>FLOPs Reduction</th>
+                        <th>Memory Reduction</th>
+                        <th>Maturity</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Mixed Precision (FP16/BF16)</strong></td>
+                        <td>~0% (faster throughput)</td>
+                        <td>~50% activations</td>
+                        <td>Standard practice</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Efficient architectures (DW-Sep, bottleneck)</strong></td>
+                        <td>3–10×</td>
+                        <td>Proportional</td>
+                        <td>Standard practice</td>
+                    </tr>
+                    <tr>
+                        <td><strong>INT8 Quantization (inference)</strong></td>
+                        <td>2–4× throughput</td>
+                        <td>75%</td>
+                        <td>Standard practice</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gradient checkpointing</strong></td>
+                        <td>+33% (more FLOPs)</td>
+                        <td>$O(L) \to O(\sqrt{L})$</td>
+                        <td>Standard practice</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Knowledge distillation</strong></td>
+                        <td>3–10× (student vs teacher)</td>
+                        <td>Proportional</td>
+                        <td>Widely used</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FlashAttention</strong></td>
+                        <td>~0% FLOPs, 2–4× speed</td>
+                        <td>$O(n^2) \to O(n)$</td>
+                        <td>Standard practice</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Structured pruning</strong></td>
+                        <td>2–5×</td>
+                        <td>Proportional</td>
+                        <td>Emerging</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MoE</strong></td>
+                        <td>$K/E$ active fraction</td>
+                        <td>Higher total (all experts)</td>
+                        <td>Frontier research</td>
+                    </tr>
+                    <tr>
+                        <td><strong>State Space Models</strong></td>
+                        <td>$O(n) \to O(n)$ (linear)</td>
+                        <td>$O(1)$ per step (inference)</td>
+                        <td>Frontier research</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2:4 Sparsity (hardware)</strong></td>
+                        <td>2× with HW support</td>
+                        <td>~50%</td>
+                        <td>Emerging</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NAS</strong></td>
+                        <td>Architecture-dependent</td>
+                        <td>Architecture-dependent</td>
+                        <td>Maturing</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="insight-box box">
+            <div class="label">The Grand Picture — Efficiency Research Trajectory</div>
+            <p>Over the past decade, the deep learning community has achieved roughly <strong>1000× improvement in
+                    efficiency</strong> for a given accuracy target (e.g., ImageNet 76% top-1), through a combination
+                of:</p>
+            <p>(1) <strong>Architecture innovations</strong> (~100× from AlexNet to EfficientNet): depthwise separable
+                convolutions, bottleneck blocks, compound scaling, attention mechanisms</p>
+            <p>(2) <strong>Numerical precision</strong> (~4×): FP32 → FP16/BF16 → INT8 for inference</p>
+            <p>(3) <strong>Hardware</strong> (~10×): GPU generations (Kepler → Ampere → Hopper), tensor cores, memory
+                bandwidth improvements</p>
+            <p>(4) <strong>Software optimization</strong> (~3×): operator fusion, FlashAttention, optimized GEMM
+                libraries</p>
+            <p>The multiplicative combination of these factors ($100 \times 4 \times 10 \times 3 \approx
+                12{,}000\times$) explains the dramatic increase in what is practically trainable and deployable. Each
+                factor represents a distinct dimension of optimization, and their <strong>multiplicative
+                    composition</strong> is the key insight: progress in any one dimension multiplies the benefit of all
+                others.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>References for §25</h4>
+            <p>[12] Fedus, W. et al. (2022). Switch Transformers: Scaling to Trillion Parameter Models with Simple and
+                Efficient Sparsity. <em>JMLR</em>, 23(120), 1–39.</p>
+            <p>[13] Gu, A. & Dao, T. (2023). Mamba: Linear-Time Sequence Modeling with Selective State Spaces.
+                <em>arXiv:2312.00752</em>.</p>
+            <p>[14] Zoph, B., Vasudevan, V., Shlens, J., & Le, Q. V. (2018). Learning Transferable Architectures for
+                Scalable Image Recognition. <em>CVPR 2018</em>. (NASNet)</p>
+            <p>[15] Liu, H., Simonyan, K., & Yang, Y. (2019). DARTS: Differentiable Architecture Search. <em>ICLR
+                    2019</em>.</p>
+            <p>[11] Frankle, J. & Carlin, M. (2019). The Lottery Ticket Hypothesis. <em>ICLR 2019</em>.</p>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================ -->
+        <!-- COMPLETE REFERENCES                                           -->
+        <!-- ============================================================ -->
+        <h2 id="sec-refs"><span class="sec-num">§</span> Complete References</h2>
+
+        <div class="ref-section">
+            <h4>Transformer Architecture</h4>
+            <p>[1] Vaswani, A. et al. (2017). Attention Is All You Need. <em>NeurIPS 2017</em>.</p>
+            <p>[2] Dao, T., Fu, D. Y., Ermon, S., Rudra, A., & Ré, C. (2022). FlashAttention: Fast and Memory-Efficient
+                Exact Attention with IO-Awareness. <em>NeurIPS 2022</em>.</p>
+            <p>[3] Shazeer, N. (2019). Fast Transformer Decoding: One Write-Head is All You Need.
+                <em>arXiv:1911.02150</em>.</p>
+            <p>[4] Ainslie, J. et al. (2023). GQA: Training Generalized Multi-Query Transformer Models from Multi-Head
+                Checkpoints. <em>EMNLP 2023</em>.</p>
+            <p>[5] Su, J. et al. (2021). RoFormer: Enhanced Transformer with Rotary Position Embedding.
+                <em>arXiv:2104.09864</em>.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Recurrent Networks</h4>
+            <p>[6] Hochreiter, S. & Schmidhuber, J. (1997). Long Short-Term Memory. <em>Neural Computation</em>, 9(8),
+                1735–1780.</p>
+            <p>[7] Cho, K. et al. (2014). Learning Phrase Representations using RNN Encoder-Decoder. <em>EMNLP
+                    2014</em>.</p>
+            <p>[8] Elman, J. L. (1990). Finding Structure in Time. <em>Cognitive Science</em>, 14(2), 179–211.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Theoretical Foundations</h4>
+            <p>[9] Santurkar, S. et al. (2018). How Does Batch Normalization Help Optimization? <em>NeurIPS 2018</em>.
+            </p>
+            <p>[10] Veit, A., Wilber, M. J., & Belongie, S. (2016). Residual Networks Behave Like Ensembles. <em>NeurIPS
+                    2016</em>.</p>
+            <p>[11] Frankle, J. & Carlin, M. (2019). The Lottery Ticket Hypothesis. <em>ICLR 2019</em>.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Efficient Deep Learning Frontiers</h4>
+            <p>[12] Fedus, W. et al. (2022). Switch Transformers. <em>JMLR</em>, 23(120), 1–39.</p>
+            <p>[13] Gu, A. & Dao, T. (2023). Mamba: Linear-Time Sequence Modeling with Selective State Spaces.
+                <em>arXiv:2312.00752</em>.</p>
+            <p>[14] Zoph, B. et al. (2018). Learning Transferable Architectures (NASNet). <em>CVPR 2018</em>.</p>
+            <p>[15] Liu, H. et al. (2019). DARTS: Differentiable Architecture Search. <em>ICLR 2019</em>.</p>
+        </div>
+
+        <div class="ref-section">
+            <h4>Foundational Texts</h4>
+            <p>[16] Goodfellow, I., Bengio, Y., & Courville, A. (2016). <em>Deep Learning</em>. MIT Press.</p>
+            <p>[17] Sze, V. et al. (2017). Efficient Processing of Deep Neural Networks. <em>Proc. IEEE</em>, 105(12),
+                2295–2329.</p>
+        </div>
+
+        <!-- ==================== SERIES CONCLUSION ==================== -->
+        <hr>
+        <div style="text-align:center;padding:40px 0;">
+            <p
+                style="font-family:'Source Sans 3',sans-serif;font-weight:700;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">
+                End of Part VI — Series Complete</p>
+            <p style="font-size:20px;font-style:italic;color:var(--text-muted);">This concludes the six-part deep dive
+                into Deep Neural Networks: Computational Foundations and Efficiency Analysis.</p>
+            <p style="font-size:16px;color:var(--text-muted);margin-top:10px;">Parts I–VI collectively cover 25
+                sections, from basic linear algebra through Transformer architectures and current frontiers, with every
+                mathematical derivation, computational cost, and memory requirement tracked in full detail.</p>
+        </div>
+
+    
+  <!-- Back to Index -->
+  <div style="margin-top: 4rem; padding-top: 2rem; border-top: var(--border-width-thin, 1px) solid var(--footnotes-border-color, #ddd);">
+    <a href="../../index.html" class="back-link">Back to Notebook Index</a>
+  </div>
+
+  <!-- Visitor Counter -->
+  <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00010">
+    <div class="visitor-stats">
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Total visits:</span>
+        <span class="visitor-stat-count" id="overall-visitor-count"></span>
+      </div>
+      <span class="visitor-stat-separator">§</span>
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Page visits:</span>
+        <span class="visitor-stat-count" id="page-visitor-count"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Portfolio nav script -->
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+    let lastScrollTop = 0;
+    const nav = document.querySelector('.top-nav');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollPos > 50) { nav.classList.add('nav-scrolled'); } else { nav.classList.remove('nav-scrolled'); }
+      if (scrollPos > 100) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) { nav.classList.add('nav-hidden'); } else { nav.classList.remove('nav-hidden'); }
+      }
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    });
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../../firebase-config.js"></script>
+  <script src="../../../visitor-counter.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part I — Mathematical Foundations for Deep Neural Networks</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Source+Sans+3:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        macros: {
+          R: '\\mathbb{R}',
+          bm: ['\\boldsymbol{#1}', 1],
+          pd: ['\\frac{\\partial #1}{\\partial #2}', 2],
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+  <style>
+    :root {
+      --bg: #faf8f5;
+      --bg-alt: #f0ece6;
+      --bg-code: #1a1b26;
+      --text: #2c2824;
+      --text-muted: #6b6560;
+      --accent: #8b2500;
+      --accent-light: #c4551a;
+      --accent-bg: #fdf0ea;
+      --border: #d4cfc8;
+      --blue: #1a5276;
+      --blue-bg: #e8f0f7;
+      --green: #1e6e3e;
+      --green-bg: #e8f5ec;
+      --purple: #5b2c8e;
+      --purple-bg: #f0e8f7;
+      --gold: #8b6914;
+      --gold-bg: #fdf5e0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 19px;
+      line-height: 1.75;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 30px 100px;
+    }
+
+    /* ---- Header ---- */
+    .doc-header {
+      text-align: center;
+      padding: 60px 0 50px;
+      border-bottom: 3px double var(--border);
+      margin-bottom: 50px;
+    }
+
+    .doc-header .part-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .doc-header h1 {
+      font-family: 'Crimson Pro', serif;
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .doc-header .subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      font-style: italic;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ---- Section headers ---- */
+    h2 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 70px;
+      margin-bottom: 8px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    h2 .sec-num {
+      font-weight: 300;
+      opacity: 0.6;
+      margin-right: 6px;
+    }
+
+    h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+
+    h4 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 16px;
+    }
+
+    p+p {
+      margin-top: 0;
+    }
+
+    /* ---- Definition / key concept boxes ---- */
+    .def-box {
+      background: var(--blue-bg);
+      border-left: 4px solid var(--blue);
+      padding: 18px 22px;
+      margin: 24px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .def-box .label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+
+    .theorem-box {
+      background: var(--purple-bg);
+      border-left: 4px solid var(--purple);
+      padding: 18px 22px;
+      margin: 24px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .theorem-box .label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--purple);
+      margin-bottom: 6px;
+    }
+
+    .compute-box {
+      background: var(--gold-bg);
+      border-left: 4px solid var(--gold);
+      padding: 18px 22px;
+      margin: 24px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .compute-box .label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .example-box {
+      background: var(--green-bg);
+      border-left: 4px solid var(--green);
+      padding: 18px 22px;
+      margin: 24px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .example-box .label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+
+    .warning-box {
+      background: var(--accent-bg);
+      border-left: 4px solid var(--accent);
+      padding: 18px 22px;
+      margin: 24px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .warning-box .label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    /* ---- Tables ---- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 16px;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+
+    th {
+      background: var(--bg-alt);
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--border);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* ---- Code blocks ---- */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      background: var(--bg-alt);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    pre {
+      background: var(--bg-code);
+      color: #c0caf5;
+      padding: 20px 24px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* ---- SVG figures ---- */
+    .figure {
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    .figure svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .figure-caption {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .figure-caption strong {
+      color: var(--text);
+      font-style: normal;
+    }
+
+    /* ---- References ---- */
+    .ref-section {
+      background: var(--bg-alt);
+      padding: 24px 28px;
+      border-radius: 8px;
+      margin: 30px 0;
+    }
+
+    .ref-section h4 {
+      font-family: 'Source Sans 3', sans-serif;
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .ref-section p {
+      font-size: 15px;
+      margin-bottom: 8px;
+      padding-left: 24px;
+      text-indent: -24px;
+      line-height: 1.55;
+    }
+
+    /* ---- Inline math spacing ---- */
+    mjx-container[jax="SVG"][display="true"] {
+      margin: 20px 0 !important;
+    }
+
+    /* ---- TOC ---- */
+    .toc {
+      background: var(--bg-alt);
+      padding: 28px 32px;
+      border-radius: 8px;
+      margin-bottom: 50px;
+    }
+
+    .toc h3 {
+      font-family: 'Source Sans 3', sans-serif;
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    .toc ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .toc li {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 16px;
+      padding: 4px 0;
+      color: var(--text-muted);
+    }
+
+    .toc li a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .toc li a:hover {
+      text-decoration: underline;
+    }
+
+    .toc li.sub {
+      padding-left: 24px;
+      font-size: 15px;
+    }
+
+    /* ---- Misc ---- */
+    strong {
+      font-weight: 700;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 50px 0;
+    }
+
+    .display-math {
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+
+    /* Navigation */
+    .nav-bar {
+      background: var(--bg-alt);
+      padding: 15px 20px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-bar a {
+      text-decoration: none;
+      color: var(--text);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .nav-bar a.active {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 24px;
+    }
+
+    img,
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container {
+      padding: 20px 20px 120px;
+    }
+  </style>
+  <!-- Portfolio CSS -->
+  <link rel="stylesheet" href="../../../style.css" />
+  <link rel="stylesheet" href="../../notebook.css" />
+  <link rel="stylesheet" href="../../../visitor-counter.css" />
+
+<body class="text-justify">
+  <!-- Portfolio Navigation Bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../../index.html">Portfolio</a></li>
+      <li><a href="../../index.html">Notebook</a></li>
+      <li><a href="../../../resources/index.html">Resources</a></li>
+      <li><a href="../../../quick-notes/index.html">Quick Notes</a></li>
+    </ul>
+  </nav>
+
+  <!-- DNN Series Navigation -->
+  <nav class="nav-bar">
+    <a href="../../index.html#dnn">Home</a>
+    <a href="../post_00004/index.html">Part 0</a>
+    <a href="../post_00005/index.html" class="active">Part I</a>
+    <a href="../post_00006/index.html">Part II</a>
+    <a href="../post_00007/index.html">Part III</a>
+    <a href="../post_00008/index.html">Part IV</a>
+    <a href="../post_00009/index.html">Part V</a>
+    <a href="../post_00010/index.html">Part VI</a>
+  </nav>
+  
+
+  <div class="container">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" style="margin-bottom:1.5rem; font-size:0.85em; opacity:0.7;">
+    <a href="../../index.html" style="text-decoration:none; color:var(--body-color);">Notebook</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#cs" style="text-decoration:none; color:var(--body-color);">Computer Science</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <a href="../../index.html#dnn" style="text-decoration:none; color:var(--body-color);">Deep Neural Networks</a>
+    <span style="margin:0 0.5rem;">/</span>
+    <span>Part I: Mathematical Foundations</span>
+  </nav>
+
+
+    <!-- ==================== HEADER ==================== -->
+    <div class="doc-header">
+      <div class="part-label">Part I of VI</div>
+      <h1>Mathematical Foundations for Deep Neural Networks</h1>
+      <div class="subtitle">A research-depth treatment of the linear algebra, calculus, and probability theory
+        underlying neural network computation — with full computational cost analysis</div>
+    </div>
+
+    <!-- ==================== TOC ==================== -->
+    <div class="toc">
+      <h3>Contents</h3>
+      <ul>
+        <li><a href="#sec1">1. Linear Algebra for Neural Networks</a></li>
+        <li class="sub"><a href="#sec1-1">1.1 Scalars, Vectors, Matrices, and Tensors</a></li>
+        <li class="sub"><a href="#sec1-2">1.2 Core Matrix Operations and Their Computational Cost</a></li>
+        <li class="sub"><a href="#sec1-3">1.3 Matrix Multiplication — The Central Operation</a></li>
+        <li class="sub"><a href="#sec1-4">1.4 Special Matrix Operations</a></li>
+        <li class="sub"><a href="#sec1-5">1.5 Norms and Their Computational Role</a></li>
+        <li class="sub"><a href="#sec1-6">1.6 Broadcasting</a></li>
+        <li><a href="#sec2">2. Calculus and Automatic Differentiation</a></li>
+        <li class="sub"><a href="#sec2-1">2.1 Derivatives and Gradients</a></li>
+        <li class="sub"><a href="#sec2-2">2.2 The Chain Rule — Foundation of Backpropagation</a></li>
+        <li class="sub"><a href="#sec2-3">2.3 Jacobians and Hessians</a></li>
+        <li class="sub"><a href="#sec2-4">2.4 Forward-Mode vs. Reverse-Mode Automatic Differentiation</a></li>
+        <li class="sub"><a href="#sec2-5">2.5 Optimization Landscape Geometry</a></li>
+        <li><a href="#sec3">3. Probability and Information Theory</a></li>
+        <li class="sub"><a href="#sec3-1">3.1 Probability Distributions in Neural Networks</a></li>
+        <li class="sub"><a href="#sec3-2">3.2 Information-Theoretic Loss Functions</a></li>
+        <li class="sub"><a href="#sec3-3">3.3 Maximum Likelihood and Cross-Entropy</a></li>
+        <li><a href="#sec-summary">Computational Cost Summary</a></li>
+        <li><a href="#sec-refs">Complete References</a></li>
+      </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: LINEAR ALGEBRA                                     -->
+    <!-- ============================================================ -->
+    <h2 id="sec1"><span class="sec-num">§1</span> Linear Algebra for Neural Networks</h2>
+
+    <p>
+      Every computation in a neural network — from the forward pass to backpropagation to the optimizer update —
+      ultimately reduces to linear algebra operations on multi-dimensional arrays of numbers. A thorough understanding
+      of these operations and their computational costs is the foundation upon which all efficiency analysis rests.
+    </p>
+
+    <!-- ---- 1.1 ---- -->
+    <h3 id="sec1-1">1.1 Scalars, Vectors, Matrices, and Tensors</h3>
+
+    <div class="def-box">
+      <div class="label">Definitions</div>
+      <p>
+        A <strong>scalar</strong> is a single number, $x \in \R$. A <strong>vector</strong> is an ordered array of $n$
+        scalars, $\bm{x} \in \R^n$. A <strong>matrix</strong> is a 2D array of scalars, $\bm{A} \in \R^{m \times n}$,
+        with $m$ rows and $n$ columns. A <strong>tensor</strong> is the generalization to any number of dimensions (or
+        <em>rank</em>): a rank-$k$ tensor has $k$ indices.
+      </p>
+    </div>
+
+    <p>
+      In deep learning, the fundamental data structure is the tensor. Every input, output, weight, gradient, and
+      activation in a neural network is stored as a tensor. The <strong>shape</strong> of a tensor fully determines its
+      memory footprint:
+    </p>
+
+    <div class="compute-box">
+      <div class="label">Memory Cost</div>
+      <p>
+        For a tensor with shape $(d_1, d_2, \ldots, d_k)$ stored in a given numerical precision:
+      </p>
+      $$\text{Memory (bytes)} = \left(\prod_{i=1}^{k} d_i\right) \times \text{bytes\_per\_element}$$
+      <p>
+        Common precisions: <strong>float32</strong> = 4 bytes, <strong>float16 / bfloat16</strong> = 2 bytes,
+        <strong>float64</strong> = 8 bytes, <strong>int8</strong> = 1 byte.
+      </p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Worked Example — Tensor Memory</div>
+      <p>
+        Consider a batch of 32 RGB images of size 224×224, represented as a tensor $\bm{X} \in \R^{32 \times 3 \times
+        224 \times 224}$:
+      </p>
+      $$\text{Elements} = 32 \times 3 \times 224 \times 224 = 4{,}816{,}896$$
+      $$\text{Memory (float32)} = 4{,}816{,}896 \times 4 = 19{,}267{,}584 \text{ bytes} \approx 18.4 \text{ MB}$$
+      $$\text{Memory (float16)} = 4{,}816{,}896 \times 2 = 9{,}633{,}792 \text{ bytes} \approx 9.2 \text{ MB}$$
+      <p>This immediately illustrates why mixed-precision training halves the activation memory.</p>
+    </div>
+
+    <p>
+      The <strong>rank</strong> (number of dimensions) of tensors commonly encountered in deep learning:
+    </p>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Shape Convention</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>Scalar</td>
+          <td>$()$</td>
+          <td>Loss value $L$</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Vector</td>
+          <td>$(n,)$</td>
+          <td>Bias vector $\bm{b} \in \R^{n}$</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Matrix</td>
+          <td>$(m, n)$</td>
+          <td>Weight matrix $\bm{W} \in \R^{m \times n}$</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>3-Tensor</td>
+          <td>$(B, T, d)$</td>
+          <td>Batch of sequences (NLP)</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>4-Tensor</td>
+          <td>$(B, C, H, W)$</td>
+          <td>Batch of feature maps (CNN)</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §1.1</h4>
+      <p>[1] Goodfellow, I., Bengio, Y., & Courville, A. (2016). <em>Deep Learning</em>, Chapter 2: Linear Algebra. MIT
+        Press. Available at <code>deeplearningbook.org</code>.</p>
+      <p>[2] Strang, G. (2016). <em>Introduction to Linear Algebra</em>, 5th Ed. Wellesley-Cambridge Press. Chapters
+        1–3.</p>
+    </div>
+
+    <!-- ---- 1.2 ---- -->
+    <h3 id="sec1-2">1.2 Core Matrix Operations and Their Computational Cost</h3>
+
+    <p>
+      Before dissecting neural network layers, we must establish the exact cost of the atomic operations from which they
+      are built. In computational analysis, we count <strong>FLOPs</strong> (floating-point operations), where one FLOP
+      is typically one addition or one multiplication. A <strong>multiply-accumulate (MAC)</strong> operation — $a
+      \leftarrow a + b \times c$ — counts as 2 FLOPs.
+    </p>
+
+    <h4>Vector-Vector Operations</h4>
+
+    <div class="def-box">
+      <div class="label">Dot Product</div>
+      <p>
+        Given $\bm{x}, \bm{y} \in \R^n$, the dot product is:
+      </p>
+      $$\bm{x} \cdot \bm{y} = \bm{x}^\top \bm{y} = \sum_{i=1}^{n} x_i y_i$$
+      <p>This requires $n$ multiplications and $(n-1)$ additions = $\mathbf{2n - 1}$ <strong>FLOPs</strong>. In
+        practice, this is often rounded to $2n$ FLOPs (counting one MAC per element).</p>
+    </div>
+
+    <div class="compute-box">
+      <div class="label">Element-wise (Hadamard) Product</div>
+      <p>
+        $\bm{x} \odot \bm{y}$: multiply corresponding elements. For vectors of length $n$: exactly $n$ FLOPs
+        (multiplications only). Output is a vector of length $n$.
+      </p>
+    </div>
+
+    <div class="compute-box">
+      <div class="label">Outer Product</div>
+      <p>
+        $\bm{x} \bm{y}^\top$ for $\bm{x} \in \R^m$, $\bm{y} \in \R^n$: produces an $m \times n$ matrix. Cost: $mn$
+        multiplications = $mn$ FLOPs. Memory for result: $mn$ elements.
+      </p>
+    </div>
+
+    <h4>Vector Addition and Scaling</h4>
+
+    <p>
+      Vector addition $\bm{x} + \bm{y}$ for $\bm{x}, \bm{y} \in \R^n$: exactly $n$ FLOPs. Scalar-vector multiplication
+      $\alpha \bm{x}$: exactly $n$ FLOPs. These are trivially cheap, but they appear billions of times during training,
+      so their cost is not negligible in aggregate.
+    </p>
+
+    <!-- ---- 1.3 ---- -->
+    <h3 id="sec1-3">1.3 Matrix Multiplication — The Central Operation of Deep Learning</h3>
+
+    <p>
+      Matrix multiplication is, without exaggeration, <em>the</em> core operation of neural network computation. Every
+      fully-connected layer, every convolution (via im2col), every attention mechanism — all reduce to matrix
+      multiplication at the hardware level. Understanding its cost is essential.
+    </p>
+
+    <div class="def-box">
+      <div class="label">Definition — Matrix Multiplication</div>
+      <p>
+        Given $\bm{A} \in \R^{m \times n}$ and $\bm{B} \in \R^{n \times p}$, the product $\bm{C} = \bm{A}\bm{B} \in
+        \R^{m \times p}$ is defined as:
+      </p>
+      $$C_{ij} = \sum_{k=1}^{n} A_{ik} B_{kj}$$
+      <p>
+        Each element $C_{ij}$ is a dot product of row $i$ of $\bm{A}$ with column $j$ of $\bm{B}$.
+      </p>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 750 280" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;">
+        <!-- Matrix A -->
+        <rect x="30" y="40" width="120" height="160" rx="4" fill="#e8f0f7" stroke="#1a5276" stroke-width="2" />
+        <text x="90" y="25" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15"
+          font-weight="700" fill="#1a5276">A</text>
+        <text x="90" y="225" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          fill="#6b6560">(m × n)</text>
+        <!-- rows label -->
+        <line x1="18" y1="45" x2="18" y2="195" stroke="#1a5276" stroke-width="1.5" marker-start="url(#arrowUp)"
+          marker-end="url(#arrowDown)" />
+        <text x="10" y="125" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#1a5276"
+          transform="rotate(-90 10 125)">m rows</text>
+        <!-- cols label -->
+        <line x1="35" y1="210" x2="145" y2="210" stroke="#1a5276" stroke-width="1.5" />
+        <text x="90" y="245" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12"
+          fill="#1a5276">n cols</text>
+        <!-- Highlight row i -->
+        <rect x="34" y="100" width="112" height="22" rx="2" fill="#1a5276" opacity="0.25" />
+        <text x="158" y="116" font-family="Source Sans 3, sans-serif" font-size="12" fill="#1a5276">row i</text>
+
+        <!-- × -->
+        <text x="200" y="128" text-anchor="middle" font-family="Crimson Pro, serif" font-size="28"
+          fill="#2c2824">×</text>
+
+        <!-- Matrix B -->
+        <rect x="240" y="40" width="160" height="160" rx="4" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="2" />
+        <text x="320" y="25" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15"
+          font-weight="700" fill="#5b2c8e">B</text>
+        <text x="320" y="225" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          fill="#6b6560">(n × p)</text>
+        <!-- Highlight col j -->
+        <rect x="330" y="44" width="22" height="152" rx="2" fill="#5b2c8e" opacity="0.25" />
+        <text x="341" y="212" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12"
+          fill="#5b2c8e">col j</text>
+
+        <!-- = -->
+        <text x="435" y="128" text-anchor="middle" font-family="Crimson Pro, serif" font-size="28"
+          fill="#2c2824">=</text>
+
+        <!-- Matrix C -->
+        <rect x="475" y="40" width="160" height="160" rx="4" fill="#e8f5ec" stroke="#1e6e3e" stroke-width="2" />
+        <text x="555" y="25" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15"
+          font-weight="700" fill="#1e6e3e">C</text>
+        <text x="555" y="225" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          fill="#6b6560">(m × p)</text>
+        <!-- Highlight element (i,j) -->
+        <rect x="567" y="100" width="22" height="22" rx="2" fill="#1e6e3e" opacity="0.4" />
+        <text x="578" y="116" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#fff"
+          font-weight="700">ij</text>
+        <text x="640" y="116" font-family="Source Sans 3, sans-serif" font-size="12" fill="#1e6e3e">C_ij = dot(row_i,
+          col_j)</text>
+
+        <!-- Arrows from highlighted row and col to element -->
+        <path d="M 158 111 Q 180 111 180 90 Q 180 70 250 70" fill="none" stroke="#1a5276" stroke-width="1"
+          stroke-dasharray="4,3" opacity="0.5" />
+      </svg>
+      <div class="figure-caption"><strong>Figure 1.1.</strong> Matrix multiplication $\bm{C} = \bm{A}\bm{B}$. Element
+        $C_{ij}$ is the dot product of the $i$-th row of $\bm{A}$ with the $j$-th column of $\bm{B}$, requiring $2n$
+        FLOPs.</div>
+    </div>
+
+    <div class="compute-box">
+      <div class="label">Computational Cost — Matrix Multiplication</div>
+      <p>For $\bm{A} \in \R^{m \times n}$ and $\bm{B} \in \R^{n \times p}$:</p>
+      $$\text{FLOPs} = 2mnp$$
+      <p>(Each of the $mp$ output elements requires $n$ multiplications and $n$ additions = $2n$ FLOPs.)</p>
+      $$\text{Memory for result: } m \times p \text{ elements}$$
+      <p><strong>This is the single most important formula in computational efficiency analysis of neural
+          networks.</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Worked Example — Fully Connected Layer as Matrix Multiply</div>
+      <p>
+        A fully-connected layer with 784 inputs and 256 outputs, processing a batch of 32 samples:
+      </p>
+      <p>
+        Input: $\bm{X} \in \R^{32 \times 784}$, Weight: $\bm{W} \in \R^{256 \times 784}$
+      </p>
+      <p>
+        Output: $\bm{Z} = \bm{X}\bm{W}^\top \in \R^{32 \times 256}$
+      </p>
+      $$\text{FLOPs} = 2 \times 32 \times 784 \times 256 = 12{,}845{,}056 \approx 12.8\text{M FLOPs}$$
+      $$\text{Output memory (float32)} = 32 \times 256 \times 4 = 32{,}768 \text{ bytes} = 32 \text{ KB}$$
+      <p>The bias addition $\bm{Z} + \bm{b}$ adds another $32 \times 256 = 8{,}192$ FLOPs — negligible compared to the
+        matmul.</p>
+    </div>
+
+    <h4>Matrix-Vector Multiplication</h4>
+    <p>
+      The special case $\bm{y} = \bm{A}\bm{x}$ where $\bm{A} \in \R^{m \times n}$ and $\bm{x} \in \R^n$ costs $2mn$
+      FLOPs and produces $\bm{y} \in \R^m$. This is the computation for a single sample through a fully-connected layer
+      (without batching).
+    </p>
+
+    <h4>Why Matrix Multiplication Dominates</h4>
+    <p>
+      For a network with weight matrices of dimension $d$, the matrix multiplication cost scales as $O(d^2)$ per sample
+      (or $O(Bd^2)$ per batch), while element-wise operations like activations scale as $O(d)$ (or $O(Bd)$). For typical
+      hidden sizes ($d = 256$ to $d = 4096$), the matmul is 2–3 orders of magnitude more expensive than element-wise
+      ops. This is why GPU hardware is designed with <strong>tensor cores</strong> that accelerate matrix multiplication
+      specifically (NVIDIA, 2017).
+    </p>
+
+    <div class="ref-section">
+      <h4>References for §1.2–1.3</h4>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 2.3: Multiplying Matrices and Vectors.</p>
+      <p>[2] Golub, G. H. & Van Loan, C. F. (2013). <em>Matrix Computations</em>, 4th Ed. Johns Hopkins University
+        Press. — The definitive reference on computational cost of matrix operations.</p>
+      <p>[3] Sze, V., Chen, Y., Yang, T., & Emer, J. (2017). Efficient Processing of Deep Neural Networks: A Tutorial
+        and Survey. <em>Proceedings of the IEEE</em>, 105(12), 2295–2329. — Table II provides FLOP formulas for all DNN
+        layer types.</p>
+    </div>
+
+    <!-- ---- 1.4 ---- -->
+    <h3 id="sec1-4">1.4 Special Matrix Operations</h3>
+
+    <h4>Transpose</h4>
+    <p>
+      The transpose $\bm{A}^\top$ of a matrix $\bm{A} \in \R^{m \times n}$ satisfies $(\bm{A}^\top)_{ij} = A_{ji}$. In
+      modern deep learning frameworks (PyTorch, TensorFlow), the transpose is a <strong>zero-cost operation</strong> —
+      it simply changes the metadata (strides) describing how the data is laid out in memory, without moving any data.
+      This costs $O(1)$ in time and $O(1)$ in extra memory. However, a transposed matrix may have non-contiguous memory
+      access patterns, which can slow down subsequent operations due to cache inefficiency.
+    </p>
+
+    <h4>Matrix Inverse</h4>
+    <p>
+      The inverse $\bm{A}^{-1}$ of a square matrix $\bm{A} \in \R^{n \times n}$ costs $O(n^3)$ FLOPs to compute (using
+      LU decomposition or Gaussian elimination). In deep learning, <strong>we almost never compute matrix inverses
+        directly</strong>. The operations that might seem to require an inverse — such as solving linear systems or
+      computing the Hessian inverse — are handled by iterative methods (conjugate gradient) or approximations (L-BFGS,
+      natural gradient). When the Hessian $\bm{H} \in \R^{P \times P}$ has $P$ = millions of parameters, storing it
+      alone would require $P^2 \times 4$ bytes, which is completely infeasible.
+    </p>
+
+    <div class="compute-box">
+      <div class="label">Why the Hessian is Infeasible</div>
+      <p>For a small network with $P = 10^6$ parameters (1 million):</p>
+      $$\text{Hessian memory} = (10^6)^2 \times 4 \text{ bytes} = 4 \times 10^{12} \text{ bytes} = 4 \text{ TB}$$
+      <p>And computing it would require $O(P^2)$ = $10^{12}$ operations per element. This is why first-order methods
+        (SGD, Adam) dominate deep learning — they only need $O(P)$ memory for gradients.</p>
+    </div>
+
+    <h4>Eigendecomposition and Singular Value Decomposition (SVD)</h4>
+    <p>
+      Eigendecomposition factors a square matrix as $\bm{A} = \bm{Q}\bm{\Lambda}\bm{Q}^{-1}$, where $\bm{\Lambda}$ is
+      diagonal with eigenvalues. SVD factors any $m \times n$ matrix as $\bm{A} = \bm{U}\bm{\Sigma}\bm{V}^\top$. Both
+      cost $O(n^3)$ for an $n \times n$ matrix.
+    </p>
+    <p>
+      In deep learning, these are used for: (a) analyzing the <strong>condition number</strong> $\kappa =
+      \sigma_{\max}/\sigma_{\min}$ of weight matrices and the Hessian, which affects optimization convergence; (b)
+      <strong>low-rank approximation</strong> for model compression — truncating to the top $r$ singular values reduces
+      a layer from $mn$ to $r(m+n)$ parameters; (c) understanding <strong>weight initialization</strong> — ensuring the
+      singular values of weight matrices stay near 1 prevents gradient explosion/vanishing (Saxe et al., 2014).
+    </p>
+
+    <div class="ref-section">
+      <h4>References for §1.4</h4>
+      <p>[3] Golub & Van Loan (2013). <em>Matrix Computations</em>, Ch. 5 (Eigenvalues), Ch. 8 (SVD).</p>
+      <p>[4] Saxe, A. M., McClelland, J. L., & Ganguli, S. (2014). Exact solutions to the nonlinear dynamics of learning
+        in deep linear neural networks. <em>ICLR 2014</em>.</p>
+    </div>
+
+    <!-- ---- 1.5 ---- -->
+    <h3 id="sec1-5">1.5 Norms and Their Computational Role</h3>
+
+    <p>Norms measure the "size" of vectors and matrices. They appear throughout deep learning in regularization,
+      gradient clipping, normalization layers, and convergence analysis.</p>
+
+    <div class="def-box">
+      <div class="label">Vector Norms</div>
+      <p>For a vector $\bm{x} \in \R^n$:</p>
+      <p><strong>$L^1$ norm:</strong> $\|\bm{x}\|_1 = \sum_{i=1}^n |x_i|$ — Cost: $n$ absolute values + $(n-1)$
+        additions ≈ $2n$ FLOPs</p>
+      <p><strong>$L^2$ (Euclidean) norm:</strong> $\|\bm{x}\|_2 = \sqrt{\sum_{i=1}^n x_i^2}$ — Cost: $n$ multiplications
+        + $(n-1)$ additions + 1 square root ≈ $2n + 1$ FLOPs</p>
+      <p><strong>$L^p$ norm:</strong> $\|\bm{x}\|_p = \left(\sum_{i=1}^n |x_i|^p\right)^{1/p}$ — Cost: $n$ powers +
+        $(n-1)$ additions + 1 root ≈ $O(n)$ but with expensive per-element ops</p>
+      <p><strong>$L^\infty$ norm:</strong> $\|\bm{x}\|_\infty = \max_i |x_i|$ — Cost: $n$ absolute values + $(n-1)$
+        comparisons ≈ $2n$ FLOPs</p>
+    </div>
+
+    <h4>Role in Neural Networks</h4>
+
+    <p>
+      <strong>L2 regularization</strong> adds $\frac{\lambda}{2}\|\bm{W}\|_F^2 = \frac{\lambda}{2}\sum_{ij} W_{ij}^2$ to
+      the loss. The Frobenius norm $\|\bm{W}\|_F$ for a matrix $\bm{W} \in \R^{m \times n}$ costs $mn$ multiplications +
+      $(mn-1)$ additions ≈ $2mn$ FLOPs. But in practice, the gradient is simply $\lambda \bm{W}$, which costs only $mn$
+      multiplications to add to the existing gradient — so the per-step cost of L2 regularization is $O(P)$ where $P$ is
+      the total parameter count.
+    </p>
+
+    <p>
+      <strong>Gradient clipping</strong> computes $\|\bm{g}\|_2$ for the full gradient vector $\bm{g} \in \R^P$ (cost:
+      $2P$ FLOPs), then scales $\bm{g} \leftarrow \bm{g} \cdot \min(1, \tau/\|\bm{g}\|_2)$ (cost: $P$ FLOPs for the
+      scaling). Total: $3P$ FLOPs — the same order as one gradient step.
+    </p>
+
+    <table>
+      <tr>
+        <th>Norm Operation</th>
+        <th>FLOPs</th>
+        <th>Use in Deep Learning</th>
+      </tr>
+      <tr>
+        <td>$\|\bm{x}\|_1$ (vector, length $n$)</td>
+        <td>$2n$</td>
+        <td>L1 regularization (sparsity)</td>
+      </tr>
+      <tr>
+        <td>$\|\bm{x}\|_2$ (vector, length $n$)</td>
+        <td>$2n + 1$</td>
+        <td>Gradient clipping, normalization</td>
+      </tr>
+      <tr>
+        <td>$\|\bm{W}\|_F$ (matrix $m \times n$)</td>
+        <td>$2mn + 1$</td>
+        <td>L2/weight decay regularization</td>
+      </tr>
+      <tr>
+        <td>$\|\bm{x}\|_\infty$ (vector, length $n$)</td>
+        <td>$2n$</td>
+        <td>Convergence analysis, adversarial robustness</td>
+      </tr>
+    </table>
+
+    <div class="ref-section">
+      <h4>References for §1.5</h4>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 2.5: Norms.</p>
+      <p>[5] Pascanu, R., Mikolov, T., & Bengio, Y. (2013). On the difficulty of training recurrent neural networks.
+        <em>ICML 2013</em>. — Introduces gradient clipping and its mathematical justification.</p>
+    </div>
+
+    <!-- ---- 1.6 ---- -->
+    <h3 id="sec1-6">1.6 Broadcasting</h3>
+
+    <p>
+      Broadcasting is a set of rules that allows operations between tensors of different shapes by virtually "expanding"
+      the smaller tensor to match the larger one, <strong>without actually copying data in memory</strong>. This is
+      critical for understanding both the computational cost and memory cost of neural network operations.
+    </p>
+
+    <div class="example-box">
+      <div class="label">Broadcasting in a FC Layer — Bias Addition</div>
+      <p>
+        In a fully-connected layer, after the matrix multiplication $\bm{Z} = \bm{X}\bm{W}^\top$ where $\bm{Z} \in \R^{B
+        \times n}$, we add the bias $\bm{b} \in \R^{n}$:
+      </p>
+      $$\bm{Z} + \bm{b} \quad \text{where } \bm{Z} \text{ has shape } (B, n) \text{ and } \bm{b} \text{ has shape }
+      (n,)$$
+      <p>
+        Broadcasting "virtually replicates" $\bm{b}$ across the batch dimension to shape $(B, n)$. The computation costs
+        $Bn$ additions (same as if $\bm{b}$ were a full $B \times n$ matrix), but the memory for $\bm{b}$ remains just
+        $n$ elements — <strong>not</strong> $Bn$. This is a memory saving factor of $B$.
+      </p>
+    </div>
+
+    <p>
+      In Batch Normalization, broadcasting is used extensively: the learned parameters $\gamma, \beta \in \R^C$ (one per
+      channel) are broadcast across the entire batch and spatial dimensions $(B, C, H, W)$, saving a factor of $B \times
+      H \times W$ in memory.
+    </p>
+
+    <div class="warning-box">
+      <div class="label">Computational Efficiency Insight</div>
+      <p>
+        Broadcasting means that the <strong>FLOPs</strong> of an operation are determined by the <strong>output
+          shape</strong> (after broadcasting), while the <strong>memory</strong> for the operands is determined by their
+        <strong>original shapes</strong>. This distinction is crucial: an operation can have high FLOPs but low
+        parameter memory (like bias addition), or high memory but low FLOPs (like storing activations).
+      </p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: CALCULUS                                            -->
+    <!-- ============================================================ -->
+    <h2 id="sec2"><span class="sec-num">§2</span> Calculus and Automatic Differentiation</h2>
+
+    <p>
+      If linear algebra is the <em>language</em> of neural network computation, calculus is the <em>engine</em> of
+      learning. Every weight update in every neural network ever trained is computed via derivatives. The specific
+      mechanism — backpropagation — is a direct application of the chain rule combined with an algorithmic insight about
+      the order of computation. This section derives the mathematical machinery from first principles, with full
+      computational cost analysis at each step.
+    </p>
+
+    <!-- ---- 2.1 ---- -->
+    <h3 id="sec2-1">2.1 Derivatives and Gradients</h3>
+
+    <div class="def-box">
+      <div class="label">Definitions</div>
+      <p>
+        For a function $f: \R \to \R$, the <strong>derivative</strong> is: $f'(x) = \lim_{h \to 0} \frac{f(x+h) -
+        f(x)}{h}$
+      </p>
+      <p>
+        For a function $f: \R^n \to \R$, the <strong>partial derivative</strong> with respect to $x_i$ is: $\pd{f}{x_i}
+        = \lim_{h \to 0} \frac{f(x_1, \ldots, x_i + h, \ldots, x_n) - f(x_1, \ldots, x_n)}{h}$
+      </p>
+      <p>
+        The <strong>gradient</strong> is the vector of all partial derivatives: $\nabla_{\bm{x}} f = \left[\pd{f}{x_1},
+        \pd{f}{x_2}, \ldots, \pd{f}{x_n}\right]^\top \in \R^n$
+      </p>
+    </div>
+
+    <p>
+      The gradient $\nabla_{\bm{x}} f$ points in the direction of steepest ascent of $f$ at point $\bm{x}$. Gradient
+      descent moves in the opposite direction: $\bm{x} \leftarrow \bm{x} - \eta \nabla_{\bm{x}} f$, where $\eta$ is the
+      learning rate. The cost of one gradient descent step is the cost of computing $\nabla_{\bm{x}} f$ (which we will
+      analyze in detail) plus $O(n)$ for the subtraction.
+    </p>
+
+    <h4>Gradient of Common Scalar Functions</h4>
+
+    <p>These appear constantly in loss function computation and activation function derivatives:</p>
+
+    <table>
+      <tr>
+        <th>Function $f(x)$</th>
+        <th>Derivative $f'(x)$</th>
+        <th>FLOPs per element</th>
+      </tr>
+      <tr>
+        <td>$x^2$</td>
+        <td>$2x$</td>
+        <td>1 (multiply by constant)</td>
+      </tr>
+      <tr>
+        <td>$e^x$</td>
+        <td>$e^x$</td>
+        <td>~1 (reuse cached $e^x$)</td>
+      </tr>
+      <tr>
+        <td>$\ln(x)$</td>
+        <td>$1/x$</td>
+        <td>1 (division)</td>
+      </tr>
+      <tr>
+        <td>$\frac{1}{1+e^{-x}}$ (sigmoid)</td>
+        <td>$\sigma(x)(1-\sigma(x))$</td>
+        <td>2 (if $\sigma(x)$ cached)</td>
+      </tr>
+      <tr>
+        <td>$\tanh(x)$</td>
+        <td>$1 - \tanh^2(x)$</td>
+        <td>2 (if $\tanh(x)$ cached)</td>
+      </tr>
+      <tr>
+        <td>$\max(0, x)$ (ReLU)</td>
+        <td>$\mathbb{1}[x > 0]$</td>
+        <td>1 (comparison)</td>
+      </tr>
+    </table>
+
+    <p>
+      The "FLOPs per element" column assumes that the forward pass value has been cached. This is standard practice:
+      during the forward pass, activations are stored, and the backward pass reuses them to cheaply compute derivatives.
+      This is a <strong>time-memory trade-off</strong> — we spend memory to store activations in order to save FLOPs
+      during backpropagation.
+    </p>
+
+    <!-- ---- 2.2 ---- -->
+    <h3 id="sec2-2">2.2 The Chain Rule — Foundation of Backpropagation</h3>
+
+    <div class="theorem-box">
+      <div class="label">The Chain Rule (Scalar Case)</div>
+      <p>
+        If $y = f(g(x))$, then:
+      </p>
+      $$\frac{dy}{dx} = \frac{dy}{dg} \cdot \frac{dg}{dx} = f'(g(x)) \cdot g'(x)$$
+      <p>For a composition of $L$ functions $y = f_L(f_{L-1}(\cdots f_1(x) \cdots))$:</p>
+      $$\frac{dy}{dx} = \frac{df_L}{df_{L-1}} \cdot \frac{df_{L-1}}{df_{L-2}} \cdots \frac{df_2}{df_1} \cdot
+      \frac{df_1}{dx} = \prod_{l=1}^{L} f_l'$$
+    </div>
+
+    <p>
+      This product of $L$ derivatives is exactly what happens during backpropagation through an $L$-layer network. Each
+      layer contributes one factor to the product. If any factor is consistently less than 1 (sigmoid, tanh in saturated
+      regime), the product vanishes exponentially — this is the <strong>vanishing gradient problem</strong>. If any
+      factor is consistently greater than 1, the product explodes — the <strong>exploding gradient problem</strong>.
+    </p>
+
+    <div class="theorem-box">
+      <div class="label">The Chain Rule (Vector Case)</div>
+      <p>
+        If $\bm{y} = f(\bm{g}(\bm{x}))$ where $\bm{x} \in \R^n$, $\bm{g}: \R^n \to \R^m$, and $f: \R^m \to \R$ (scalar
+        loss), then:
+      </p>
+      $$\pd{f}{\bm{x}} = \left(\pd{\bm{g}}{\bm{x}}\right)^\top \pd{f}{\bm{g}}$$
+      <p>
+        where $\pd{\bm{g}}{\bm{x}} \in \R^{m \times n}$ is the <strong>Jacobian matrix</strong> and $\pd{f}{\bm{g}} \in
+        \R^m$ is the gradient of $f$ with respect to $\bm{g}$.
+      </p>
+    </div>
+
+    <p>
+      In neural network terms: the loss $L$ is a scalar, and we want $\pd{L}{\bm{x}}$ for each layer's inputs. We
+      multiply the <strong>incoming gradient</strong> $\pd{L}{\bm{g}} \in \R^m$ (from the layer above) by the transposed
+      Jacobian of the current layer. This is a matrix-vector product costing $O(mn)$ FLOPs.
+    </p>
+
+    <div class="figure">
+      <svg viewBox="0 0 750 200" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;">
+        <!-- Chain of layers -->
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#2c2824" />
+          </marker>
+          <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#8b2500" />
+          </marker>
+        </defs>
+
+        <!-- Forward pass (top) -->
+        <text x="375" y="18" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          font-weight="700" fill="#1a5276">FORWARD PASS</text>
+        <rect x="50" y="30" width="80" height="40" rx="6" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <text x="90" y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12"
+          fill="#1a5276">x</text>
+        <line x1="130" y1="50" x2="180" y2="50" stroke="#2c2824" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="185" y="30" width="100" height="40" rx="6" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <text x="235" y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12"
+          fill="#1a5276">z=Wx+b</text>
+        <line x1="285" y1="50" x2="330" y2="50" stroke="#2c2824" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="335" y="30" width="100" height="40" rx="6" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <text x="385" y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12"
+          fill="#1a5276">a=σ(z)</text>
+        <line x1="435" y1="50" x2="480" y2="50" stroke="#2c2824" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="485" y="30" width="100" height="40" rx="6" fill="#e8f0f7" stroke="#1a5276" stroke-width="1.5" />
+        <text x="535" y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12"
+          fill="#1a5276">...</text>
+        <line x1="585" y1="50" x2="630" y2="50" stroke="#2c2824" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="635" y="30" width="70" height="40" rx="6" fill="#e8f5ec" stroke="#1e6e3e" stroke-width="1.5" />
+        <text x="670" y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12"
+          fill="#1e6e3e">L</text>
+
+        <!-- Backward pass (bottom) -->
+        <text x="375" y="115" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          font-weight="700" fill="#8b2500">BACKWARD PASS (reverse order)</text>
+
+        <rect x="635" y="130" width="70" height="40" rx="6" fill="#fdf0ea" stroke="#8b2500" stroke-width="1.5" />
+        <text x="670" y="152" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11"
+          fill="#8b2500">∂L/∂L=1</text>
+
+        <line x1="635" y1="150" x2="590" y2="150" stroke="#8b2500" stroke-width="1.5" marker-end="url(#arrowRed)" />
+        <rect x="485" y="130" width="100" height="40" rx="6" fill="#fdf0ea" stroke="#8b2500" stroke-width="1.5" />
+        <text x="535" y="152" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11"
+          fill="#8b2500">∂L/∂a</text>
+
+        <line x1="485" y1="150" x2="440" y2="150" stroke="#8b2500" stroke-width="1.5" marker-end="url(#arrowRed)" />
+        <rect x="335" y="130" width="100" height="40" rx="6" fill="#fdf0ea" stroke="#8b2500" stroke-width="1.5" />
+        <text x="385" y="148" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10"
+          fill="#8b2500">∂L/∂z</text>
+        <text x="385" y="162" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9"
+          fill="#8b2500">=∂L/∂a⊙σ'(z)</text>
+
+        <line x1="335" y1="150" x2="290" y2="150" stroke="#8b2500" stroke-width="1.5" marker-end="url(#arrowRed)" />
+        <rect x="185" y="130" width="100" height="40" rx="6" fill="#fdf0ea" stroke="#8b2500" stroke-width="1.5" />
+        <text x="235" y="148" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10"
+          fill="#8b2500">∂L/∂W, ∂L/∂b</text>
+        <text x="235" y="162" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9"
+          fill="#8b2500">∂L/∂x=Wᵀ∂L/∂z</text>
+
+        <line x1="185" y1="150" x2="135" y2="150" stroke="#8b2500" stroke-width="1.5" marker-end="url(#arrowRed)" />
+        <rect x="50" y="130" width="80" height="40" rx="6" fill="#fdf0ea" stroke="#8b2500" stroke-width="1.5" />
+        <text x="90" y="155" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11"
+          fill="#8b2500">∂L/∂x</text>
+
+        <!-- Cache arrows (vertical) -->
+        <line x1="235" y1="70" x2="235" y2="130" stroke="#6b6560" stroke-width="1" stroke-dasharray="4,3" />
+        <text x="248" y="100" font-family="Source Sans 3, sans-serif" font-size="10" fill="#6b6560">cache x</text>
+
+        <line x1="385" y1="70" x2="385" y2="130" stroke="#6b6560" stroke-width="1" stroke-dasharray="4,3" />
+        <text x="398" y="100" font-family="Source Sans 3, sans-serif" font-size="10" fill="#6b6560">cache z</text>
+      </svg>
+      <div class="figure-caption"><strong>Figure 2.1.</strong> Forward and backward pass through a single layer. The
+        forward pass caches intermediate values ($\bm{x}$, $\bm{z}$) that are reused during the backward pass. Each
+        backward step involves a matrix-vector product (chain rule application) and element-wise operations.</div>
+    </div>
+
+    <!-- ---- 2.3 ---- -->
+    <h3 id="sec2-3">2.3 Jacobians and Hessians</h3>
+
+    <div class="def-box">
+      <div class="label">Jacobian Matrix</div>
+      <p>
+        For a function $\bm{f}: \R^n \to \R^m$, the Jacobian $\bm{J} \in \R^{m \times n}$ is the matrix of all
+        first-order partial derivatives:
+      </p>
+      $$J_{ij} = \pd{f_i}{x_j}$$
+      $$\bm{J} = \begin{bmatrix} \pd{f_1}{x_1} & \cdots & \pd{f_1}{x_n} \\ \vdots & \ddots & \vdots \\ \pd{f_m}{x_1} &
+      \cdots & \pd{f_m}{x_n} \end{bmatrix}$$
+      <p>
+        <strong>Storage cost:</strong> $m \times n$ elements. <strong>Computation cost:</strong> depends on the
+        function, but generally $O(mn)$ FLOPs.
+      </p>
+    </div>
+
+    <h4>Jacobians in Neural Networks</h4>
+
+    <p>
+      Every layer in a neural network defines a function from its inputs to its outputs. The Jacobian of this function
+      captures how each output changes with respect to each input. For a fully-connected layer $\bm{z} = \bm{W}\bm{x} +
+      \bm{b}$, the Jacobian with respect to $\bm{x}$ is simply $\bm{W}$ itself (since the function is linear). For an
+      element-wise activation $\bm{a} = \sigma(\bm{z})$, the Jacobian is the diagonal matrix
+      $\text{diag}(\sigma'(\bm{z}))$.
+    </p>
+
+    <div class="compute-box">
+      <div class="label">Key Insight — Diagonal Jacobians Are Cheap</div>
+      <p>
+        For element-wise functions like activations, the Jacobian is diagonal. Multiplying by a diagonal matrix is
+        equivalent to element-wise multiplication: $\text{diag}(\bm{d}) \cdot \bm{v} = \bm{d} \odot \bm{v}$, costing
+        only $n$ FLOPs instead of $n^2$ for a full matrix-vector product. This is why activation function backward
+        passes are cheap — they use Hadamard products, not full matrix multiplications.
+      </p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Hessian Matrix</div>
+      <p>
+        For a scalar function $f: \R^n \to \R$, the Hessian $\bm{H} \in \R^{n \times n}$ is the matrix of second-order
+        partial derivatives:
+      </p>
+      $$H_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}$$
+      <p><strong>Storage:</strong> $n^2$ elements ($n(n+1)/2$ if symmetric). <strong>Computation:</strong> $O(n^2)$ for
+        all elements.</p>
+    </div>
+
+    <p>
+      The Hessian encodes the <em>curvature</em> of the loss surface. Its eigenvalues determine whether a critical point
+      is a local minimum (all positive), saddle point (mixed), or local maximum (all negative). As noted earlier, for a
+      network with $P$ parameters, the Hessian is a $P \times P$ matrix — far too large to store or compute. However,
+      <strong>Hessian-vector products</strong> $\bm{H}\bm{v}$ can be computed in $O(P)$ time using a technique called
+      "Pearlmutter's trick" (Pearlmutter, 1994), which requires only one additional forward and backward pass. This
+      enables methods like conjugate gradient without ever forming the full Hessian.
+    </p>
+
+    <div class="ref-section">
+      <h4>References for §2.1–2.3</h4>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 4: Numerical Computation (gradients, Hessians,
+        optimization).</p>
+      <p>[6] Pearlmutter, B. A. (1994). Fast exact multiplication by the Hessian. <em>Neural Computation</em>, 6(1),
+        147–160.</p>
+      <p>[7] Magnus, J. R. & Neudecker, H. (2019). <em>Matrix Differential Calculus with Applications in Statistics and
+          Econometrics</em>, 3rd Ed. Wiley. — Rigorous reference for matrix calculus.</p>
+    </div>
+
+    <!-- ---- 2.4 ---- -->
+    <h3 id="sec2-4">2.4 Forward-Mode vs. Reverse-Mode Automatic Differentiation</h3>
+
+    <p>
+      This section explains <em>why</em> backpropagation works the way it does — and why it is computationally optimal
+      for neural networks. The insight is purely about the order in which we apply the chain rule, but it has enormous
+      computational implications.
+    </p>
+
+    <p>
+      Consider a function $f: \R^n \to \R^m$ composed of elementary operations. We want to compute the Jacobian $\bm{J}
+      \in \R^{m \times n}$.
+    </p>
+
+    <div class="theorem-box">
+      <div class="label">Two Modes of Automatic Differentiation</div>
+      <p><strong>Forward mode:</strong> Computes one <em>column</em> of the Jacobian per pass. We pick an input
+        direction $\bm{v} \in \R^n$ and compute the <em>Jacobian-vector product</em> $\bm{J}\bm{v} \in \R^m$ in one
+        forward sweep. To get the full Jacobian, we need $n$ passes (one per input dimension).</p>
+      <p>$$\text{Cost for full Jacobian} = O(n) \times \text{cost of one forward pass}$$</p>
+      <p><strong>Reverse mode:</strong> Computes one <em>row</em> of the Jacobian per pass. We pick an output direction
+        $\bm{u} \in \R^m$ and compute the <em>vector-Jacobian product</em> $\bm{u}^\top\bm{J} \in \R^n$ in one backward
+        sweep. To get the full Jacobian, we need $m$ passes (one per output dimension).</p>
+      <p>$$\text{Cost for full Jacobian} = O(m) \times \text{cost of one backward pass}$$</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">The Critical Insight for Neural Networks</div>
+      <p>
+        In neural network training, the function we differentiate is the <strong>loss function</strong> $L: \R^P \to
+        \R$, which maps $P$ parameters to a single scalar loss. Here $m = 1$ and $n = P$ (which can be millions or
+        billions).
+      </p>
+      <p>
+        Forward mode would require $P$ passes → <strong>completely infeasible</strong>.
+      </p>
+      <p>
+        Reverse mode requires $m = 1$ pass → <strong>one backward pass computes the entire gradient</strong> $\nabla L
+        \in \R^P$.
+      </p>
+      <p>
+        This is why backpropagation (reverse-mode AD) costs only about <strong>2–3× the cost of a single forward
+          pass</strong>, regardless of the number of parameters. This is the fundamental reason deep learning is
+        computationally tractable.
+      </p>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 750 260" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;">
+        <!-- Forward mode -->
+        <text x="185" y="20" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14"
+          font-weight="700" fill="#1a5276">Forward Mode AD</text>
+        <text x="185" y="38" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11"
+          fill="#6b6560">One pass → one column of J</text>
+
+        <!-- n inputs -->
+        <rect x="20" y="55" width="50" height="20" rx="3" fill="#e8f0f7" stroke="#1a5276" stroke-width="1" />
+        <text x="45" y="69" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#1a5276">x₁</text>
+        <rect x="20" y="80" width="50" height="20" rx="3" fill="#e8f0f7" stroke="#1a5276" stroke-width="1" />
+        <text x="45" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#1a5276">x₂</text>
+        <rect x="20" y="105" width="50" height="20" rx="3" fill="#1a5276" stroke="#1a5276" stroke-width="1" />
+        <text x="45" y="119" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">x₃ →</text>
+        <rect x="20" y="130" width="50" height="20" rx="3" fill="#e8f0f7" stroke="#1a5276" stroke-width="1" />
+        <text x="45" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#1a5276">x₄</text>
+        <text x="45" y="170" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11"
+          fill="#1a5276">n inputs</text>
+
+        <!-- Arrow -->
+        <line x1="80" y1="100" x2="140" y2="100" stroke="#1a5276" stroke-width="2" marker-end="url(#arrow)" />
+        <text x="110" y="90" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10"
+          fill="#1a5276">1 pass</text>
+
+        <!-- computation -->
+        <rect x="145" y="70" width="80" height="60" rx="6" fill="#f0ece6" stroke="#d4cfc8" stroke-width="1.5" />
+        <text x="185" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+          fill="#2c2824">f(x)</text>
+
+        <!-- Arrow -->
+        <line x1="225" y1="100" x2="280" y2="100" stroke="#1a5276" stroke-width="2" marker-end="url(#arrow)" />
+
+        <!-- m outputs: one column -->
+        <rect x="285" y="65" width="65" height="15" rx="2" fill="#1a5276" stroke="#1a5276" stroke-width="1" />
+        <text x="317" y="76" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#fff">∂f₁/∂x₃</text>
+        <rect x="285" y="85" width="65" height="15" rx="2" fill="#1a5276" stroke="#1a5276" stroke-width="1" />
+        <text x="317" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#fff">∂f₂/∂x₃</text>
+        <rect x="285" y="105" width="65" height="15" rx="2" fill="#1a5276" stroke="#1a5276" stroke-width="1" />
+        <text x="317" y="116" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#fff">∂f₃/∂x₃</text>
+        <text x="317" y="140" text-anchor="middle" font-family="Source Sans 3" font-size="10" fill="#1a5276">column 3 of
+          J</text>
+        <text x="317" y="155" text-anchor="middle" font-family="Source Sans 3" font-size="10" fill="#8b2500">Need n
+          passes!</text>
+
+        <!-- Divider -->
+        <line x1="385" y1="10" x2="385" y2="250" stroke="#d4cfc8" stroke-width="1" stroke-dasharray="6,4" />
+
+        <!-- Reverse mode -->
+        <text x="565" y="20" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14"
+          font-weight="700" fill="#8b2500">Reverse Mode AD (Backprop)</text>
+        <text x="565" y="38" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11"
+          fill="#6b6560">One pass → one row of J</text>
+
+        <!-- m outputs -->
+        <rect x="660" y="70" width="65" height="15" rx="2" fill="#fdf0ea" stroke="#8b2500" stroke-width="1" />
+        <text x="692" y="81" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#8b2500">f₁</text>
+        <rect x="660" y="90" width="65" height="15" rx="2" fill="#8b2500" stroke="#8b2500" stroke-width="1" />
+        <text x="692" y="101" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">← L</text>
+        <rect x="660" y="110" width="65" height="15" rx="2" fill="#fdf0ea" stroke="#8b2500" stroke-width="1" />
+        <text x="692" y="121" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#8b2500">f₃</text>
+        <text x="692" y="145" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11"
+          fill="#8b2500">m outputs</text>
+
+        <!-- Arrow (reversed) -->
+        <line x1="655" y1="100" x2="600" y2="100" stroke="#8b2500" stroke-width="2" marker-end="url(#arrowRed)" />
+        <text x="628" y="90" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10"
+          fill="#8b2500">1 pass</text>
+
+        <!-- computation -->
+        <rect x="520" y="70" width="80" height="60" rx="6" fill="#f0ece6" stroke="#d4cfc8" stroke-width="1.5" />
+        <text x="560" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="10"
+          fill="#2c2824">f(x)</text>
+
+        <!-- Arrow (reversed) -->
+        <line x1="520" y1="100" x2="470" y2="100" stroke="#8b2500" stroke-width="2" marker-end="url(#arrowRed)" />
+
+        <!-- All gradients -->
+        <rect x="400" y="55" width="65" height="15" rx="2" fill="#8b2500" stroke="#8b2500" stroke-width="1" />
+        <text x="432" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#fff">∂L/∂x₁</text>
+        <rect x="400" y="75" width="65" height="15" rx="2" fill="#8b2500" stroke="#8b2500" stroke-width="1" />
+        <text x="432" y="86" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#fff">∂L/∂x₂</text>
+        <rect x="400" y="95" width="65" height="15" rx="2" fill="#8b2500" stroke="#8b2500" stroke-width="1" />
+        <text x="432" y="106" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#fff">∂L/∂x₃</text>
+        <rect x="400" y="115" width="65" height="15" rx="2" fill="#8b2500" stroke="#8b2500" stroke-width="1" />
+        <text x="432" y="126" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#fff">∂L/∂x₄</text>
+        <text x="432" y="148" text-anchor="middle" font-family="Source Sans 3" font-size="10" fill="#8b2500">FULL
+          gradient ∇L</text>
+        <text x="432" y="163" text-anchor="middle" font-family="Source Sans 3" font-size="10" fill="#1e6e3e"
+          font-weight="700">Just 1 pass!</text>
+
+        <!-- Bottom comparison -->
+        <rect x="50" y="205" width="650" height="42" rx="6" fill="#fdf5e0" stroke="#8b6914" stroke-width="1" />
+        <text x="375" y="224" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          fill="#8b6914">For loss L: ℝᴾ → ℝ (m=1, n=P): Forward mode costs O(P) passes. Reverse mode costs O(1)
+          pass.</text>
+        <text x="375" y="241" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          font-weight="700" fill="#8b6914">This is why all of deep learning uses reverse-mode AD
+          (backpropagation).</text>
+      </svg>
+      <div class="figure-caption"><strong>Figure 2.2.</strong> Forward-mode vs. reverse-mode automatic differentiation.
+        For a scalar loss function with $P$ parameters, reverse mode computes the entire gradient in a single backward
+        pass — making it $P$ times more efficient than forward mode.</div>
+    </div>
+
+    <div class="compute-box">
+      <div class="label">Computational Cost of Backpropagation</div>
+      <p>
+        The cost of one backward pass through the entire network is:
+      </p>
+      $$\text{FLOPs}_{\text{backward}} \approx 2 \times \text{FLOPs}_{\text{forward}}$$
+      <p>
+        This factor of 2 arises because each layer requires two matrix multiplications in the backward pass (one for
+        $\partial L / \partial \bm{W}$ and one for $\partial L / \partial \bm{x}$), compared to one in the forward pass.
+        The total cost of one training step is:
+      </p>
+      $$\text{FLOPs}_{\text{total}} = \text{FLOPs}_{\text{forward}} + \text{FLOPs}_{\text{backward}} \approx 3 \times
+      \text{FLOPs}_{\text{forward}}$$
+      <p>
+        This is a well-established empirical rule confirmed by profiling studies (Sze et al., 2017).
+      </p>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §2.4</h4>
+      <p>[8] Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). Learning representations by back-propagating
+        errors. <em>Nature</em>, 323(6088), 533–536. — The seminal backpropagation paper.</p>
+      <p>[9] Griewank, A. & Walther, A. (2008). <em>Evaluating Derivatives: Principles and Techniques of Algorithmic
+          Differentiation</em>, 2nd Ed. SIAM. — The comprehensive reference on automatic differentiation.</p>
+      <p>[10] Baydin, A. G., Pearlmutter, B. A., Radul, A. A., & Siskind, J. M. (2018). Automatic Differentiation in
+        Machine Learning: a Survey. <em>Journal of Machine Learning Research</em>, 18(153), 1–43.</p>
+    </div>
+
+    <!-- ---- 2.5 ---- -->
+    <h3 id="sec2-5">2.5 Optimization Landscape Geometry</h3>
+
+    <p>
+      Understanding the geometry of the loss surface is essential for understanding why certain optimizers converge
+      faster (requiring fewer total FLOPs to reach a good solution) and why certain architectures are easier to train.
+    </p>
+
+    <h4>Critical Points</h4>
+    <p>
+      A <strong>critical point</strong> of $L(\bm{\theta})$ satisfies $\nabla L = \bm{0}$. The nature of the critical
+      point is determined by the Hessian $\bm{H}$:
+    </p>
+
+    <table>
+      <tr>
+        <th>Eigenvalues of H</th>
+        <th>Type</th>
+        <th>Behavior</th>
+      </tr>
+      <tr>
+        <td>All positive (positive definite)</td>
+        <td>Local minimum</td>
+        <td>Loss increases in all directions</td>
+      </tr>
+      <tr>
+        <td>All negative (negative definite)</td>
+        <td>Local maximum</td>
+        <td>Loss decreases in all directions</td>
+      </tr>
+      <tr>
+        <td>Mixed positive and negative</td>
+        <td>Saddle point</td>
+        <td>Loss increases in some directions, decreases in others</td>
+      </tr>
+    </table>
+
+    <h4>The Saddle Point Problem</h4>
+    <p>
+      A critical result by Dauphin et al. (2014) showed that in high-dimensional loss surfaces (typical for neural
+      networks), saddle points vastly outnumber local minima. For a function in $P$ dimensions, at a random critical
+      point, each Hessian eigenvalue is independently positive or negative with roughly equal probability. The
+      probability of <em>all</em> $P$ eigenvalues being positive (a local minimum) is approximately $2^{-P}$ —
+      exponentially small. This means that for networks with millions of parameters, the optimizer almost never
+      encounters true local minima; instead, it must navigate past saddle points.
+    </p>
+
+    <h4>Condition Number and Convergence</h4>
+    <div class="def-box">
+      <div class="label">Condition Number</div>
+      <p>
+        The condition number of the Hessian is $\kappa = \lambda_{\max} / \lambda_{\min}$, where $\lambda_{\max}$ and
+        $\lambda_{\min}$ are the largest and smallest positive eigenvalues. For gradient descent on a quadratic loss
+        (locally approximating any smooth loss):
+      </p>
+      $$\text{Convergence rate} \propto \left(\frac{\kappa - 1}{\kappa + 1}\right)^t$$
+      <p>
+        A condition number of $\kappa = 100$ means convergence takes roughly $100\times$ as many steps as $\kappa = 1$.
+        Since each step has a fixed FLOP cost, <strong>the condition number directly determines the total FLOPs required
+          for training</strong>.
+      </p>
+    </div>
+
+    <p>
+      This is why techniques like Batch Normalization (which reduces the condition number — Santurkar et al., 2018),
+      proper weight initialization (which starts the optimization in a well-conditioned region), and adaptive learning
+      rate methods like Adam (which implicitly estimate curvature) are so important from a computational efficiency
+      perspective — they reduce the total number of training steps needed.
+    </p>
+
+    <div class="ref-section">
+      <h4>References for §2.5</h4>
+      <p>[11] Dauphin, Y. N., Pascanu, R., Gulcehre, C., Cho, K., Ganguli, S., & Bengio, Y. (2014). Identifying and
+        attacking the saddle point problem in high-dimensional non-convex optimization. <em>NeurIPS 2014</em>.</p>
+      <p>[12] Santurkar, S., Tsipras, D., Ilyas, A., & Madry, A. (2018). How Does Batch Normalization Help Optimization?
+        <em>NeurIPS 2018</em>.</p>
+      <p>[13] Li, H., Xu, Z., Taylor, G., Studer, C., & Goldstein, T. (2018). Visualizing the Loss Landscape of Neural
+        Nets. <em>NeurIPS 2018</em>.</p>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 4.3: Gradient-Based Optimization, Ch. 8.2: Challenges
+        in Neural Network Optimization.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: PROBABILITY AND INFORMATION THEORY                 -->
+    <!-- ============================================================ -->
+    <h2 id="sec3"><span class="sec-num">§3</span> Probability and Information Theory</h2>
+
+    <p>
+      Probability theory provides the framework for understanding what neural networks are actually <em>learning</em> (a
+      probability distribution), and information theory provides the natural loss functions for measuring how well they
+      learn. Every classification network trained with cross-entropy loss is performing maximum likelihood estimation —
+      this connection is fundamental and has direct computational implications.
+    </p>
+
+    <!-- ---- 3.1 ---- -->
+    <h3 id="sec3-1">3.1 Probability Distributions in Neural Networks</h3>
+
+    <h4>Bernoulli Distribution (Binary Classification)</h4>
+    <p>
+      For a single binary output $y \in \{0, 1\}$ with predicted probability $\hat{y} = p$:
+    </p>
+    $$P(y \mid p) = p^y (1-p)^{1-y}$$
+    <p>
+      A neural network performing binary classification outputs a single value $\hat{y} = \sigma(z) \in (0, 1)$ through
+      a sigmoid activation. The output is interpreted as the Bernoulli parameter $p$.
+    </p>
+
+    <h4>Categorical Distribution (Multi-class Classification)</h4>
+    <p>
+      For a classification problem with $C$ classes, the network output $\hat{\bm{y}} = \text{softmax}(\bm{z}) \in \R^C$
+      defines a categorical distribution:
+    </p>
+    $$P(y = c \mid \hat{\bm{y}}) = \hat{y}_c = \frac{e^{z_c}}{\sum_{j=1}^{C} e^{z_j}}$$
+
+    <div class="compute-box">
+      <div class="label">Softmax — Computational Analysis</div>
+      <p>For logits $\bm{z} \in \R^C$:</p>
+      <p><strong>Step 1:</strong> Compute $\max(\bm{z})$ for numerical stability — $C - 1$ comparisons</p>
+      <p><strong>Step 2:</strong> Subtract max: $z_c \leftarrow z_c - \max(\bm{z})$ — $C$ subtractions</p>
+      <p><strong>Step 3:</strong> Exponentiate: $e^{z_c}$ for each $c$ — $C$ exponentials</p>
+      <p><strong>Step 4:</strong> Sum: $S = \sum_c e^{z_c}$ — $C - 1$ additions</p>
+      <p><strong>Step 5:</strong> Normalize: $\hat{y}_c = e^{z_c} / S$ — $C$ divisions</p>
+      <p><strong>Total: $\approx 5C$ FLOPs</strong> (dominated by $C$ exponentials, which are the most expensive
+        elementary operations)</p>
+      <p><strong>Memory:</strong> $C$ elements for the output $\hat{\bm{y}}$ (stored for backpropagation)</p>
+    </div>
+
+    <h4>Gaussian Distribution (Regression)</h4>
+    <p>
+      For regression tasks, the network output can be interpreted as the mean $\mu$ (and optionally variance $\sigma^2$)
+      of a Gaussian: $P(y \mid \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y -
+      \mu)^2}{2\sigma^2}\right)$. Under maximum likelihood with fixed variance, this leads directly to the MSE loss.
+    </p>
+
+    <!-- ---- 3.2 ---- -->
+    <h3 id="sec3-2">3.2 Information-Theoretic Loss Functions</h3>
+
+    <div class="def-box">
+      <div class="label">Entropy</div>
+      <p>
+        The entropy of a discrete probability distribution $p$ measures its uncertainty:
+      </p>
+      $$H(p) = -\sum_{x} p(x) \log p(x)$$
+      <p><strong>Computational cost:</strong> $C$ logarithms + $C$ multiplications + $(C-1)$ additions + 1 negation =
+        $\approx 3C$ FLOPs for $C$ classes.</p>
+      <p>Entropy is maximized for the uniform distribution ($H = \log C$) and minimized (= 0) for a point mass.</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Cross-Entropy</div>
+      <p>
+        The cross-entropy between the true distribution $p$ and the predicted distribution $q$ is:
+      </p>
+      $$H(p, q) = -\sum_{x} p(x) \log q(x)$$
+      <p>
+        In classification, $p$ is typically a one-hot vector (with $p(y_{\text{true}}) = 1$ and all other entries 0),
+        so:
+      </p>
+      $$H(p, q) = -\log q(y_{\text{true}})$$
+      <p><strong>Computational cost with one-hot labels:</strong> Only 1 logarithm + 1 negation = <strong>2 FLOPs per
+          sample</strong> (!)</p>
+      <p>For soft labels (e.g., label smoothing, knowledge distillation): $\approx 3C$ FLOPs per sample.</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">KL Divergence</div>
+      <p>
+        The KL divergence from distribution $p$ to distribution $q$ is:
+      </p>
+      $$D_{\text{KL}}(p \| q) = \sum_{x} p(x) \log \frac{p(x)}{q(x)} = H(p, q) - H(p)$$
+      <p>
+        Since $H(p)$ is a constant (determined by the data, not the model), minimizing cross-entropy $H(p, q)$ is
+        equivalent to minimizing KL divergence $D_{\text{KL}}(p \| q)$. This means the computational cost of training
+        with cross-entropy loss or KL divergence loss is identical.
+      </p>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 750 300" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;">
+        <!-- Title -->
+        <text x="375" y="20" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15"
+          font-weight="700" fill="#2c2824">Relationship: Entropy, Cross-Entropy, and KL Divergence</text>
+
+        <!-- The true distribution entropy (inner circle) -->
+        <ellipse cx="300" cy="170" rx="260" ry="110" fill="#e8f0f7" stroke="#1a5276" stroke-width="2" opacity="0.7" />
+        <text x="300" y="270" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14"
+          font-weight="600" fill="#1a5276">H(p, q) = Cross-Entropy</text>
+
+        <!-- Inner part: entropy of p -->
+        <ellipse cx="230" cy="165" rx="130" ry="75" fill="#f0e8f7" stroke="#5b2c8e" stroke-width="2" opacity="0.7" />
+        <text x="195" y="155" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          font-weight="600" fill="#5b2c8e">H(p)</text>
+        <text x="195" y="172" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11"
+          fill="#5b2c8e">Entropy of</text>
+        <text x="195" y="186" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11"
+          fill="#5b2c8e">true distribution</text>
+        <text x="195" y="205" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10"
+          fill="#5b2c8e">(constant, not learnable)</text>
+
+        <!-- KL divergence region -->
+        <text x="420" y="155" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13"
+          font-weight="600" fill="#8b2500">D_KL(p ‖ q)</text>
+        <text x="420" y="172" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11"
+          fill="#8b2500">KL Divergence</text>
+        <text x="420" y="189" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10"
+          fill="#8b2500">(what training minimizes)</text>
+
+        <!-- Equation at bottom -->
+        <text x="375" y="295" text-anchor="middle" font-family="Crimson Pro, serif" font-size="16" fill="#2c2824"
+          font-style="italic">H(p, q) = H(p) + D_KL(p ‖ q) → minimizing H(p,q) ≡ minimizing D_KL</text>
+      </svg>
+      <div class="figure-caption"><strong>Figure 3.1.</strong> The decomposition of cross-entropy into entropy and KL
+        divergence. Since $H(p)$ is a property of the data distribution (constant during training), minimizing
+        cross-entropy is equivalent to minimizing KL divergence. This has zero extra computational cost — same loss
+        function, same gradients.</div>
+    </div>
+
+    <!-- ---- 3.3 ---- -->
+    <h3 id="sec3-3">3.3 Maximum Likelihood Estimation and the Connection to Cross-Entropy</h3>
+
+    <p>
+      This connection is one of the most important theoretical results underpinning neural network training. It answers
+      the question: <em>why</em> do we use cross-entropy as the loss function?
+    </p>
+
+    <div class="theorem-box">
+      <div class="label">Maximum Likelihood ↔ Cross-Entropy Equivalence</div>
+      <p>
+        Given a dataset $\{(\bm{x}_i, y_i)\}_{i=1}^N$ and a model parameterized by $\bm{\theta}$ that outputs
+        probability $P_\theta(y \mid \bm{x})$, the maximum likelihood estimator is:
+      </p>
+      $$\hat{\bm{\theta}}_{\text{MLE}} = \arg\max_{\bm{\theta}} \prod_{i=1}^N P_\theta(y_i \mid \bm{x}_i)$$
+      <p>Taking the log and negating (converting max to min):</p>
+      $$\hat{\bm{\theta}}_{\text{MLE}} = \arg\min_{\bm{\theta}} \left(-\frac{1}{N}\sum_{i=1}^N \log P_\theta(y_i \mid
+      \bm{x}_i)\right)$$
+      <p>
+        This is exactly the <strong>cross-entropy loss</strong>. The negative log-likelihood (NLL) averaged over the
+        dataset equals the cross-entropy between the empirical data distribution and the model's predicted distribution.
+      </p>
+    </div>
+
+    <h4>The Softmax + Cross-Entropy Gradient Simplification</h4>
+
+    <p>
+      One of the most computationally significant results in neural network implementation is the simplification of the
+      gradient when softmax output is combined with cross-entropy loss.
+    </p>
+
+    <div class="compute-box">
+      <div class="label">Derivation — Softmax + Cross-Entropy Gradient</div>
+      <p>Let $\hat{y}_c = \text{softmax}(z_c) = \frac{e^{z_c}}{\sum_j e^{z_j}}$ and $L = -\log \hat{y}_k$ where $k$ is
+        the true class.</p>
+      <p>We need $\pd{L}{z_c}$ for all $c$:</p>
+      <p><strong>Case 1:</strong> $c = k$ (the true class):</p>
+      $$\pd{L}{z_k} = -\frac{1}{\hat{y}_k} \cdot \hat{y}_k(1 - \hat{y}_k) = -(1 - \hat{y}_k) = \hat{y}_k - 1$$
+      <p><strong>Case 2:</strong> $c \neq k$ (all other classes):</p>
+      $$\pd{L}{z_c} = -\frac{1}{\hat{y}_k} \cdot (-\hat{y}_k \hat{y}_c) = \hat{y}_c$$
+      <p><strong>Unified:</strong></p>
+      $$\pd{L}{\bm{z}} = \hat{\bm{y}} - \bm{y}$$
+      <p>where $\bm{y}$ is the one-hot encoded true label vector.</p>
+      <p>
+        <strong>Computational cost of this gradient:</strong> $C$ subtractions = $C$ FLOPs. <strong>No logarithms, no
+          divisions, no Jacobian computation</strong> — just a simple vector subtraction. This is dramatically cheaper
+        than computing the full softmax Jacobian ($C^2$ elements) and multiplying by the loss gradient.
+      </p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Why This Matters for Computational Efficiency</div>
+      <p>
+        Without this simplification, the backward pass through a softmax layer with $C$ classes would require computing
+        the full $C \times C$ Jacobian matrix of softmax (cost: $O(C^2)$ FLOPs and memory), then multiplying it by the
+        gradient vector (cost: $O(C^2)$ FLOPs). With the simplification, the cost drops to $O(C)$. For ImageNet ($C =
+        1000$), this is a $1000\times$ reduction. For language models ($C = 50{,}000+$ vocabulary tokens), this is a
+        $50{,}000\times$ reduction. All modern deep learning frameworks implement this fused softmax-cross-entropy
+        backward pass.
+      </p>
+    </div>
+
+    <div class="ref-section">
+      <h4>References for §3</h4>
+      <p>[1] Goodfellow et al. (2016). <em>Deep Learning</em>, Ch. 3: Probability and Information Theory; Ch. 5.5:
+        Maximum Likelihood Estimation; Ch. 6.2.2: Cost Functions.</p>
+      <p>[14] Bishop, C. M. (2006). <em>Pattern Recognition and Machine Learning</em>. Springer. Ch. 1.6 (Information
+        Theory), Ch. 4.3.4 (Softmax).</p>
+      <p>[15] Cover, T. M. & Thomas, J. A. (2006). <em>Elements of Information Theory</em>, 2nd Ed. Wiley. — The
+        definitive reference on information theory.</p>
+      <p>[16] Murphy, K. P. (2022). <em>Probabilistic Machine Learning: An Introduction</em>. MIT Press. Ch. 5 (Decision
+        Theory), Ch. 10 (MLE). Freely available online.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- SUMMARY TABLE                                                 -->
+    <!-- ============================================================ -->
+    <h2 id="sec-summary"><span class="sec-num">§</span> Computational Cost Summary — All Part I Operations</h2>
+
+    <p>
+      The following table consolidates every computational cost derived in this document. This serves as a quick
+      reference for analyzing the efficiency of any neural network component built from these primitives.
+    </p>
+
+    <table>
+      <tr>
+        <th>Operation</th>
+        <th>FLOPs</th>
+        <th>Memory (elements)</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>Dot product ($\bm{x}^\top\bm{y}$, length $n$)</td>
+        <td>$2n$</td>
+        <td>1 (scalar output)</td>
+        <td>Building block of matmul</td>
+      </tr>
+      <tr>
+        <td>Element-wise multiply ($\bm{x} \odot \bm{y}$, length $n$)</td>
+        <td>$n$</td>
+        <td>$n$</td>
+        <td>Activation backward pass</td>
+      </tr>
+      <tr>
+        <td>Outer product ($\bm{x}\bm{y}^\top$, $m \times n$)</td>
+        <td>$mn$</td>
+        <td>$mn$</td>
+        <td>Weight gradient computation</td>
+      </tr>
+      <tr>
+        <td>Matrix-vector ($\bm{A}\bm{x}$, $m \times n$)</td>
+        <td>$2mn$</td>
+        <td>$m$</td>
+        <td>Single-sample FC layer</td>
+      </tr>
+      <tr>
+        <td><strong>Matrix multiply ($\bm{A}\bm{B}$, $m \times n \times p$)</strong></td>
+        <td><strong>$2mnp$</strong></td>
+        <td><strong>$mp$</strong></td>
+        <td><strong>Core operation of DL</strong></td>
+      </tr>
+      <tr>
+        <td>Transpose</td>
+        <td>$O(1)$</td>
+        <td>0 (metadata only)</td>
+        <td>Stride manipulation</td>
+      </tr>
+      <tr>
+        <td>$L^2$ norm (length $n$)</td>
+        <td>$2n + 1$</td>
+        <td>1</td>
+        <td>Gradient clipping</td>
+      </tr>
+      <tr>
+        <td>Frobenius norm ($m \times n$ matrix)</td>
+        <td>$2mn + 1$</td>
+        <td>1</td>
+        <td>L2 regularization</td>
+      </tr>
+      <tr>
+        <td>Softmax ($C$ classes)</td>
+        <td>$\sim5C$</td>
+        <td>$C$</td>
+        <td>Includes numerical stability</td>
+      </tr>
+      <tr>
+        <td>Cross-entropy (one-hot)</td>
+        <td>$2$</td>
+        <td>1</td>
+        <td>Only 1 log needed</td>
+      </tr>
+      <tr>
+        <td>Softmax + CE gradient (fused)</td>
+        <td>$C$</td>
+        <td>$C$</td>
+        <td>$\hat{\bm{y}} - \bm{y}$</td>
+      </tr>
+      <tr>
+        <td>Entropy ($C$ classes)</td>
+        <td>$\sim3C$</td>
+        <td>1</td>
+        <td>$C$ logs + $C$ multiplies</td>
+      </tr>
+      <tr>
+        <td>KL divergence ($C$ classes)</td>
+        <td>$\sim5C$</td>
+        <td>1</td>
+        <td>$C$ logs + $C$ divides + $C$ multiplies</td>
+      </tr>
+      <tr>
+        <td>Full Jacobian ($f: \R^n \to \R^m$)</td>
+        <td>$O(mn)$</td>
+        <td>$mn$</td>
+        <td>Rarely computed in full</td>
+      </tr>
+      <tr>
+        <td>Hessian ($f: \R^n \to \R$)</td>
+        <td>$O(n^2)$</td>
+        <td>$n^2$</td>
+        <td>Infeasible for large $n$</td>
+      </tr>
+      <tr>
+        <td>Hessian-vector product</td>
+        <td>$O(n)$</td>
+        <td>$O(n)$</td>
+        <td>Pearlmutter's trick</td>
+      </tr>
+      <tr>
+        <td>Forward pass (full network)</td>
+        <td>$F$</td>
+        <td>All activations</td>
+        <td>Defined by architecture</td>
+      </tr>
+      <tr>
+        <td>Backward pass (full network)</td>
+        <td>$\sim2F$</td>
+        <td>Gradients + cached activations</td>
+        <td>Reverse-mode AD</td>
+      </tr>
+      <tr>
+        <td>Forward + backward</td>
+        <td>$\sim3F$</td>
+        <td>Params + grads + activations</td>
+        <td>One training iteration</td>
+      </tr>
+    </table>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- COMPLETE REFERENCES                                           -->
+    <!-- ============================================================ -->
+    <h2 id="sec-refs"><span class="sec-num">§</span> Complete References</h2>
+
+    <div class="ref-section">
+      <h4>Textbooks</h4>
+      <p>[1] Goodfellow, I., Bengio, Y., & Courville, A. (2016). <em>Deep Learning</em>. MIT Press. Chapters 2 (Linear
+        Algebra), 3 (Probability), 4 (Numerical Computation). Available at <code>deeplearningbook.org</code>.</p>
+      <p>[2] Strang, G. (2016). <em>Introduction to Linear Algebra</em>, 5th Ed. Wellesley-Cambridge Press.</p>
+      <p>[3] Golub, G. H. & Van Loan, C. F. (2013). <em>Matrix Computations</em>, 4th Ed. Johns Hopkins University
+        Press.</p>
+      <p>[7] Magnus, J. R. & Neudecker, H. (2019). <em>Matrix Differential Calculus with Applications in Statistics and
+          Econometrics</em>, 3rd Ed. Wiley.</p>
+      <p>[9] Griewank, A. & Walther, A. (2008). <em>Evaluating Derivatives: Principles and Techniques of Algorithmic
+          Differentiation</em>, 2nd Ed. SIAM.</p>
+      <p>[14] Bishop, C. M. (2006). <em>Pattern Recognition and Machine Learning</em>. Springer.</p>
+      <p>[15] Cover, T. M. & Thomas, J. A. (2006). <em>Elements of Information Theory</em>, 2nd Ed. Wiley.</p>
+      <p>[16] Murphy, K. P. (2022). <em>Probabilistic Machine Learning: An Introduction</em>. MIT Press.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Research Papers</h4>
+      <p>[4] Saxe, A. M., McClelland, J. L., & Ganguli, S. (2014). Exact solutions to the nonlinear dynamics of learning
+        in deep linear neural networks. <em>ICLR 2014</em>.</p>
+      <p>[5] Pascanu, R., Mikolov, T., & Bengio, Y. (2013). On the difficulty of training recurrent neural networks.
+        <em>ICML 2013</em>.</p>
+      <p>[6] Pearlmutter, B. A. (1994). Fast exact multiplication by the Hessian. <em>Neural Computation</em>, 6(1),
+        147–160.</p>
+      <p>[8] Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). Learning representations by back-propagating
+        errors. <em>Nature</em>, 323(6088), 533–536.</p>
+      <p>[10] Baydin, A. G., Pearlmutter, B. A., Radul, A. A., & Siskind, J. M. (2018). Automatic Differentiation in
+        Machine Learning: a Survey. <em>JMLR</em>, 18(153), 1–43.</p>
+      <p>[11] Dauphin, Y. N., et al. (2014). Identifying and attacking the saddle point problem in high-dimensional
+        non-convex optimization. <em>NeurIPS 2014</em>.</p>
+      <p>[12] Santurkar, S., Tsipras, D., Ilyas, A., & Madry, A. (2018). How Does Batch Normalization Help Optimization?
+        <em>NeurIPS 2018</em>.</p>
+      <p>[13] Li, H., Xu, Z., Taylor, G., Studer, C., & Goldstein, T. (2018). Visualizing the Loss Landscape of Neural
+        Nets. <em>NeurIPS 2018</em>.</p>
+    </div>
+
+    <div class="ref-section">
+      <h4>Surveys</h4>
+      <p>[3*] Sze, V., Chen, Y., Yang, T., & Emer, J. (2017). Efficient Processing of Deep Neural Networks: A Tutorial
+        and Survey. <em>Proceedings of the IEEE</em>, 105(12), 2295–2329. — Comprehensive FLOP and memory formulas for
+        all DNN layer types.</p>
+    </div>
+
+  </div><!-- end container -->
+
+  <!-- Portfolio nav script -->
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Notebook') {
+        link.classList.add('active');
+      }
+    });
+    let lastScrollTop = 0;
+    const nav = document.querySelector('.top-nav');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollPos > 50) { nav.classList.add('nav-scrolled'); } else { nav.classList.remove('nav-scrolled'); }
+      if (scrollPos > 100) {
+        if (scrollPos > lastScrollTop && scrollPos > 200) { nav.classList.add('nav-hidden'); } else { nav.classList.remove('nav-hidden'); }
+      }
+      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+    });
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../../firebase-config.js"></script>
+  <script src="../../../visitor-counter.js"></script>
+
+  <!-- Back to Index -->
+  <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #d4cfc8;">
+    <a href="../../index.html" style="font-family: 'Source Sans 3', sans-serif; font-size: 15px; color: #8b2500; text-decoration: none; font-weight: 600;">← Back to Notebook Index</a>
+  </div>
+
+  <!-- Visitor Counter -->
+  <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="notebook_post_00005">
+    <div class="visitor-stats">
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Total visits:</span>
+        <span class="visitor-stat-count" id="overall-visitor-count"></span>
+      </div>
+      <span class="visitor-stat-separator">§</span>
+      <div class="visitor-stat">
+        <span class="visitor-stat-label">Page visits:</span>
+        <span class="visitor-stat-count" id="page-visitor-count"></span>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
