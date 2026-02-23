@@ -9,6 +9,157 @@
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="notebook.css" />
   <link rel="stylesheet" href="../visitor-counter.css" />
+  <style>
+    /* ─────────────────────────────────────────────
+       Notebook Index — Clean list redesign
+    ───────────────────────────────────────────── */
+
+    .nb-wrap {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* ── Category block ── */
+    .nb-cat {
+      margin-bottom: 3.2rem;
+    }
+
+    .nb-cat-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--body-color, #444);
+      opacity: 0.38;
+      margin: 0 0 1.4rem;
+    }
+
+    /* ── Subcategory block ── */
+    .nb-sub {
+      margin-bottom: 2rem;
+    }
+
+    .nb-sub-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .nb-sub-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--body-color, #333);
+      opacity: 0.5;
+      white-space: nowrap;
+    }
+
+    .nb-sub-rule {
+      flex: 1;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.1;
+    }
+
+    /* ── Entry row ── */
+    .nb-entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.38rem 0.5rem;
+      margin: 0 -0.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+      position: relative;
+      text-align: left;
+    }
+
+    .nb-entry:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .nb-entry:hover .nb-entry-title {
+      opacity: 1;
+    }
+
+    /* Left accent on hover */
+    .nb-entry::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 20%;
+      bottom: 20%;
+      width: 2px;
+      border-radius: 2px;
+      background: var(--link-color, #c0392b);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .nb-entry:hover::before {
+      opacity: 1;
+    }
+
+    /* Part label for series (e.g. "0", "I", "II") */
+    .nb-entry-num {
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: ui-monospace, 'JetBrains Mono', monospace;
+      letter-spacing: 0.04em;
+      color: var(--body-color, #333);
+      opacity: 0.28;
+      min-width: 1.8rem;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Title */
+    .nb-entry-title {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.9rem;
+      font-weight: 400;
+      line-height: 1.45;
+      opacity: 0.82;
+      transition: opacity 0.15s;
+    }
+
+    /* Leader hidden in multiline mode */
+    .nb-leader {
+      display: none;
+    }
+
+    /* Date */
+    .nb-entry-date {
+      font-size: 0.72rem;
+      font-family: ui-monospace, 'JetBrains Mono', monospace;
+      opacity: 0.32;
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
+      padding-top: 0.18rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      .nb-leader {
+        display: none;
+      }
+
+      .nb-entry-date {
+        display: none;
+      }
+
+      .nb-entry-num {
+        min-width: 1.4rem;
+      }
+    }
+  </style>
 </head>
 
 <body class="text-justify">
@@ -27,131 +178,112 @@
     <p class="subtitle">Technical notes on Computer Science, Mathematics, and Engineering</p>
   </header>
 
-  <main class="notebook-index">
+  <main class="nb-wrap">
 
-    <!-- Category: Mathematics -->
-    <section class="category-section">
-      <h2 class="category-title" id="maths">Mathematics</h2>
+    <!-- ═══════════════════════════
+         MATHEMATICS
+    ══════════════════════════════ -->
+    <section class="nb-cat" id="maths">
+      <p class="nb-cat-label">Mathematics</p>
 
-      <!-- Subcategory: Preliminary Knowledge -->
-      <div class="subcategory">
-        <h3 class="subcategory-title">Preliminary Knowledge</h3>
-        <ul class="post-list">
-          <li class="post-item">
-            <a href="./posts/post_00001/index.html" class="post-link">
-              <span class="post-title">Review of functions, polynomials, infinite series, combinatorics, and integration
-                techniques.</span>
-              <span class="post-meta">
-                <time datetime="2025-10-24">Oct 24, 2025</time>
-              </span>
-            </a>
-          </li>
-        </ul>
+      <!-- Preliminary Knowledge -->
+      <div class="nb-sub">
+        <div class="nb-sub-header">
+          <span class="nb-sub-name">Preliminary Knowledge</span>
+          <span class="nb-sub-rule"></span>
+        </div>
+
+        <a href="./posts/post_00001/index.html" class="nb-entry">
+          <span class="nb-entry-num">1</span>
+          <span class="nb-entry-title">Mathematical Background Review</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Oct 24, 2025</span>
+        </a>
       </div>
 
-      <!-- Subcategory: Probability Theory -->
-      <div class="subcategory">
-        <h3 class="subcategory-title">Probability Theory</h3>
-        <ul class="post-list">
-          <li class="post-item">
-            <a href="./posts/post_00002/index.html" class="post-link">
-              <span class="post-title">Set Theory and Probability I: Fundamental concepts including set operations,
-                cardinality, probability spaces, axioms, and conditional probability.</span>
-              <span class="post-meta">
-                <time datetime="2025-10-25">Oct 25, 2025</time>
-              </span>
-            </a>
-          </li>
-          <li class="post-item">
-            <a href="./posts/post_00003/index.html" class="post-link">
-              <span class="post-title">Set Theory and Probability II: Conditional probability, statistical independence,
-                law of total probability, and Bayes' theorem with applications.</span>
-              <span class="post-meta">
-                <time datetime="2025-10-26">Oct 26, 2025</time>
-              </span>
-            </a>
-          </li>
-        </ul>
+      <!-- Probability Theory -->
+      <div class="nb-sub">
+        <div class="nb-sub-header">
+          <span class="nb-sub-name">Probability Theory</span>
+          <span class="nb-sub-rule"></span>
+        </div>
+
+        <a href="./posts/post_00002/index.html" class="nb-entry">
+          <span class="nb-entry-num">1</span>
+          <span class="nb-entry-title">Set Theory &amp; Probability I — Sets, axioms, conditional probability</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Oct 25, 2025</span>
+        </a>
+        <a href="./posts/post_00003/index.html" class="nb-entry">
+          <span class="nb-entry-num">2</span>
+          <span class="nb-entry-title">Set Theory &amp; Probability II — Independence, total probability, Bayes'
+            theorem</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Oct 26, 2025</span>
+        </a>
       </div>
     </section>
 
-    <!-- Category: Computer Science -->
-    <section class="category-section">
-      <h2 class="category-title" id="cs">Computer Science</h2>
+    <!-- ═══════════════════════════
+         COMPUTER SCIENCE
+    ══════════════════════════════ -->
+    <section class="nb-cat" id="cs">
+      <p class="nb-cat-label">Computer Science</p>
 
-      <!-- Subcategory: Deep Learning -->
-      <div class="subcategory" id="dnn">
-        <h3 class="subcategory-title">Deep Neural Networks</h3>
-        <ul class="post-list">
-          <li class="post-item">
-            <a href="./posts/post_00004/index.html" class="post-link">
-              <span class="post-title">Part 0 — Prologue: The Intellectual Genealogy of Deep Neural Networks. History,
-                taxonomy, AI/ML/DL hierarchy, and the six historical eras.</span>
-              <span class="post-meta">
-                <time datetime="2026-02-23">Feb 23, 2026</time>
-              </span>
-            </a>
-          </li>
-          <li class="post-item">
-            <a href="./posts/post_00005/index.html" class="post-link">
-              <span class="post-title">Part I — Mathematical Foundations: Linear algebra, calculus, automatic
-                differentiation, and probability theory underlying neural network computation — with full FLOP
-                analysis.</span>
-              <span class="post-meta">
-                <time datetime="2026-02-23">Feb 23, 2026</time>
-              </span>
-            </a>
-          </li>
-          <li class="post-item">
-            <a href="./posts/post_00006/index.html" class="post-link">
-              <span class="post-title">Part II — The Multilayer Perceptron: Complete dissection of the MLP — every
-                neuron, layer, matrix multiplication, and gradient derived from first principles with full computational
-                cost accounting.</span>
-              <span class="post-meta">
-                <time datetime="2026-02-23">Feb 23, 2026</time>
-              </span>
-            </a>
-          </li>
-          <li class="post-item">
-            <a href="./posts/post_00007/index.html" class="post-link">
-              <span class="post-title">Part III — Convolutional Neural Networks: The convolution operation, all layer
-                types, receptive field theory, landmark architectures (LeNet to EfficientNet), and full computational
-                cost analysis.</span>
-              <span class="post-meta">
-                <time datetime="2026-02-23">Feb 23, 2026</time>
-              </span>
-            </a>
-          </li>
-          <li class="post-item">
-            <a href="./posts/post_00008/index.html" class="post-link">
-              <span class="post-title">Part IV — Training Components: Loss functions, optimizers (SGD to AdamW),
-                regularization, normalization layers, and learning rate schedules — every update rule derived, every
-                FLOP counted.</span>
-              <span class="post-meta">
-                <time datetime="2026-02-23">Feb 23, 2026</time>
-              </span>
-            </a>
-          </li>
-          <li class="post-item">
-            <a href="./posts/post_00009/index.html" class="post-link">
-              <span class="post-title">Part V — Computational Efficiency Analysis: FLOP counting, memory budgets, the
-                roofline model, mixed precision, gradient checkpointing, quantization, pruning, and scaling laws.</span>
-              <span class="post-meta">
-                <time datetime="2026-02-23">Feb 23, 2026</time>
-              </span>
-            </a>
-          </li>
-          <li class="post-item">
-            <a href="./posts/post_00010/index.html" class="post-link">
-              <span class="post-title">Part VI — Advanced Topics: Transformers (self-attention, MHA, FFN), RNNs and
-                LSTMs, theoretical foundations of BatchNorm and residual connections, MoE, SSMs, and the efficiency
-                frontier.</span>
-              <span class="post-meta">
-                <time datetime="2026-02-23">Feb 23, 2026</time>
-              </span>
-            </a>
-          </li>
-        </ul>
+      <!-- Deep Neural Networks -->
+      <div class="nb-sub" id="dnn">
+        <div class="nb-sub-header">
+          <span class="nb-sub-name">Deep Neural Networks</span>
+          <span class="nb-sub-rule"></span>
+        </div>
+
+        <a href="./posts/post_00004/index.html" class="nb-entry">
+          <span class="nb-entry-num">0</span>
+          <span class="nb-entry-title">Prologue — The Intellectual Genealogy of Deep Neural Networks</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Feb 23, 2026</span>
+        </a>
+        <a href="./posts/post_00005/index.html" class="nb-entry">
+          <span class="nb-entry-num">I</span>
+          <span class="nb-entry-title">Mathematical Foundations — Linear algebra, calculus, probability &amp;
+            autodiff</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Feb 23, 2026</span>
+        </a>
+        <a href="./posts/post_00006/index.html" class="nb-entry">
+          <span class="nb-entry-num">II</span>
+          <span class="nb-entry-title">The Multilayer Perceptron — Complete dissection from neuron to backprop</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Feb 23, 2026</span>
+        </a>
+        <a href="./posts/post_00007/index.html" class="nb-entry">
+          <span class="nb-entry-num">III</span>
+          <span class="nb-entry-title">Convolutional Neural Networks — Complete dissection, im2col, landmark
+            architectures</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Feb 23, 2026</span>
+        </a>
+        <a href="./posts/post_00008/index.html" class="nb-entry">
+          <span class="nb-entry-num">IV</span>
+          <span class="nb-entry-title">Training Components — Loss functions, optimizers, regularization,
+            BatchNorm</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Feb 23, 2026</span>
+        </a>
+        <a href="./posts/post_00009/index.html" class="nb-entry">
+          <span class="nb-entry-num">V</span>
+          <span class="nb-entry-title">Computational Efficiency — FLOPs, memory, roofline model, quantization, scaling
+            laws</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Feb 23, 2026</span>
+        </a>
+        <a href="./posts/post_00010/index.html" class="nb-entry">
+          <span class="nb-entry-num">VI</span>
+          <span class="nb-entry-title">Advanced Topics — Transformers, RNNs, Lottery Ticket, MoE, State Space
+            Models</span>
+          <span class="nb-leader"></span>
+          <span class="nb-entry-date">Feb 23, 2026</span>
+        </a>
       </div>
     </section>
 
@@ -178,41 +310,25 @@
   </footer>
 
   <script>
-    // Active link highlighting - Notebook page
     document.querySelectorAll('.top-nav a').forEach(link => {
       if (link.getAttribute('href') === 'index.html' || link.textContent.trim() === 'Notebook') {
         link.classList.add('active');
       }
     });
 
-    // Sticky navigation with scroll behavior
     let lastScrollTop = 0;
-    let scrollThreshold = 100;
     const nav = document.querySelector('.top-nav');
     let ticking = false;
-
-    function updateNavigation(scrollPos) {
-      if (scrollPos > 50) {
-        nav.classList.add('nav-scrolled');
-      } else {
-        nav.classList.remove('nav-scrolled');
-      }
-
-      if (scrollPos > scrollThreshold) {
-        if (scrollPos > lastScrollTop && scrollPos > 200) {
-          nav.classList.add('nav-hidden');
-        } else {
-          nav.classList.remove('nav-hidden');
-        }
-      }
-
-      lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
-    }
 
     window.addEventListener('scroll', () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          updateNavigation(window.pageYOffset || document.documentElement.scrollTop);
+          const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+          nav.classList.toggle('nav-scrolled', scrollPos > 50);
+          if (scrollPos > 100) {
+            nav.classList.toggle('nav-hidden', scrollPos > lastScrollTop && scrollPos > 200);
+          }
+          lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
           ticking = false;
         });
         ticking = true;
@@ -220,11 +336,8 @@
     });
   </script>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-  <!-- Firebase Configuration & Visitor Counter -->
   <script src="../firebase-config.js"></script>
   <script src="../visitor-counter.js"></script>
 </body>
