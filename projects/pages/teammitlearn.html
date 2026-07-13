@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TeammitLearn - Projects - Mahbub Kousar</title>
+  <meta name="description" content="TeammitLearn Three.js interactive physics simulation with LLM-controllable parameters" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb"><a href="../index.html">Projects</a><span class="breadcrumb-separator">/</span><span>TeammitLearn</span></nav>
+
+    <header class="project-header">
+      <h1>TeammitLearn</h1>
+      <p class="subtitle">An interactive physics simulator where parameters move faster than excuses.</p>
+      <div class="project-meta"><span>Interactive Simulation</span><span>Three.js</span><span>Educational AI</span></div>
+    </header>
+
+    <article>
+      <p>
+        TeammitLearn is a Three.js-based interactive physics simulation platform for real-time projectile and motion
+        modeling. It combines direct visual feedback with an LLM-controllable simulation API, because sometimes the
+        best interface is "make gravity weird and explain what happened."
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Renderer</dt><dd>Three.js real-time visual simulation pipeline.</dd></div>
+        <div class="project-fact"><dt>Controls</dt><dd>Adjustable gravity, velocity, angle, and related physical parameters.</dd></div>
+        <div class="project-fact"><dt>AI Layer</dt><dd>Natural-language parameter control and AI-generated practice questions.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Simulation Design</h2>
+        <p>
+          The platform models motion in real time, allowing students to modify parameters and immediately observe the
+          consequences. This makes abstract formulas visible, which is useful when equations are being technically
+          correct but emotionally unhelpful.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>LLM Control</h2>
+        <p>
+          The simulation exposes an API that can be controlled by language-model instructions. Users can describe
+          parameter changes naturally, and the system maps those requests into simulation updates.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Practice Generation</h2>
+        <p>
+          AI-generated practice questions connect the simulation state to learning tasks. The result is an environment
+          that can demonstrate a concept and then immediately ask whether the learner was paying attention.
+        </p>
+      </section>
+
+      <div class="project-tags"><span>Three.js</span><span>Physics</span><span>Simulation</span><span>LLM Control</span><span>Education</span></div>
+
+      <nav class="project-nav-links">
+        <a href="teammitdrive.html">Previous: TeammitDrive</a>
+        <a href="okkhor.html">Next: Okkhor</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_teammitlearn">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>document.querySelectorAll('.top-nav a').forEach(link => { if (link.textContent.trim() === 'Projects') link.classList.add('active'); });</script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>

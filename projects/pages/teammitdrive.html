@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TeammitDrive - Projects - Mahbub Kousar</title>
+  <meta name="description" content="TeammitDrive RAG-based Telegram bot for natural-language cloud file search" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb"><a href="../index.html">Projects</a><span class="breadcrumb-separator">/</span><span>TeammitDrive</span></nav>
+
+    <header class="project-header">
+      <h1>TeammitDrive</h1>
+      <p class="subtitle">Natural-language file search for people who know the document exists, somewhere, probably.</p>
+      <div class="project-meta"><span>RAG-Based File Search</span><span>Telegram Bot</span><span>Cloud Storage</span></div>
+    </header>
+
+    <article>
+      <p>
+        TeammitDrive is a RAG-based Telegram bot that lets users search files across aggregated storage providers
+        through natural language. It targets the common tragedy of remembering what a file was about but not what it
+        was called.
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Providers</dt><dd>Google Drive, Dropbox, OneDrive, and similar connected storage options.</dd></div>
+        <div class="project-fact"><dt>Interface</dt><dd>Telegram bot conversation flow.</dd></div>
+        <div class="project-fact"><dt>Ranking</dt><dd>Embedding-based semantic ranking over file metadata.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Unified Retrieval Layer</h2>
+        <p>
+          The system unifies multiple cloud storage APIs behind one retrieval layer. Users can ask for files across
+          connected accounts without manually checking each storage service like a digital archaeologist.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Semantic Ranking</h2>
+        <p>
+          Embeddings are applied to file metadata so search can surface relevant results beyond exact filename matches.
+          This makes the system more tolerant of human memory, which is generous because human memory started the
+          problem.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Conversational Access</h2>
+        <p>
+          Telegram provides a low-friction access point for querying files from a chat interface. The design favors
+          direct natural-language requests over making users learn yet another search syntax.
+        </p>
+      </section>
+
+      <div class="project-tags"><span>Telegram</span><span>RAG</span><span>Cloud APIs</span><span>Embeddings</span><span>Semantic Search</span></div>
+
+      <nav class="project-nav-links">
+        <a href="physics-chatbot.html">Previous: Physics Chatbot</a>
+        <a href="teammitlearn.html">Next: TeammitLearn</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_teammitdrive">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>document.querySelectorAll('.top-nav a').forEach(link => { if (link.textContent.trim() === 'Projects') link.classList.add('active'); });</script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>

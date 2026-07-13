@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InstaBin - Projects - Mahbub Kousar</title>
+  <meta name="description" content="InstaBin React TypeScript code-sharing platform with syntax highlighting and shareable links" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb"><a href="../index.html">Projects</a><span class="breadcrumb-separator">/</span><span>InstaBin</span></nav>
+
+    <header class="project-header">
+      <h1>InstaBin</h1>
+      <p class="subtitle">A code-sharing platform for snippets too useful to leave in a chat window forever.</p>
+      <div class="project-meta"><span>Developer Utility</span><span>React</span><span>TypeScript</span></div>
+    </header>
+
+    <article>
+      <p>
+        InstaBin is a React/TypeScript code-sharing platform with multi-language syntax highlighting, shareable
+        public/private links, automatic language detection, and theming. It is essentially a cleaner habitat for the
+        code snippets that would otherwise wander through messages without supervision.
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Frontend</dt><dd>React and TypeScript.</dd></div>
+        <div class="project-fact"><dt>Editor</dt><dd>Distraction-free editing with automatic language detection and theming.</dd></div>
+        <div class="project-fact"><dt>Sharing</dt><dd>Public/private visibility controls with shareable links.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Editor Experience</h2>
+        <p>
+          The editor focuses on readability and low-friction snippet creation. Multi-language highlighting makes shared
+          code easier to inspect, which is important because plain-text code screenshots remain a small civic tragedy.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Visibility Model</h2>
+        <p>
+          Users can choose whether snippets are public or private, allowing the same platform to support quick sharing,
+          reference storage, and selective disclosure of code that may or may not have been written at 2 AM.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>System Role</h2>
+        <p>
+          InstaBin is a compact developer utility rather than a research system. Its value is in making a common
+          workflow feel direct, legible, and less dependent on copy-pasting into whatever text box was nearest.
+        </p>
+      </section>
+
+      <div class="project-tags"><span>React</span><span>TypeScript</span><span>Syntax Highlighting</span><span>Editor</span><span>Sharing</span></div>
+
+      <nav class="project-nav-links">
+        <a href="tuitiontracker.html">Previous: TuitionTracker</a>
+        <a href="../index.html">Back to Projects</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_instabin">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>document.querySelectorAll('.top-nav a').forEach(link => { if (link.textContent.trim() === 'Projects') link.classList.add('active'); });</script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>

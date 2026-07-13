@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physics Chatbot - Projects - Mahbub Kousar</title>
+  <meta name="description" content="Offline RAG-based physics chatbot using FAISS and local LLMs" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb"><a href="../index.html">Projects</a><span class="breadcrumb-separator">/</span><span>Physics Chatbot</span></nav>
+
+    <header class="project-header">
+      <h1>Physics Chatbot via RAG + Local LLMs</h1>
+      <p class="subtitle">A physics tutor that works offline, because the laws of motion should not require Wi-Fi.</p>
+      <div class="project-meta"><span>Educational AI</span><span>Offline RAG</span><span>Local LLMs</span></div>
+    </header>
+
+    <article>
+      <p>
+        This project is an offline RAG-based physics tutor designed to answer conceptual, formula-based, and numerical
+        questions with cited sources. It combines semantic retrieval with locally hosted language models, making the
+        system useful in settings where network dependence is undesirable or simply impolite.
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Retrieval</dt><dd>FAISS semantic search over a 562-vector knowledge base.</dd></div>
+        <div class="project-fact"><dt>Models</dt><dd>Locally hosted LLMs including Llama 3.2 and Phi-3.</dd></div>
+        <div class="project-fact"><dt>Interface</dt><dd>Streamlit UI with LaTeX-rendered responses.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Retrieval Design</h2>
+        <p>
+          The system retrieves relevant curriculum material using FAISS before generating an answer. This keeps responses
+          anchored to source content and reduces the model's opportunity to hallucinate a new branch of physics.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Performance Observation</h2>
+        <p>
+          Retrieval latency reached approximately 10ms across the knowledge base, making the tutor fast enough for
+          interactive use. The real pedagogical challenge then becomes answer quality, not waiting for the system to
+          remember Newton.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Evaluation</h2>
+        <p>
+          Retrieval accuracy and answer relevance were evaluated across multiple curriculum difficulty levels. The
+          result is a practical tutor prototype aimed at traceable explanations rather than mysterious oracle behavior.
+        </p>
+      </section>
+
+      <div class="project-tags"><span>FAISS</span><span>Llama 3.2</span><span>Phi-3</span><span>Streamlit</span><span>LaTeX</span></div>
+
+      <nav class="project-nav-links">
+        <a href="resumesync.html">Previous: ResumeSync</a>
+        <a href="teammitdrive.html">Next: TeammitDrive</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_physics_chatbot">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>document.querySelectorAll('.top-nav a').forEach(link => { if (link.textContent.trim() === 'Projects') link.classList.add('active'); });</script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>

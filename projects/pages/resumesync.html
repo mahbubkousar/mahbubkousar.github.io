@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ResumeSync - Projects - Mahbub Kousar</title>
+  <meta name="description" content="ResumeSync ATS resume optimization platform with AI-assisted editing and scoring" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb">
+      <a href="../index.html">Projects</a>
+      <span class="breadcrumb-separator">/</span>
+      <span>ResumeSync</span>
+    </nav>
+
+    <header class="project-header">
+      <h1>ResumeSync</h1>
+      <p class="subtitle">An ATS optimizer, also known as a mirror with a scoring engine.</p>
+      <div class="project-meta">
+        <span>AI Product</span>
+        <span>Resume Optimization</span>
+        <span>Web Platform</span>
+      </div>
+    </header>
+
+    <article>
+      <p>
+        ResumeSync is an ATS resume optimization platform that helps users compare resume content against target job
+        descriptions. It combines structured scoring with AI-assisted manual and conversational editing, because
+        apparently resumes were not stressful enough without real-time metrics.
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Backend</dt><dd>Node.js, Express, PostgreSQL, Redis-cached analytics.</dd></div>
+        <div class="project-fact"><dt>AI Features</dt><dd>LLM-powered keyword extraction and conversational editing support.</dd></div>
+        <div class="project-fact"><dt>Output</dt><dd>Automated PDF export and real-time ATS-style score feedback.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Scoring Engine</h2>
+        <p>
+          The scoring engine benchmarks resume content against target job descriptions, surfacing missing keywords,
+          content gaps, and formatting issues. The goal is to make optimization explicit without turning the user into
+          a passive passenger inside an opaque AI rewrite machine.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Editing Workflow</h2>
+        <p>
+          ResumeSync supports both manual edits and AI-assisted conversational editing. This lets users preserve voice
+          and intent while still benefiting from keyword extraction and targeted improvement suggestions.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>System Notes</h2>
+        <p>
+          Redis-cached analytics reduce repeated computation, while PostgreSQL stores structured resume and job data.
+          Automated PDF export turns the optimized draft into a usable artifact, completing the sacred software loop:
+          input, anxiety, output.
+        </p>
+      </section>
+
+      <div class="project-tags">
+        <span>Node.js</span><span>Express</span><span>PostgreSQL</span><span>Redis</span><span>LLM</span>
+      </div>
+
+      <nav class="project-nav-links">
+        <a href="cpu-dnn-optimization.html">Previous: CPU-Level DNN Optimization</a>
+        <a href="physics-chatbot.html">Next: Physics Chatbot</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_resumesync">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Projects') link.classList.add('active');
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>

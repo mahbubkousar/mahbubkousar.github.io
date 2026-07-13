@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects - Mahbub Kousar</title>
+  <meta name="description" content="Selected AI, NLP, research, web, mobile, and systems projects by Mahbubur Rahman Khan" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="projects.css" />
+  <link rel="stylesheet" href="../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../index.html">Portfolio</a></li>
+      <li><a href="../notebooks/index.html">Notebook</a></li>
+      <li><a href="index.html">Projects</a></li>
+      <li><a href="../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <header class="projects-header">
+    <h1>Projects</h1>
+    <p class="subtitle">Selected experimental evidence from AI systems, research prototypes, and software that allegedly works.</p>
+  </header>
+
+  <main class="projects-index">
+    <p>
+      This catalogue records artifacts produced under varying levels of caffeine, deadline pressure, and academic
+      optimism. Entries are grouped as individual case studies so future investigators may distinguish between
+      "interesting idea," "working system," and "why did this require three services?"
+    </p>
+
+    <div class="project-list">
+      <a class="project-entry" href="pages/itihaasai.html">
+        <span class="project-entry-kicker">CSE499 Capstone</span>
+        <span class="project-entry-title">ItihaasAI</span>
+        <span class="project-entry-summary">A full-stack AI historical archive with knowledge graphs, OCR-assisted verification, vector retrieval, NER, and a bilingual Bengali/English GraphRAG voice assistant.</span>
+        <span class="project-entry-tags"><span>React</span><span>FastAPI</span><span>GraphRAG</span><span>PostgreSQL</span></span>
+      </a>
+
+      <a class="project-entry" href="pages/cpu-dnn-optimization.html">
+        <span class="project-entry-kicker">CSE498R Thesis</span>
+        <span class="project-entry-title">CPU-Level Deep Neural Network Optimization</span>
+        <span class="project-entry-summary">A CPU-only optimization framework for vision, NLP, and tokenization workloads using multi-core threading, MKL acceleration, and cache-aware memory layout.</span>
+        <span class="project-entry-tags"><span>Deep Learning</span><span>MKL</span><span>Optimization</span><span>BERT</span></span>
+      </a>
+
+      <a class="project-entry" href="pages/resumesync.html">
+        <span class="project-entry-kicker">AI Product</span>
+        <span class="project-entry-title">ResumeSync</span>
+        <span class="project-entry-summary">An ATS resume optimization platform with AI-assisted editors, real-time score feedback, keyword extraction, PDF export, and Redis-cached analytics.</span>
+        <span class="project-entry-tags"><span>Node.js</span><span>PostgreSQL</span><span>Redis</span><span>LLM</span></span>
+      </a>
+
+      <a class="project-entry" href="pages/physics-chatbot.html">
+        <span class="project-entry-kicker">Educational AI</span>
+        <span class="project-entry-title">Physics Chatbot via RAG + Local LLMs</span>
+        <span class="project-entry-summary">An offline RAG-based physics tutor using FAISS and local LLMs to answer concept, formula, and numerical queries with cited sources.</span>
+        <span class="project-entry-tags"><span>FAISS</span><span>Llama</span><span>Phi-3</span><span>Streamlit</span></span>
+      </a>
+
+      <a class="project-entry" href="pages/teammitdrive.html">
+        <span class="project-entry-kicker">RAG File Search</span>
+        <span class="project-entry-title">TeammitDrive</span>
+        <span class="project-entry-summary">A Telegram bot for natural-language file search across aggregated cloud storage providers using unified APIs and semantic ranking.</span>
+        <span class="project-entry-tags"><span>Telegram Bot</span><span>RAG</span><span>Embeddings</span><span>Cloud APIs</span></span>
+      </a>
+
+      <a class="project-entry" href="pages/teammitlearn.html">
+        <span class="project-entry-kicker">Interactive Simulation</span>
+        <span class="project-entry-title">TeammitLearn</span>
+        <span class="project-entry-summary">A Three.js physics simulation platform with real-time projectile and motion modeling, LLM-controllable parameters, and AI-generated practice questions.</span>
+        <span class="project-entry-tags"><span>Three.js</span><span>Physics</span><span>LLM API</span><span>Education</span></span>
+      </a>
+
+      <a class="project-entry" href="pages/okkhor.html">
+        <span class="project-entry-kicker">Programming Language</span>
+        <span class="project-entry-title">Okkhor</span>
+        <span class="project-entry-summary">A Bengali-language programming language prototype with a custom lexer, parser, AST generator, bytecode compiler, and stack-based virtual machine.</span>
+        <span class="project-entry-tags"><span>Python</span><span>Compiler</span><span>VM</span><span>Bengali</span></span>
+      </a>
+
+      <a class="project-entry" href="pages/tuitiontracker.html">
+        <span class="project-entry-kicker">Android Application</span>
+        <span class="project-entry-title">TuitionTracker</span>
+        <span class="project-entry-summary">A native Android tuition-management app with Firebase-backed attendance, payments, analytics, owner-scoped access rules, and notifications.</span>
+        <span class="project-entry-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>Firebase</span><span>MVVM</span></span>
+      </a>
+
+      <a class="project-entry" href="pages/instabin.html">
+        <span class="project-entry-kicker">Developer Utility</span>
+        <span class="project-entry-title">InstaBin</span>
+        <span class="project-entry-summary">A React/TypeScript code-sharing platform with multi-language syntax highlighting, automatic language detection, theming, and public/private links.</span>
+        <span class="project-entry-tags"><span>React</span><span>TypeScript</span><span>Syntax Highlighting</span><span>Sharing</span></span>
+      </a>
+    </div>
+
+    <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="projects_index">
+      <div class="visitor-stats">
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Total visits:</span>
+          <span class="visitor-stat-count" id="overall-visitor-count"></span>
+        </div>
+        <span class="visitor-stat-separator">§</span>
+        <div class="visitor-stat">
+          <span class="visitor-stat-label">Page visits:</span>
+          <span class="visitor-stat-count" id="page-visitor-count"></span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Projects') {
+        link.classList.add('active');
+      }
+    });
+
+    let lastScrollTop = 0;
+    const nav = document.querySelector('.top-nav');
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+          nav.classList.toggle('nav-scrolled', scrollPos > 50);
+          if (scrollPos > 100) {
+            nav.classList.toggle('nav-hidden', scrollPos > lastScrollTop && scrollPos > 200);
+          }
+          lastScrollTop = scrollPos <= 0 ? 0 : scrollPos;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../visitor-counter.js"></script>
+</body>
+
+</html>

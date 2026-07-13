@@ -837,6 +837,29 @@ input.sidenote-toggle {
   margin-bottom: -0.2rem;
 }
 
+.cv-download {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin-top: 1rem !important;
+  padding-top: 0.75rem;
+  border-top: var(--border-width-thin) solid var(--footnotes-border-color);
+  font-size: 0.95rem;
+}
+
+.cv-download a {
+  font-variant-caps: small-caps;
+  letter-spacing: 0.03em;
+  font-weight: bold;
+}
+
+.cv-download span {
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.72;
+}
+
 /* Format the LaTeX symbol correctly (a higher up, e lower) */
 .latex span:nth-child(1) {
   text-transform: uppercase;

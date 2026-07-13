@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ItihaasAI - Projects - Mahbub Kousar</title>
+  <meta name="description" content="ItihaasAI, a full-stack AI historical archive and Bengali-English GraphRAG assistant" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb">
+      <a href="../index.html">Projects</a>
+      <span class="breadcrumb-separator">/</span>
+      <span>ItihaasAI</span>
+    </nav>
+
+    <header class="project-header">
+      <h1>ItihaasAI</h1>
+      <p class="subtitle">A historical archive that decided plain storage was insufficiently dramatic.</p>
+      <div class="project-meta">
+        <span>CSE499 Capstone</span>
+        <span>Full-Stack AI</span>
+        <span>Bengali/English</span>
+      </div>
+    </header>
+
+    <article>
+      <p>
+        ItihaasAI is a full-stack AI historical archive for linking events, people, locations, and documents into
+        a searchable knowledge system. Its central hypothesis is that historical material becomes more useful when
+        it can be queried, verified, visualized, and politely interrogated by a bilingual assistant.
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Stack</dt><dd>React, TypeScript, Node.js, Express, PostgreSQL, Python FastAPI.</dd></div>
+        <div class="project-fact"><dt>Security</dt><dd>JWT authentication and role-based access control.</dd></div>
+        <div class="project-fact"><dt>AI Layer</dt><dd>OCR, fuzzy matching, vector retrieval, NER, credibility scoring, and GraphRAG.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Principal Construction</h2>
+        <p>
+          The system models historical knowledge as a graph, connecting source documents to people, places, and
+          events. Full-text search handles direct lookup, while graph visualization gives the archive a navigable
+          structure that is more useful than a pile of PDFs wearing a database costume.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Verification Pipeline</h2>
+        <p>
+          A six-layer fact-verification pipeline combines OCR, fuzzy matching, vector retrieval, named entity
+          recognition, and credibility scoring. The goal is to surface relevant evidence while flagging source
+          inconsistencies and potentially tampered material.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Assistant Interface</h2>
+        <p>
+          A GraphRAG-powered Bengali/English voice assistant answers historical questions with citation-grounded
+          responses. This gives the archive a conversational access layer while keeping the evidence trail visible,
+          because unsupported historical confidence is how arguments start at family gatherings.
+        </p>
+      </section>
+
+      <div class="project-tags">
+        <span>React</span><span>TypeScript</span><span>FastAPI</span><span>PostgreSQL</span><span>GraphRAG</span>
+      </div>
+
+      <nav class="project-nav-links">
+        <a href="../index.html">Back to Projects</a>
+        <a href="cpu-dnn-optimization.html">Next: CPU-Level DNN Optimization</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_itihaasai">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Projects') link.classList.add('active');
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>

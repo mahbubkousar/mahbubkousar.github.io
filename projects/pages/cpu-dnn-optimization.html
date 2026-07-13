@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPU-Level Deep Neural Network Optimization - Projects - Mahbub Kousar</title>
+  <meta name="description" content="CPU-only deep neural network optimization framework for vision and NLP workloads" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb">
+      <a href="../index.html">Projects</a>
+      <span class="breadcrumb-separator">/</span>
+      <span>CPU-Level DNN Optimization</span>
+    </nav>
+
+    <header class="project-header">
+      <h1>CPU-Level Deep Neural Network Optimization</h1>
+      <p class="subtitle">A thesis project for people who look at expensive GPUs and ask, "but what if no?"</p>
+      <div class="project-meta">
+        <span>CSE498R Thesis</span>
+        <span>Systems</span>
+        <span>Deep Learning</span>
+      </div>
+    </header>
+
+    <article>
+      <p>
+        This project investigates CPU-only deep learning performance across vision, NLP, and tokenization workloads.
+        It focuses on multi-core threading, MKL-accelerated tensor operations, and cache-aware memory layout, because
+        sometimes the hardware budget is a research question.
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Workloads</dt><dd>U-Net training, BERT-base CPU training, and tokenizer optimization.</dd></div>
+        <div class="project-fact"><dt>U-Net Result</dt><dd>Training time reduced by 35%, from 1924.4s to 1254.0s, with 0.8686 validation Dice.</dd></div>
+        <div class="project-fact"><dt>BERT Result</dt><dd>CPU training time reduced by 83%, from 1033.27s to 171.74s.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Optimization Method</h2>
+        <p>
+          The framework applies multi-core parallelization and memory-conscious computation patterns to reduce
+          training time without changing the fundamental model objectives. It treats CPU execution not as a sad
+          fallback, but as a constrained system worth measuring properly.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Vision Experiment</h2>
+        <p>
+          U-Net training was scaled across 32 CPU cores on a 31M-parameter model. The resulting speedup preserved
+          validation quality while cutting wall-clock training time, which is the kind of result that makes a profiler
+          feel briefly loved.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>NLP Experiment</h2>
+        <p>
+          BERT-base CPU training received large gains through multi-core parallelization, with additional improvements
+          from tokenizer-level optimization. The project therefore treats preprocessing as part of the system, not a
+          footnote where performance goes to hide.
+        </p>
+      </section>
+
+      <div class="project-tags">
+        <span>Python</span><span>MKL</span><span>Multi-Core</span><span>U-Net</span><span>BERT</span>
+      </div>
+
+      <nav class="project-nav-links">
+        <a href="itihaasai.html">Previous: ItihaasAI</a>
+        <a href="resumesync.html">Next: ResumeSync</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_cpu_dnn_optimization">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    document.querySelectorAll('.top-nav a').forEach(link => {
+      if (link.textContent.trim() === 'Projects') link.classList.add('active');
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>

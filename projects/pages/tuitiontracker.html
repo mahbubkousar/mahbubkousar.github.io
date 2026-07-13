@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TuitionTracker - Projects - Mahbub Kousar</title>
+  <meta name="description" content="TuitionTracker Android application for attendance, payments, analytics, and notifications" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb"><a href="../index.html">Projects</a><span class="breadcrumb-separator">/</span><span>TuitionTracker</span></nav>
+
+    <header class="project-header">
+      <h1>TuitionTracker</h1>
+      <p class="subtitle">An Android app for turning tuition logistics into something less notebook-dependent.</p>
+      <div class="project-meta"><span>Android Application</span><span>Kotlin</span><span>Firebase</span></div>
+    </header>
+
+    <article>
+      <p>
+        TuitionTracker is a native Android tuition-management application for attendance tracking, payments, analytics,
+        and notifications. It targets the practical administrative work around tutoring, where the real enemy is not
+        complexity but forgetting who paid when.
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Client</dt><dd>Kotlin, Jetpack Compose, and MVVM architecture.</dd></div>
+        <div class="project-fact"><dt>Backend</dt><dd>Firebase and Firestore with owner-scoped access rules.</dd></div>
+        <div class="project-fact"><dt>Features</dt><dd>Attendance, payments, analytics dashboards, and automated notification scheduling.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Application Model</h2>
+        <p>
+          The app models students, attendance sessions, payment status, and dashboard summaries. The interface is built
+          for repeated operational use rather than one-time novelty, which is usually where prototypes start sweating.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Data and Access</h2>
+        <p>
+          Firestore provides shared persistence, while owner-scoped rules protect user-specific data. This keeps the
+          convenience of a cloud backend without treating every tutor's records as a public group project.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Analytics</h2>
+        <p>
+          Real-time dashboards summarize attendance trends and payment state across students. The result is a practical
+          reporting layer that replaces guesswork with a slightly more civilized form of accountability.
+        </p>
+      </section>
+
+      <div class="project-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>MVVM</span><span>Firebase</span><span>Firestore</span></div>
+
+      <nav class="project-nav-links">
+        <a href="okkhor.html">Previous: Okkhor</a>
+        <a href="instabin.html">Next: InstaBin</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_tuitiontracker">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>document.querySelectorAll('.top-nav a').forEach(link => { if (link.textContent.trim() === 'Projects') link.classList.add('active'); });</script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>

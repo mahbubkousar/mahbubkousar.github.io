@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Okkhor - Projects - Mahbub Kousar</title>
+  <meta name="description" content="Okkhor Bengali programming language prototype with lexer, parser, compiler, and VM" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../projects.css" />
+  <link rel="stylesheet" href="../../visitor-counter.css" />
+</head>
+
+<body class="text-justify">
+  <nav class="top-nav">
+    <ul>
+      <li><a href="../../index.html">Portfolio</a></li>
+      <li><a href="../../notebooks/index.html">Notebook</a></li>
+      <li><a href="../index.html">Projects</a></li>
+      <li><a href="../../assets/Mahbubur_CV.pdf" download>CV</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+    <nav class="project-breadcrumb"><a href="../index.html">Projects</a><span class="breadcrumb-separator">/</span><span>Okkhor</span></nav>
+
+    <header class="project-header">
+      <h1>Okkhor</h1>
+      <p class="subtitle">A Bengali programming language prototype, because syntax should occasionally speak back in Bangla.</p>
+      <div class="project-meta"><span>Programming Language</span><span>Compiler</span><span>Bengali Script</span></div>
+    </header>
+
+    <article>
+      <p>
+        Okkhor is a Bengali-language programming language prototype implemented in Python. It explores what a native
+        Bengali-script programming grammar can look like when treated as a real language design problem rather than a
+        novelty label pasted onto English syntax.
+      </p>
+
+      <dl class="project-facts">
+        <div class="project-fact"><dt>Frontend</dt><dd>Custom lexer, parser, and AST generator.</dd></div>
+        <div class="project-fact"><dt>Backend</dt><dd>Bytecode compiler and stack-based virtual machine.</dd></div>
+        <div class="project-fact"><dt>Coverage</dt><dd>Unit tests for language components and VM behavior.</dd></div>
+      </dl>
+
+      <section class="project-section">
+        <h2>Language Design</h2>
+        <p>
+          The grammar defines Bengali-script tokens for variables, control flow, and function declarations. The design
+          goal is not merely translation, but a coherent programming surface shaped around Bengali notation.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Compiler Pipeline</h2>
+        <p>
+          Source code is tokenized, parsed into an AST, compiled into bytecode, and executed on a stack-based virtual
+          machine. This makes Okkhor a compact end-to-end language implementation rather than a parser demo wearing a
+          graduation cap.
+        </p>
+      </section>
+
+      <section class="project-section">
+        <h2>Research Value</h2>
+        <p>
+          The project sits at the intersection of programming language tooling and language accessibility. It is a
+          small prototype, but it asks a useful question: what would local-language computing feel like if the compiler
+          met the user halfway?
+        </p>
+      </section>
+
+      <div class="project-tags"><span>Python</span><span>Lexer</span><span>Parser</span><span>Bytecode</span><span>VM</span></div>
+
+      <nav class="project-nav-links">
+        <a href="teammitlearn.html">Previous: TeammitLearn</a>
+        <a href="tuitiontracker.html">Next: TuitionTracker</a>
+      </nav>
+
+      <div id="visitor-counter-container" class="visitor-counter-container" data-page-id="project_okkhor">
+        <div class="visitor-stats">
+          <div class="visitor-stat"><span class="visitor-stat-label">Total visits:</span> <span class="visitor-stat-count" id="overall-visitor-count"></span></div>
+          <span class="visitor-stat-separator">§</span>
+          <div class="visitor-stat"><span class="visitor-stat-label">Page visits:</span> <span class="visitor-stat-count" id="page-visitor-count"></span></div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script>document.querySelectorAll('.top-nav a').forEach(link => { if (link.textContent.trim() === 'Projects') link.classList.add('active'); });</script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../../firebase-config.js"></script>
+  <script src="../../visitor-counter.js"></script>
+</body>
+
+</html>
